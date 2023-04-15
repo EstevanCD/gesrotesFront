@@ -1,0 +1,13 @@
+.containerLayout{
+  position: absolute;
+  background-color: #F7F7F7;
+  width: calc(100vw - 270px);
+  height: 100px;
+  margin-top: 8.5em;
+  margin-left: 270px;
+  border-radius: 20px;
+/*TODO: quitar estos 3 items*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
