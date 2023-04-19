@@ -4,6 +4,7 @@ import Toolbar from "../Toolbar/Toolbar";
 import Navbar from "../Navbar";
 import style from "./TabComponent.module.css";
 import "react-tabs/style/react-tabs.css";
+import SubjectManagement from "../SubjectManagement/subjectManagement";
 
 function TabComponents() {
   let { id } = useParams();
@@ -21,40 +22,29 @@ function TabComponents() {
           </TabList>
 
           <TabPanel>
-            <div className={style.grid}>
-              <div className={style.card}>
-                <h4>{id}</h4>
-                {/* GUAIRSE DE LA TARJETA SUBJECT */}
-                {/* CUERPO DE LA TARJETA ESTUDIANTES*/}
-              </div>
+            <div className={style.panel}>
+
+            </div>
+
+          </TabPanel>
+          <TabPanel>
+            <div className={style.panel}>
+              <SubjectManagement />
             </div>
           </TabPanel>
           <TabPanel>
-            <div className={style.grid}>
-              <div className={style.card}>
-                {/* CUERPO DE LA TARJETA PROFESORES*/}
-              </div>
+            <div className={style.panel}>
+
             </div>
           </TabPanel>
           <TabPanel>
-            <div className={style.grid}>
-              <div className={style.card}>
-                {/* CUERPO DE LA TARJETA ROTES*/}
-              </div>
+            <div className={style.panel}>
+
             </div>
           </TabPanel>
           <TabPanel>
-            <div className={style.grid}>
-              <div className={style.card}>
-                {/* CUERPO DE LA TARJETA TURNOS*/}
-              </div>
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <div className={style.grid}>
-              <div className={style.card}>
-                {/* CUERPO DE LA TARJETA DOCUMENTOS*/}
-              </div>
+            <div className={style.panel}>
+
             </div>
           </TabPanel>
         </Tabs>
