@@ -1,16 +1,16 @@
-import { useState } from "react";
-import Navbar from "./components/Navbar";
-import Toolbar from "./components/Toolbar/Toolbar";
-import Layout from "./components/layout";
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Subjects from "./components/Subject";
+import TabComponents from "./components/TabComponent/TabComponent";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <Toolbar/>
-      <Layout/>
-      <Navbar/>
+      <Routes>
+            { <Route path='/TabComponent/:id' element={<TabComponents />}/> }
+            <Route index element={<Subjects />}/>
+            {/* <Route path='Docentes' element={<Docentes />}/> */}
+            <Route path='*' element={<Navigate replace to="/"/>}/>
+      </Routes>
     </>
   );
 }

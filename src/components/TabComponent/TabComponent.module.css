@@ -1,0 +1,60 @@
+  .containerTabComponent{
+    position: absolute;
+    background-color: #F7F7F7;
+    width: calc(100vw - 270px);
+    margin-top: 8.5em;
+    margin-left: 270px;
+    border-radius: 20px;
+  }
+  
+  .react-tabs {
+    font-size: 16px;
+    color: #333;
+
+  }
+
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    height: 72vh;
+    overflow-y: auto;
+  }
+
+  .card{
+    width: 95%;
+  }
+   
+  .react-tabs__tab-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+  }
+  
+  .react-tabs__tab {
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    background-color: #eee;
+    font-weight: bold;
+  }
+  
+  .react-tabs__tab--selected {
+    border-color: #ccc;
+    border-radius: 5px 5px 0 0;
+    background-color: #fff;
+    border-bottom: none;
+  }
+  
+  .react-tabs__tab-panel {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-top: none;
+    border-radius: 0 5px 5px 5px;
+  }
+  
