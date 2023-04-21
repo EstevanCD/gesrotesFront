@@ -145,7 +145,7 @@ export default function () {
             </div>
             <button
               className={style.buttonStyle + " " + style.buttonInlineBlock}
-              style={{ marginLeft: "40px" }}
+              style={{ marginLeft: "20px" }}
             >
               Agregar Horario
             </button>

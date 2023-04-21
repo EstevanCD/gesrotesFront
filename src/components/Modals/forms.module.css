@@ -1,10 +1,11 @@
 .containerForm {
     margin: 20px;
-    width: 100%;
+    width: calc(100vw - 270px);
 }
 
 .containerModal{
-    width: 1200px ;
+    width: 100%;
+    box-shadow: none;
 }
 
 .common {
@@ -107,9 +108,15 @@
     border-right: none !important;
 }
 
+.positionHour input{
+    width: 100px;
+}
+
 .spaceDay, .step h5, .step select{
     margin-left: 28px !important;
 }
+
+
 
 .formConfig select,
 .spaceHour input {

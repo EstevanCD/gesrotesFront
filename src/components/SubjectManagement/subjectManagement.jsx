@@ -77,7 +77,7 @@ function SubjectManagement() {
                       {teacher.name}
                     </Typography>
                   </CardContent>
-                  <CardActions style={{ justifyContent: "center" }}>
+                  <CardActions style={{ justifyContent: "center"}}>
                     <Button
                       size="small"
                       variant="contained"
