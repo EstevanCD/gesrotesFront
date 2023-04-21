@@ -38,6 +38,7 @@ function SubjectManagement() {
   };
   return (
     <>
+      <Modals open={open} handleClose={handleClose} />
       <Box
         sx={{
           height: 10,
@@ -86,7 +87,6 @@ function SubjectManagement() {
                     >
                       GESTIONAR HORARIOS
                     </Button>
-                    <Modals open={open} handleClose={handleClose} />
                   </CardActions>
                 </Card>
               </Grid>
