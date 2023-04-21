@@ -22,7 +22,6 @@
     height: 10%;
     border-bottom: 2px solid #D5D5D5;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -35,7 +34,6 @@
     height: 10%;
     border-top: 2px solid #D5D5D5;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
