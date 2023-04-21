@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Subjects from "./components/Subject";
 import TabComponents from "./components/TabComponent/TabComponent";
+import Forms from './components/Modals/Forms';
 // import subjectManagements from "./components/SubjectManagement/subjectManagement";
 
 function App() {
