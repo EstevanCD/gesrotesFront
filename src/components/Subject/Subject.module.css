@@ -1,25 +1,38 @@
 .containerSubject{
     position: absolute;
     background-color: #F7F7F7;
-    width: calc(100vw - 270px);
+    width: calc(100vw - 17em);
     margin-top: 8.5em;
-    margin-left: 270px;
+    margin-left: 17em;
     border-radius: 20px;
-    min-height: 70vh;
+  }
+
+  .noFound{
+    width: calc(100vw - 17em);
+    color: #888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem
+  }
+
+  .common{
+    color: white;
+    text-align: center;
   }
 
   .searchBar{
-    height: 40px;
+    margin: 1.3em;
     width: 100%;
     align-items: center;
     align-content: center;
-    color: gray;
+    color: #888;
   }
 
   .search{
     display: flex;
-    width: 21%;
-    border: 1px solid gray;
+    width: 35%;
+    border: 1px solid #888;
     border-radius: 8px;
     margin: auto;
     align-items: center;
@@ -27,7 +40,9 @@
 
   .search input{
     border: none;
-    width: 87%;
+    width: 75%;
+    padding-left:  2vw;
+    background-color: #F7F7F7;
   }
 
   .search input:focus, .search input:active{
@@ -35,18 +50,26 @@
     outline: none;
   }
 
+  .search:focus-within{
+    box-shadow: 0 1px 6px 0 #171717;
+    border-color: rgba(223,225,229,0);
+  }
+
   .grid{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
+    grid-gap: 10px;
     overflow-y: auto;
-    height: 72vh;
-    padding-bottom: 5px;
+    height: 62vh;
+    padding-bottom: 1vh;
+    margin: 2vh 2vw;
   }
 
   .card{
     width: 95%;
-    height: 127px;
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     border-color: lightgrey;
@@ -55,8 +78,6 @@
 
   .tittle{
     background-color: #2d0181;
-    color: white;
-    text-align: center;
   }
   .tittle h4{
     margin: 0;
@@ -75,24 +96,23 @@
   }
 
   .body{
-    background-color: white;
+    background-color: #F7F7F7;
+    flex: 5vh;
   }
 
   .buttons{
+    margin: 0 1vw;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    background-color: lightgray;
-    font-size: 10px;
+    font-size: 9px;
     display: flex;
-    border: gray 1px;
+    border-top: 1px solid lightgray;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    height: 45px;
+    gap: 8px;
+    flex: 2vh;
   }
   
   .buttons button{
-    text-align: center;
     background-color: #018112;
-    color: white;
   }

@@ -4,6 +4,7 @@ import Toolbar from "../Toolbar/Toolbar";
 import Navbar from '../Navbar';
 import style from "./Subject.module.css";
 import SearchIcon from '@material-ui/icons/Search';
+import BlockIcon from '@material-ui/icons/Block';
 import {Link} from 'react-router-dom';
 
 function Subjects() {
@@ -45,7 +46,7 @@ function Subjects() {
                 {filteredSubjects.length > 0 ? (
                     filteredSubjects.map((item, index) => (
                         <div key={index} className={style.card}>
-                            <div className={style.tittle}>
+                            <div className={style.tittle + " " + style.common}>
                                 <h4>{item.asignatura_nombre}</h4>
                                 <p>{item.programa_titulo}</p>
                             </div>
@@ -53,15 +54,18 @@ function Subjects() {
                                 <p></p>
                             </div>
                             <div className={style.buttons}>
-                                <button className="state">ESTADO DE LA ASIGNATURA</button>
+                                <button className={style.common}>ESTADO DE LA ASIGNATURA</button>
                                 <Link to={'/TabComponent/'+ item.asignatura_codigo}>
-                                    <button className="manage" >GESTIONAR ASIGNATURA</button>
+                                    <button className={style.common}>GESTIONAR ASIGNATURA</button>
                                 </Link>
                             </div>
                         </div>
                     ))
                 ):(
-                    <h4>No encontrado</h4>
+                    <div className={style.noFound}>
+                        <BlockIcon />
+                        <p>NO FOUND</p>
+                    </div>
                 )}
             </div>
         </div>

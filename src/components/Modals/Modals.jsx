@@ -9,6 +9,7 @@ import Forms from "./Forms";
 import { Close } from '@material-ui/icons';
 
 export default function Modals({ open, handleClose }) {
+  
   return (
     
     <Dialog maxWidth="lg" open={open} onClose={handleClose}>
