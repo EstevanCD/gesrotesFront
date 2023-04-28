@@ -1,0 +1,11 @@
+.react-datepicker__day-name {
+  text-transform: uppercase;
+  background-color: #a6a8ad;
+  font-weight: bold;
+}
+
+.containerDates{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
