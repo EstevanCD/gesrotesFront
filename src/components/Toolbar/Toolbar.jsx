@@ -12,13 +12,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
 
-import AppBar from "@material-ui/core/AppBar";
-
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/core/Menu";
 
 import MenuItem from "@material-ui/core/MenuItem";
-import AdbIcon from "@material-ui/icons/Adb";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];

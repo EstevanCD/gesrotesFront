@@ -12,7 +12,11 @@ function Navbar() {
     "Verificar Docentes",
     "Asignaturas",
   ];
+
+  const optionsProfile = ["Configuracion", "Salir"];
+
   //TODO: agregar logo
+
   return (
     <div className={style.container}>
       <div className={style.containernav}>
@@ -36,17 +40,24 @@ function Navbar() {
           </Typography>
         </div>
         <div className={style.items}>
+          GESTIÓN
           <ul>
             {optionsMenu.map((item) => {
               return <li className={style.containerli}>{item}</li>;
             })}
           </ul>
+          MI PERFIL
+          <ul>
+            {optionsProfile.map((item) => {
+              return <li className={style.containerli}>{item}</li>;
+            })}
+          </ul>
         </div>
         <div className={style.footer}>
-          <PhoneInTalkIcon/>
+          <PhoneInTalkIcon />
           <Typography>
             Contactanos
-            <br/>
+            <br />
             +57 345 6587 1548
           </Typography>
         </div>
