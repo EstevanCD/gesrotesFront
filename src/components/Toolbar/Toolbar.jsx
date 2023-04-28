@@ -68,9 +68,10 @@ export default function CustomSeparator() {
           </Breadcrumbs>
           <hr></hr>
           <Box sx={{ flexGrow: 0 }}>
+            
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="src\assets\salud.png" />
               </IconButton>
             </Tooltip>
             <Menu
