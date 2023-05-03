@@ -8,15 +8,21 @@ import VerifiedIcon from "@material-ui/icons/VerifiedUser";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
 import ChecklistIcon from '@material-ui/icons/PlaylistAddCheck';
 import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function Navbar() {
   const optionsMenu = [
-    <><ChecklistIcon/>Verificar estudiantes</>,
-    <><HowToRegIcon/>Verificar Docentes</>,
-    "Asignaturas",
+    <><ChecklistIcon/> Verificar estudiantes</>,
+    <><HowToRegIcon/> Verificar Docentes</>,
+    <><MenuBookIcon/> Asignaturas</>,
   ];
 
-  const optionsProfile = ["Configuracion", "Salir",];
+  const optionsProfile = [
+    <><SettingsIcon/> Configuracion</>,
+    <><ExitToAppIcon/> Salir</>,
+  ];
 
   //TODO: agregar logo
 
