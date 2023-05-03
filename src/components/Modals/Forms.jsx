@@ -61,9 +61,8 @@ export default function () {
   ];
   return (
     <div className={style.containerForm}>
-      <div className={style.common + " " + style.formManage}>
+      <div className={style.formManage}>
         <form>
-          <h3>GESTION DE HORARIOS </h3>
           <div className={style.createName}>
             <h4> Crear nombre del horario (Rote)</h4>
             <div>
@@ -73,7 +72,7 @@ export default function () {
           </div>
         </form>
       </div>
-      <div className={style.common + " " + style.formConfig}>
+      <div className={style.formConfig}>
         <h3>CONFIGURACIÓN DEL HORARIO</h3>
         <form>
           <div className={style.stepContainer + " " +style.step}>
@@ -111,14 +110,14 @@ export default function () {
                 <h5>
                   Hora de inicio <span className={style.fieldPriority}>*</span>
                 </h5>
-                <input type="time" placeholder="-- : --   ---" />
+                <input type="time" placeholder="-- : -- " />
               </div>
               <div className={style.positionHour}>
                 <h5>
                   Hora de finalización
                   <span className={style.fieldPriority}>*</span>
                 </h5>
-                <input type="time" placeholder="-- : --   ---" />
+                <input type="time" placeholder="-- : --" />
               </div>
             </div>
           </div>
@@ -152,8 +151,8 @@ export default function () {
           </div>
         </form>
       </div>
-      <div className={style.common + " " + style.formConfig}>
-        <h3>CONFIGURACIÓN DEL HORARIO</h3>
+      <div >
+        <h3>LISTA DE HORARIOS CREADOS</h3>
         <div className={style.tableContainer}>
           <div className={style.tableTittle}>
             <span className={style.tableBody + " " + style.tittle}>Nombre</span>
