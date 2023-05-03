@@ -50,11 +50,11 @@ function Navbar() {
         </div>
         <div className={style.items}>
           <ul>
-            <h3>GESTIÓN</h3>
+            <h5>GESTIÓN</h5>
             {optionsMenu.map((item) => {
               return <li className={style.containerli}>{item}</li>;
             })}
-            <h3>MI PERFIL</h3>
+            <h5>MI PERFIL</h5>
             {optionsProfile.map((item) => {
               return <li className={style.containerli}>{item}</li>;
             })}
