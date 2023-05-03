@@ -1,6 +1,8 @@
 import React from "react";
 import style from "./Routine.module.css";
 import AddIcon from "@material-ui/icons/Add";
+import Modals from "../Modals/Modals";
+import { useState } from "react";
 
 let fechas = [
   ['Enero 27 2022', 'Feba 25 2022'],
@@ -20,10 +22,27 @@ let grupos = [
 
 const Routine = () => {
   const banderaGrupo = true;
+  const [modalContent, setModalContent] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setModalContent("CycleCreation");
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div>
+      <Modals
+        open={open}
+        handleClose={handleClose}
+        modalContent={modalContent}
+        title="CREAR CICLO"
+      />
       <div className={style.positionButton}>
-        <button className={style.buttons2}>
+        <button className={style.buttons2} onClick={handleOpen}> 
           {" "}
           <i>
             <AddIcon style={{ fontSize: "15px" }} />
@@ -36,14 +55,16 @@ const Routine = () => {
           <table>
             <tr>
               <th>
-                <div className={style.titletable} >
-                  <h2>Grupo/Ciclo</h2>
+                <div className={style.titletable}>
+                  <p>Grupo/Ciclo</p>
                 </div>
               </th>
               {fechas.map((fecha) => {
                 return (<th>
-                  <div class={style.card}>
-                    <h2>{fecha[0]} {fecha[1]}</h2>
+                  <div className={style.cardCommon}>
+                    <div className={style.containerDates}>
+                    <p>{fecha[0]}<br/>{fecha[1]}</p>
+                    </div>
                   </div>
                 </th>)
               })}
@@ -53,14 +74,14 @@ const Routine = () => {
               return (
                 <tr>
                   <td>
-                    <div class={style.card}>
-                      <h2>{indice + 1}</h2>
+                    <div class={style.cardgroup}>
+                      <p>{indice + 1}</p>
                     </div>
                   </td>
                   {grupo.map((dato) => {
                     return (
                       <td>
-                        <div class={style.card}>
+                        <div class={style.cardgroup}>
                           <h2>{dato === "" ? "Agregar" : dato}</h2>
                         </div>
                       </td>
