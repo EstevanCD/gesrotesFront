@@ -24,7 +24,7 @@ export default function Modals({ open, handleClose, modalContent, title }) {
   return (
     <Dialog maxWidth="lg" open={open} onClose={handleClose} >
       <DialogActions style={styleD[modalContent]}>
-        <Button style={modalContent === "CycleCreation" ? {position: "absolute", color: "white"} : {position: "absolute"}} onClick={handleClose}>
+        <Button style={modalContent === "Forms" ? {position: "absolute"} : {position: "absolute", color: "white"}} onClick={handleClose}>
           <Close />
         </Button>
         <h3 style={{margin: "0 auto"}}>{title}</h3>

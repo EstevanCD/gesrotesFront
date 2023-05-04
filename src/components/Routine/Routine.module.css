@@ -1,0 +1,75 @@
+.buttons button {
+  background-color: #484943;
+}
+
+.buttons {
+  margin: 0 1vw;
+  position: relative;
+  left: 12px;
+  background-color:rgb(4, 4, 139);
+  color: aliceblue;
+  flex: auto;
+  width: 130px;
+  height: 35px;
+  font-size: 0.8em;
+}
+.buttons2 {
+    margin: 0 1vw;
+    position: relative;
+    background-color: rgb(4, 4, 139);
+    color: aliceblue;
+    flex: auto;
+    width: 130px;
+    height: 35px;
+    font-size:0.8em;
+  }
+  .buttonsred {
+    margin: 0 1vw;
+    position: relative;
+    left: 520px;
+    background-color:rgb(139, 4, 4);
+    color: aliceblue;
+    flex: auto;
+    width: 130px;
+    height: 35px;
+    font-size: 0.8em;
+  }
+  .positionButton{
+    position: relative;
+  }
+  .card {
+    border: 1px solid #ccc;
+    font-size: 10px;
+  }
+  .cardCommon{
+    margin: 14px;
+    width: 120px;
+    height: 40px;
+    padding: 4px;
+    font-size: 0.75rem;
+    color: #980c0f;
+  }
+
+  .containerDates{
+    border: 3px solid#0a2167;
+    border-radius: 5px;
+  }
+
+  .cardgroup{
+    border: 1px solid #ccc;
+    padding: 4px;
+    margin: 14px;
+    width: 90px;
+    height: 90px;
+    font-size: 10px;
+
+  }
+  .titletable{
+    font-size: 0.8em;
+    left: 15px;
+    border-bottom: 1px solid #484943;
+    line-height: 54px;
+    /* padding: 15px 0; */
+    margin: 0 35px;
+
+  }
