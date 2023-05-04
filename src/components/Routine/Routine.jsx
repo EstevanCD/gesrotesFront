@@ -74,14 +74,14 @@ const Routine = () => {
               return (
                 <tr>
                   <td>
-                    <div class={style.cardgroup}>
-                      <p>{indice + 1}</p>
+                    <div class={style.cardgroup2}>
+                      <p class={style.cardgroup}>{indice + 1}</p>
                     </div>
                   </td>
                   {grupo.map((dato) => {
                     return (
                       <td>
-                        <div class={style.cardgroup}>
+                        <div  className={dato === "" ? style.cardInfo : style.cardConten}>
                           <h2>{dato === "" ? "Agregar" : dato}</h2>
                         </div>
                       </td>
