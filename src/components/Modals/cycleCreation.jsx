@@ -20,7 +20,7 @@ export default function CycleCreation({ onClose }) {
     } else if (!fechaFin) {
       setAlertMessage('* Seleccione la fecha de fin');
     } else {
-      const url = "endpoint"; //aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
+      const url = "endpoint"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
       const data = {
         fechaInicio: fechaInicio.toISOString().substr(0, 10),
         fechaFin: fechaFin.toISOString().substr(0, 10),
