@@ -3,13 +3,14 @@ import style from "./Routine.module.css";
 import AddIcon from "@material-ui/icons/Add";
 import Modals from "../Modals/Modals";
 import { useState } from "react";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 let fechas = [
-  ['Enero 27 2022', 'Feba 25 2022'],
-  ['Enero 27 2022', 'Feba 25 2022'],
-  ['Enero 27 2022', 'Feba 25 2022'],
-  ['Enero 27 2022', 'Feba 25 2022'],
-  ['Enero 27 2022', 'Feba 25 2022'],
+  ['Enero. 27, 2022', 'Febrero. 25, 2022'],
+  ['Enero. 27, 2022', 'Febrero. 25, 2022'],
+  ['Enero. 27, 2022', 'Febrero. 25, 2022'],
+  ['Enero. 27, 2022', 'Febrero. 25, 2022'],
+  ['Enero. 27, 2022', 'Febrero. 25, 2022'],
 ];
 
 let grupos = [
@@ -75,16 +76,24 @@ const Routine = () => {
                 <tr>
                   <td>
                     <div class={style.cardgroup2}>
-                      <p class={style.cardgroup}>{indice + 1}</p>
+                      <p onClick={handleOpen} class={style.cardgroup}>{indice + 1}</p>
                     </div>
                   </td>
                   {grupo.map((dato) => {
                     return (
+                    
                       <td>
-                        <div  className={dato === "" ? style.cardInfo : style.cardConten}>
-                          <h2>{dato === "" ? "Agregar" : dato}</h2>
-                        </div>
-                      </td>
+            <div className={dato === "" ? style.cardInfo : style.cardConten}>
+              {dato === "" ? (
+                <h2 onClick={handleOpen}>
+                  <AddCircleIcon style={{ color: '#888888',  fontSize:40}} />
+                  <br/>Sin asignar
+                </h2>
+              ) : (
+                <h2 onClick={handleOpen}>{dato}</h2>
+              )}
+            </div>
+          </td>
                     )
                   })}
                 </tr>
