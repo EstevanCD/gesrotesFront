@@ -26,11 +26,17 @@ const Routine = () => {
   const [modalContent, setModalContent] = useState("");
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
+  const handleOpenCycle = () => {
     setModalContent("CycleCreation");
     setOpen(true);
   };
 
+  const handleOpenRote = () => {
+    setModalContent("CreateRote");
+    setOpen(true);
+  };
+
+  
   const handleClose = () => {
     setOpen(false);
   };
@@ -43,7 +49,7 @@ const Routine = () => {
         title="CREAR CICLO"
       />
       <div className={style.positionButton}>
-        <button className={style.buttons2} onClick={handleOpen}> 
+        <button className={style.buttons2} onClick={handleOpenCycle}> 
           {" "}
           <i>
             <AddIcon style={{ fontSize: "15px" }} />
@@ -76,7 +82,7 @@ const Routine = () => {
                 <tr>
                   <td>
                     <div class={style.cardgroup2}>
-                      <p onClick={handleOpen} class={style.cardgroup}>{indice + 1}</p>
+                      <p /* onClick={handleOpenRote} */ class={style.cardgroup}>{indice + 1}</p>
                     </div>
                   </td>
                   {grupo.map((dato) => {
@@ -85,12 +91,12 @@ const Routine = () => {
                       <td>
             <div className={dato === "" ? style.cardInfo : style.cardConten}>
               {dato === "" ? (
-                <h2 onClick={handleOpen}>
+                <h2 onClick={handleOpenRote}>
                   <AddCircleIcon style={{ color: '#888888',  fontSize:40}} />
                   <br/>Sin asignar
                 </h2>
               ) : (
-                <h2 onClick={handleOpen}>{dato}</h2>
+                <h2 onClick={handleOpenRote}>{dato}</h2>
               )}
             </div>
           </td>
