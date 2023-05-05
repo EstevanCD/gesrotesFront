@@ -5,6 +5,8 @@ import Navbar from "../Navbar";
 import style from "./TabComponent.module.css";
 import "react-tabs/style/react-tabs.css";
 import SubjectManagement from "../SubjectManagement/subjectManagement";
+import ClassManageGroups from "../ManageGroups/ClassManageGroups";
+import Routine from "../Routine/Routine";
 
 function TabComponents() {
   let { id } = useParams();
@@ -34,12 +36,12 @@ function TabComponents() {
           </TabPanel>
           <TabPanel>
             <div className={style.panel}>
-
+            <Routine/>
             </div>
           </TabPanel>
           <TabPanel>
             <div className={style.panel}>
-
+            <ClassManageGroups/>
             </div>
           </TabPanel>
           <TabPanel>
