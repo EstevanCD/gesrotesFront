@@ -5,8 +5,10 @@ import Navbar from "../Navbar";
 import style from "./TabComponent.module.css";
 import "react-tabs/style/react-tabs.css";
 import SubjectManagement from "../SubjectManagement/subjectManagement";
-import ClassManageGroups from "../ManageGroups/ClassManageGroups";
+import Index from "../layout/index";
 import Routine from "../Routine/Routine";
+
+//TODO: Cambiar layout "index"
 
 function TabComponents() {
   let { id } = useParams();
@@ -25,28 +27,31 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-
+              <Index />
             </div>
-
           </TabPanel>
+
           <TabPanel>
             <div className={style.panel}>
               <SubjectManagement />
             </div>
           </TabPanel>
+          
           <TabPanel>
             <div className={style.panel}>
-            <Routine/>
+              <Routine />
             </div>
           </TabPanel>
-          <TabPanel>
-            <div className={style.panel}>
-            <ClassManageGroups/>
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <div className={style.panel}>
 
+          <TabPanel>
+            <div className={style.panel}>
+              <Index />
+            </div>
+          </TabPanel>
+
+          <TabPanel>
+            <div className={style.panel}>
+              <Index />
             </div>
           </TabPanel>
         </Tabs>

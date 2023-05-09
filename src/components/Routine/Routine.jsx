@@ -24,19 +24,27 @@ let grupos = [
 const Routine = () => {
   const banderaGrupo = true;
   const [modalContent, setModalContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleOpenCycle = () => {
     setModalContent("CycleCreation");
+    setModalTitle("CREAR CICLO")
     setOpen(true);
   };
 
   const handleOpenRote = () => {
     setModalContent("CreateRote");
+    setModalTitle("CREAR ROTE")
     setOpen(true);
   };
 
-  
+  const handleOpenGesGrupos = () => {
+    setModalContent("ClassManageGroups")
+    setModalTitle("GESTIONAR GRUPOS")
+    setOpen(true);
+  }
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -46,7 +54,7 @@ const Routine = () => {
         open={open}
         handleClose={handleClose}
         modalContent={modalContent}
-        title="CREAR CICLO"
+        title = {modalTitle}
       />
       <div className={style.positionButton}>
         <button className={style.buttons2} onClick={handleOpenCycle}> 
@@ -56,7 +64,11 @@ const Routine = () => {
           </i>{" "}
           Nuevo Ciclo
         </button>
-        <button className={style.buttons}>Gestionar Grupos</button>
+
+        <button className={style.buttons}onClick={handleOpenGesGrupos}>
+          Gestionar Grupos
+        </button>
+        
         <button className={style.buttonsred}>Eliminar Todo</button>
         <div>
           <table>
