@@ -1,0 +1,89 @@
+.formCreateCycle{
+  margin: 20px 40px;
+  width: calc(50vw - 135px);
+}
+
+.containerDates{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: center;
+  padding-bottom: 10vh;
+}
+
+.react-datepicker{
+  margin-top: 10px;
+  font-size: 0.7rem;
+  border-radius: 0;
+  border: 1px solid #dedee0;
+}
+
+.react-datepicker__header{
+  background-color: #FFFF;
+  border-bottom: 0;
+}
+
+.react-datepicker__navigation-icon::before{
+  height: 6px;
+  width: 6px;
+  border-color: #9c9c9c;
+  border-width: 1px 1px 0 0;
+}
+
+.react-datepicker__current-month{
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.react-datepicker__current-month::first-letter{
+  text-transform: uppercase;
+}
+
+.react-datepicker__day-name {
+  text-transform: uppercase;
+  background-color: #f0f4f7;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 2px;
+}
+
+.react-datepicker__day-name:first-child{
+  padding-left: 3px;
+}
+
+.react-datepicker__day-name:last-child {
+  padding-right: 6px;
+}
+
+.react-datepicker__day, .react-datepicker__time-name{
+  margin: 2px;
+}
+
+.react-datepicker__day--selected {
+  background-color: #980c0f;
+  color: #FFFF;
+}
+
+.saveButton, .cancelButton{
+  margin: 0 1vw;
+  color: #FFFF;
+  width: 10em;
+  font-size: 10px;
+}
+
+.saveButton{
+  background-color: #0a2167;
+}
+
+.cancelButton{
+  background-color: #980c0f;
+}
+
+.alert {
+  position:absolute;
+  top: 75%;
+  left: 14%;
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}

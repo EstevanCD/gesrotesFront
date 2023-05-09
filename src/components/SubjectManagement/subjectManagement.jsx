@@ -12,7 +12,6 @@ import { useState, useEffect } from "react";
 
 function SubjectManagement() {
   const [teachers, setTeachers] = useState([]);
-
   const loadTeachers = async () => {
     const responseTeachers = await fetch(
       `https://rickandmortyapi.com/api/character`,
@@ -28,8 +27,10 @@ function SubjectManagement() {
     loadTeachers();
   }, []);
   const [open, setOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
   const handleOpen = () => {
+    setModalContent("Forms");
     setOpen(true);
   };
 
@@ -38,7 +39,7 @@ function SubjectManagement() {
   };
   return (
     <>
-      <Modals open={open} handleClose={handleClose} />
+      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS"/>
       <Box
         sx={{
           height: 10,
@@ -79,14 +80,14 @@ function SubjectManagement() {
                     </Typography>
                   </CardContent>
                   <CardActions style={{ justifyContent: "center"}}>
-                    <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={handleOpen}
-                    >
-                      GESTIONAR HORARIOS
-                    </Button>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleOpen}
+                      >
+                        GESTIONAR HORARIOS
+                      </Button>
                   </CardActions>
                 </Card>
               </Grid>

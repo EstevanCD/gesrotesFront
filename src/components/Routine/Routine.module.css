@@ -1,0 +1,133 @@
+.buttons button {
+  background-color: #484943;
+}
+
+.buttons {
+  margin: 15px 1vw;
+  position: relative;
+  left: 12px;
+  background-color:rgb(4, 4, 139);
+  color: aliceblue;
+  flex: auto;
+  height: 35px;
+  font-size: 0.8em;
+    left: 50px;
+}
+.buttons2 {
+    margin: 15px 1vw;
+    position: relative;
+    background-color: rgb(4, 4, 139);
+    color: aliceblue;
+    flex: auto;
+    height: 35px;
+    font-size:0.8em;
+    left: 50px;
+  }
+  button i {
+    vertical-align: middle;
+  }
+  .buttonsred {
+    margin: 0 1vw;
+    position: relative;
+    left: 520px;
+    background-color:rgb(139, 4, 4);
+    color: aliceblue;
+    flex: auto;
+    width: 130px;
+    height: 35px;
+    font-size: 0.8em;
+  }
+  .positionButton{
+    position: relative;
+    
+  }
+  .card {
+    border: 1px solid #ccc;
+    font-size: 10px;
+  }
+  .cardCommon{
+    /*margin: 14px;*/
+    width: 120px;
+    height: 40px;
+    padding: 4px;
+    font-size: 0.75rem;
+    color: #980c0f;
+    border-left: 1px solid black;
+
+  }
+
+  .containerDates{
+    border: 3px solid#0a2167;
+    border-radius: 5px;
+    margin: -10px 0 0 6px;
+    width: 130px;
+
+
+  
+  }
+  .cardgroup{
+    border: 3px solid#0a2167;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    margin:auto;
+    margin-top: 10px;
+    color: #980c0f;
+    
+    
+  }
+  .cardgroup2{
+    border-bottom: 1px solid #484943;
+    padding: 30px;
+    margin: 0 35px;
+    
+  }
+  .cardgroups{
+    border: 1px solid #ccc;
+    /* padding: 4px;
+    margin: 14px; */
+    width: 90px;
+    height: 90px;
+    font-size: 10px;
+
+  }
+  .titletable{
+    font-size: 0.8em;
+    left: 15px;
+    border-bottom: 1px solid #484943;
+    line-height: 54px;
+    /* padding: 15px 0; */
+    margin: 0 35px;
+   
+
+  }
+  .cardInfo{
+    border: 2px solid #201d1d;
+    box-shadow: 2px 2px 2px 2px #888;
+    margin: 5px;
+    width: 140px;
+    height: 90px;
+    font-size: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+  }
+  .cardConten{
+    border: 2.5px solid #58595af1;
+    box-shadow: 2px 2px 2px 2px #092169ce;
+    margin: 5px;
+    width: 140px;
+    height: 90px;
+    font-size: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  table{
+    border-spacing:0;
+  }
