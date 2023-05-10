@@ -80,14 +80,14 @@ function SubjectManagement() {
                     </Typography>
                   </CardContent>
                   <CardActions style={{ justifyContent: "center"}}>
-                    <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={handleOpen}
-                    >
-                      GESTIONAR HORARIOS
-                    </Button>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleOpen}
+                      >
+                        GESTIONAR HORARIOS
+                      </Button>
                   </CardActions>
                 </Card>
               </Grid>

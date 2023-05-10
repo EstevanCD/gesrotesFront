@@ -56,21 +56,19 @@ export default function CustomSeparator() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Breadcrumbs separator="›" aria-label="breadcrumb">
-            <Link color="inherit" href="/" onClick={handleClick}>
+            <Link color="#092167" href="/" onClick={handleClick}>
               <HomeIcon />
             </Link>
-            <Link color="inherit" href="/" onClick={handleClick}>
+            <Link color="#092167" href="/" onClick={handleClick}>
               Asignaturas
             </Link>
-            <Typography color="textPrimary">
-              Cuidado de la salud mental
-            </Typography>
+            <Typography color="#092167">Cuidado de la salud mental</Typography>
           </Breadcrumbs>
           <hr></hr>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="src\assets\salud.png" />
               </IconButton>
             </Tooltip>
             <Menu

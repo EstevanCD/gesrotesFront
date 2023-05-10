@@ -3,16 +3,29 @@ import React from "react";
 import style from "./Navbar.module.css";
 
 import Typography from "@material-ui/core/Typography";
+
 import VerifiedIcon from "@material-ui/icons/VerifiedUser";
+import HowToRegIcon from "@material-ui/icons/HowToReg";
+import ChecklistIcon from '@material-ui/icons/PlaylistAddCheck';
 import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function Navbar() {
   const optionsMenu = [
-    "Verificar estudiantes",
-    "Verificar Docentes",
-    "Asignaturas",
+    <><ChecklistIcon/> Verificar estudiantes</>,
+    <><HowToRegIcon/> Verificar Docentes</>,
+    <><MenuBookIcon/> Asignaturas</>,
   ];
+
+  const optionsProfile = [
+    <><SettingsIcon/> Configuracion</>,
+    <><ExitToAppIcon/> Salir</>,
+  ];
+
   //TODO: agregar logo
+
   return (
     <div className={style.container}>
       <div className={style.containernav}>
@@ -37,16 +50,21 @@ function Navbar() {
         </div>
         <div className={style.items}>
           <ul>
+            <h5>GESTIÓN</h5>
             {optionsMenu.map((item) => {
+              return <li className={style.containerli}>{item}</li>;
+            })}
+            <h5>MI PERFIL</h5>
+            {optionsProfile.map((item) => {
               return <li className={style.containerli}>{item}</li>;
             })}
           </ul>
         </div>
         <div className={style.footer}>
-          <PhoneInTalkIcon/>
+          <PhoneInTalkIcon />
           <Typography>
             Contactanos
-            <br/>
+            <br />
             +57 345 6587 1548
           </Typography>
         </div>
