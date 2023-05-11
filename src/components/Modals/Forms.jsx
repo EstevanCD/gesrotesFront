@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./forms.module.css";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
+import {environment} from "../../hooks/environment";
 
 export default function () {
   const Icons = () => (
@@ -16,7 +17,7 @@ export default function () {
       hour: "3 pm - 5 pm",
       escenary: "Hospital sanjose E.S.E",
       service: "Salud Mental",
-      eliminate: <DeleteIcon/>,
+      eliminate: <DeleteIcon />,
     },
     {
       name: "Horario 01 SJ",
@@ -59,14 +60,42 @@ export default function () {
       eliminate: <DeleteIcon />,
     },
   ];
+  const [nameModule, setNameModule] = useState("");
+
+  const handleInputNameChange = (event) => {
+    setNameModule(event.target.value);
+  };
+
+  const handleSubmitCreateName = (event) => {
+    event.preventDefault();
+    const url = environment.url + "/api/modulos/crear/" + "1" + "/" + "1";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nombre_modulo: nameModule,
+      }),
+    })
+      .then((response) => {
+        console.log(response);
+        // Hacer algo con la respuesta, como mostrar un mensaje de éxito
+        setNameModule("");
+      })
+      .catch((error) => {
+        console.error(error);
+        // Mostrar un mensaje de error
+      });
+  };
   return (
     <div className={style.containerForm}>
       <div className={style.formManage}>
-        <form>
+        <form onSubmit={handleSubmitCreateName}> 
           <div className={style.createName}>
             <h4> Crear nombre del horario (Rote)</h4>
             <div>
-              <input type="text" placeholder="Ingrese el nombre del horario" />
+              <input type="text" placeholder="Ingrese el nombre del horario" value={nameModule} onChange={handleInputNameChange} />
               <button className={style.buttonStyle}>AGREGAR NOMBRE</button>
             </div>
           </div>
@@ -75,7 +104,7 @@ export default function () {
       <div className={style.formConfig}>
         <h3>CONFIGURACIÓN DEL HORARIO</h3>
         <form>
-          <div className={style.stepContainer + " " +style.step}>
+          <div className={style.stepContainer + " " + style.step}>
             <h4>
               <span className={style.numberRounded}>1</span>PASO 1: Selecionar
               nombre del horario
@@ -121,7 +150,7 @@ export default function () {
               </div>
             </div>
           </div>
-          <div className={style.stepContainer + " " +style.step}>
+          <div className={style.stepContainer + " " + style.step}>
             <h4>
               <span className={style.numberRounded}>3</span>PASO 3: Selecion de
               escenario y servicio
@@ -151,7 +180,7 @@ export default function () {
           </div>
         </form>
       </div>
-      <div >
+      <div>
         <h3>LISTA DE HORARIOS CREADOS</h3>
         <div className={style.tableContainer}>
           <div className={style.tableTittle}>

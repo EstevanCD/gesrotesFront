@@ -11,7 +11,7 @@ import Routine from "../Routine/Routine";
 //TODO: Cambiar layout "index"
 
 function TabComponents() {
-  let { id } = useParams();
+  let { idAsignatura } = useParams();
   return (
     <>
       <Toolbar />
@@ -33,7 +33,7 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-              <SubjectManagement />
+              <SubjectManagement idAsignatura={idAsignatura}/>
             </div>
           </TabPanel>
           

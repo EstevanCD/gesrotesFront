@@ -10,7 +10,8 @@ import Modals from "../Modals/Modals";
 
 import { useState, useEffect } from "react";
 
-function SubjectManagement() {
+function SubjectManagement({idAsignatura}) {
+  console.log("id que trae ",idAsignatura);
   const [teachers, setTeachers] = useState([]);
   const loadTeachers = async () => {
     const responseTeachers = await fetch(

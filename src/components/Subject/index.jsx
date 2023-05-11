@@ -6,21 +6,8 @@ import style from "./Subject.module.css";
 import SearchIcon from "@material-ui/icons/Search";
 import BlockIcon from "@material-ui/icons/Block";
 import { Link } from "react-router-dom";
-// import Modals from "../Modals/Modals";
 
 function Subjects() {
-  const [open, setOpen] = useState(false);
-  // const [modalContent, setModalContent] = useState("");
-
-  // const handleOpen = () => {
-  //   setModalContent("CycleCreation");
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
   const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -46,12 +33,6 @@ function Subjects() {
   return (
     <>
       <Toolbar />
-      {/* <Modals
-        open={open}
-        handleClose={handleClose}
-        modalContent={modalContent}
-        title="CREAR CICLO"
-      /> */}
       <div className={style.containerSubject}>
         <div className={style.searchBar}>
           <div className={style.search}>
@@ -77,7 +58,7 @@ function Subjects() {
                   <p></p>
                 </div>
                 <div className={style.buttons}>
-                  <button className={style.common} /* onClick={handleOpen} */>
+                  <button className={style.common} >
                     ESTADO DE LA ASIGNATURA
                   </button>
                   <Link to={"/TabComponent/" + item.asignatura_codigo}>
