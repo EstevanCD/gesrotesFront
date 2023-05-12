@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./forms.module.css";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-import {environment} from "../../hooks/environment";
+import { environment } from "../../hooks/environment";
 
 export default function () {
   const Icons = () => (
@@ -10,6 +10,7 @@ export default function () {
       <DeleteIcon />
     </IconButton>
   );
+
   const data = [
     {
       name: "Horario 01 SJ",
@@ -60,6 +61,84 @@ export default function () {
       eliminate: <DeleteIcon />,
     },
   ];
+  const [nameModules, setnameModules] = useState([]);
+  const [escenary, setEscenary] = useState([]);
+  const [service, setService] = useState([]);
+  const [name, setName] = useState([]);
+  const [nameEscenary, setNameEscenary] = useState([]);
+  const [idEscenary, setIdEscenary] = useState([]);
+  const saveName = (event) => {
+    setName(event.target.value);
+  };
+  const saveEscenary = (event) => {
+    setNameEscenary(event.target.value);
+  };
+
+  const [day, setDay] = useState([]);
+  const saveDay = (event) => {
+    setDay(event.target.value);
+  };
+  const [hourI, setHourI] = useState([]);
+  const saveHourI = (event) => {
+    setHourI(event.target.value);
+  };
+  const [hourF, setHourF] = useState([]);
+  const saveHourF = (event) => {
+    setHourF(event.target.value);
+  };
+
+  useEffect(() => {
+    const url =
+      environment.url +
+      "/api/modulos/sin_horarios?id_docente=1&id_asignatura=1";
+    fetch(url, { method: "GET" })
+      .then((response) => response.json())
+      .then((data) => {
+        const simplifiedData = data.modulos_sin_horarios.map((modules) => {
+          return {
+            id: modules.id,
+            nombre: modules.nombre,
+          };
+        });
+        setnameModules(simplifiedData);
+      });
+  }, []);
+
+  //
+  useEffect(() => {
+    const url = environment.url + "/api/escenarios/listado";
+    fetch(url, { method: "GET" })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data, "ESTO TRAE");
+        const simplifiedData = data.map((escenaries) => {
+          return {
+            id: escenaries.id,
+            nombre: escenaries.nombre,
+            direccion: escenaries.direccion,
+          };
+        });
+        setEscenary(simplifiedData);
+      });
+  }, []);
+
+  //
+  useEffect(() => {
+    const url = environment.url + "/api/servicios/listado/" +idEscenary;
+    fetch(url, { method: "GET" })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data,"SERVICIOS",idEscenary);
+        const simplifiedData = data.servicios.map((services) => {
+          return {
+            id: services.id,
+            descripcion: services.descripcion,
+          };
+        });
+        setService(simplifiedData);
+      });
+  }, []);
+  //
   const [nameModule, setNameModule] = useState("");
 
   const handleInputNameChange = (event) => {
@@ -88,14 +167,20 @@ export default function () {
         // Mostrar un mensaje de error
       });
   };
+
   return (
     <div className={style.containerForm}>
       <div className={style.formManage}>
-        <form onSubmit={handleSubmitCreateName}> 
+        <form onSubmit={handleSubmitCreateName}>
           <div className={style.createName}>
             <h4> Crear nombre del horario (Rote)</h4>
             <div>
-              <input type="text" placeholder="Ingrese el nombre del horario" value={nameModule} onChange={handleInputNameChange} />
+              <input
+                type="text"
+                placeholder="Ingrese el nombre del horario"
+                value={nameModule}
+                onChange={handleInputNameChange}
+              />
               <button className={style.buttonStyle}>AGREGAR NOMBRE</button>
             </div>
           </div>
@@ -112,8 +197,11 @@ export default function () {
             <h5>
               Nombre el horario <span className={style.fieldPriority}>*</span>
             </h5>
-            <select>
+            <select onChange={saveName} value={name}>
               <option>Seleccione el nombre del horario</option>
+              {nameModules.map((item, index) => (
+                <option>{item.nombre}</option>
+              ))}
             </select>
           </div>
           <div className={style.stepContainer}>
@@ -125,7 +213,7 @@ export default function () {
               <h5>
                 Dia <span className={style.fieldPriority}>*</span>
               </h5>
-              <select>
+              <select onChange={saveDay} value={day}>
                 <option>Seleccione un día</option>
                 <option>Lunes</option>
                 <option>Martes</option>
@@ -139,14 +227,24 @@ export default function () {
                 <h5>
                   Hora de inicio <span className={style.fieldPriority}>*</span>
                 </h5>
-                <input type="time" placeholder="-- : -- " />
+                <input
+                  onChange={saveHourI}
+                  value={hourI}
+                  type="time"
+                  placeholder="-- : -- "
+                />
               </div>
               <div className={style.positionHour}>
                 <h5>
                   Hora de finalización
                   <span className={style.fieldPriority}>*</span>
                 </h5>
-                <input type="time" placeholder="-- : --" />
+                <input
+                  onChange={saveHourF}
+                  value={hourF}
+                  type="time"
+                  placeholder="-- : --"
+                />
               </div>
             </div>
           </div>
@@ -159,8 +257,12 @@ export default function () {
               <h5>
                 Escenario <span className={style.fieldPriority}>*</span>
               </h5>
-              <select>
+              <select onChange={saveEscenary} value={nameEscenary}>
                 <option>selecione un escenario</option>
+                {escenary.map((item, index) => (
+                  <option>{item.nombre}</option>
+                 
+                ))}
               </select>
             </div>
             <div className={style.buttonInlineBlock}>
@@ -169,6 +271,9 @@ export default function () {
               </h5>
               <select>
                 <option>selecione un servicio</option>
+                {service.map((item, index) => (
+                  <option>{item.descripcion}</option>
+                ))}
               </select>
             </div>
             <button
