@@ -10,19 +10,21 @@ import Modals from "../Modals/Modals";
 
 import { useState, useEffect } from "react";
 
-function SubjectManagement({idAsignatura}) {
-  console.log("id que trae ",idAsignatura);
+function SubjectManagement({ idAsignatura }) {
+  console.log("id que trae ", idAsignatura);
   const [teachers, setTeachers] = useState([]);
+  const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
     const responseTeachers = await fetch(
-      `https://rickandmortyapi.com/api/character`,
+      `http://132.226.60.71:8080/api/docentes/listado/1`,
       {
         method: "GET",
       }
     );
     const dataTeachers = await responseTeachers.json();
-    console.log(dataTeachers.results[1]);
-    setTeachers(dataTeachers.results);
+    console.log(dataTeachers.info);
+    setTeachers(dataTeachers.docentes);
+    setTeachersInfo(dataTeachers.info);
   };
   useEffect(() => {
     loadTeachers();
@@ -40,12 +42,22 @@ function SubjectManagement({idAsignatura}) {
   };
   return (
     <>
-      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS"/>
+      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
       <Box
         sx={{
           height: 10,
         }}
       >
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="div"
+          color="#960D0D"
+          textAlign="left"
+        >
+          {teachersInfo} *
+        </Typography>
+        <br></br>
         <Grid
           container
           direction="row"
@@ -67,8 +79,6 @@ function SubjectManagement({idAsignatura}) {
                       border: 1,
                       margin: "auto",
                     }}
-                    image={teacher.image}
-                    title="green iguana"
                   />
                   <CardContent>
                     <Typography
@@ -77,18 +87,36 @@ function SubjectManagement({idAsignatura}) {
                       component="div"
                       textAlign="center"
                     >
-                      {teacher.name}
+                      {teacher.nombre}
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      color="#960D0D"
+                      textAlign="center"
+                    >
+                      {teacher.info} *
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      color="grey"
+                      textAlign="center"
+                    >
+                      _____________________________
                     </Typography>
                   </CardContent>
-                  <CardActions style={{ justifyContent: "center"}}>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleOpen}
-                      >
-                        GESTIONAR HORARIOS
-                      </Button>
+                  <CardActions style={{ justifyContent: "center" }}>
+                    <Button
+                      style={{backgroundColor:"#04048b"}}
+                      size="small"
+                      variant="contained"
+                      onClick={handleOpen}
+                    > 
+                      GESTIONAR HORARIOS
+                    </Button>
                   </CardActions>
                 </Card>
               </Grid>
