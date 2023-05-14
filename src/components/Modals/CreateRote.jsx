@@ -3,8 +3,39 @@ import RoteList from "./ListRote";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import "./stylesCreateRote.css";
 
 function CreateRote() {
+
+
+  // bring the data backent teacher
+  const [options, setData] = useState([]);
+
+     useEffect(() => {
+      async function fetchData() {
+        const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/1");
+        const json = await response.json();
+        setData(json.docentes);
+      }
+      fetchData();
+    }, []); 
+
+
+/*   console.log("este es el array"+data.docentes); */
+
+/*   useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/1");
+      const json = await response.json();
+      setData(json);
+    }
+    fetchData();
+  }, []); */
+
+  
+/*   console.log(data); */
+
+
 
  
   // Este va a ser el array que se listara ESTO ME TOCA LLEVARMELO A OTRA CLASES
@@ -33,6 +64,8 @@ function CreateRote() {
     },
   ];
 
+
+
   const StyledButtonAdd = styled(Button)({
     color: "white",
     backgroundColor: "#0A2168",
@@ -59,14 +92,21 @@ function CreateRote() {
   }
 
 
-  // listado de tareas del rote
+  // listado de profesores para el rote
   const [selectedValue, setSelectedValue] = useState("");
-  const options = [
-    { label: "Maria Paz", value: 1 },
-    { label: "Jorge Ruiz", value: 2 },
-    { label: "Christian Escobar", value: 3 },
-    { label: "Magdalena Falla", value: 4 },
-  ];
+ 
+/*   const options = [
+    { nombre: "Maria Paz", id: 1 },
+    { nombre: "Jorge Ruiz", id: 2 },
+    { nombre: "Christian Escobar", id: 3 },
+    { nombre: "Magdalena Falla", id: 4 },
+    { nombre: "Cristina Mar", id: 5 },
+    
+  ]; */
+
+ 
+
+
 
   // listado de tareas del horario rote
   const [selectHorario, setselectHorario] = useState("");
@@ -74,49 +114,45 @@ function CreateRote() {
     { label: "Horario 1 SJ", value: 1 },
     { label: "Horario 2 SJ", value: 2 },
     { label: "Horario 3 H4", value: 3 },
-    { label: "Horario 4 H4", value: 3 },
+    { label: "Horario 4 H4", value: 4 },
   ];
 
   useEffect(() => {
     setlistRotes(Rotes); //cuando cargue el documento voy a establecer el array de tareas
   }, []);
 
+
+  const deleteAllListRotes = () => {
+    setlistRotes([]);
+  };
+
+  const deleteListRotes = (taskId) => {
+    setlistRotes(listRotes.filter((task) => task.id !== taskId)); 
+  };
+
  return (
     <>
       <form onSubmit={SaveRote}>
         <h4>Asignar horario al rote</h4>
        
-        <select
+        <select className="container-selectTeachers"
           value={selectedValue}
-          onChange={(e) => setSelectedValue(e.target.value)}
-          style={{
-            width: '40%',
-            marginLeft: '20px',
-            marginRight: '10px',
-            borderRadius: '25px',
-            
-          }}
+          onChange={(e) => setSelectedValue(e.target.value)} 
         >
           <option hidden defaultValue>
             Seleccione el nombre del docente
           </option>
 
           {options.map((option) => (
-            <option key={option.value} value={option.label}>
-              {option.label}
+            <option key={option.id} value={option.nombre}>
+              {option.nombre}
             </option>
           ))}
         </select>
 
-        <select
+        <select className="container-selectSchedule"
           value={selectHorario}
           onChange={(e) => setselectHorario(e.target.value)}
-          style={{
-            width: '40%',
-            marginLeft: '10px',
-            marginRight: '20px',
-            borderRadius: "25px",
-          }}
         >
           <option hidden defaultValue>
             Seleccione el Horario
@@ -140,7 +176,7 @@ function CreateRote() {
           </StyledButtonAdd>
 
       </form>
-      <RoteList listRotes={listRotes} />
+      <RoteList listRotes={listRotes} deleteAllListRotes = {deleteAllListRotes} deleteListRotes = {deleteListRotes} />
     </>
   );
 

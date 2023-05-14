@@ -28,7 +28,7 @@ const Routine = () => {
 
   const handleOpenRote = () => {
     setModalContent("CreateRote");
-    setModalTitle("CREAR ROTE");
+    setModalTitle("INFORMACIÓN DEL ROTE");
     setOpen(true);
   };
 
