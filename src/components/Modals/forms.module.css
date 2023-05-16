@@ -153,3 +153,12 @@ h3 {
     box-sizing: border-box;
     border-right: 2px solid gray;
 }
+
+.alert {
+    position:block;
+    top: 75%;
+    left: 4%;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+  }

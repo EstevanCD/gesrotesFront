@@ -61,33 +61,40 @@ export default function () {
       eliminate: <DeleteIcon />,
     },
   ];
+  const [nameActive, setNameActive] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [nameModules, setnameModules] = useState([]);
   const [escenary, setEscenary] = useState([]);
   const [service, setService] = useState([]);
   const [name, setName] = useState([]);
-  const [nameEscenary, setNameEscenary] = useState([]);
-  const [idEscenary, setIdEscenary] = useState([]);
-  const saveName = (event) => {
-    setName(event.target.value);
+  const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
+  const handleEscenaryChange = (event) => {
+    setSelectedEscenaryId(event.target.value);
   };
-  const saveEscenary = (event) => {
-    setNameEscenary(event.target.value);
+  const [selectedServiceId, setSelectedServiceId] = useState("");
+  const handleServiceChange = (event) => {
+    setSelectedServiceId(event.target.value);
   };
 
+  const saveName = (event) => {
+    setName(event.target.value);
+    setNameActive(true)
+  };
   const [day, setDay] = useState([]);
   const saveDay = (event) => {
     setDay(event.target.value);
   };
-  const [hourI, setHourI] = useState([]);
+  let [hourI, setHourI] = useState([]);
   const saveHourI = (event) => {
     setHourI(event.target.value);
   };
-  const [hourF, setHourF] = useState([]);
+  let [hourF, setHourF] = useState([]);
   const saveHourF = (event) => {
     setHourF(event.target.value);
   };
 
   useEffect(() => {
+    setAlertMessage('* Hay un horario sin configurar ');
     const url =
       environment.url +
       "/api/modulos/sin_horarios?id_docente=1&id_asignatura=1";
@@ -110,7 +117,7 @@ export default function () {
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data, "ESTO TRAE");
+
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
@@ -123,12 +130,12 @@ export default function () {
   }, []);
 
   //
-  useEffect(() => {
-    const url = environment.url + "/api/servicios/listado/" +idEscenary;
+  const handleEscenary = () => {
+    const url =
+      environment.url + "/api/servicios/listado/" + selectedEscenaryId;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data,"SERVICIOS",idEscenary);
         const simplifiedData = data.servicios.map((services) => {
           return {
             id: services.id,
@@ -137,7 +144,7 @@ export default function () {
         });
         setService(simplifiedData);
       });
-  }, []);
+  };
   //
   const [nameModule, setNameModule] = useState("");
 
@@ -168,8 +175,41 @@ export default function () {
       });
   };
 
+  const handleSubmitCreateHorary = (event) => {
+    event.preventDefault();
+    let [hours, minutes]=hourI.split(":")
+     hourI= (Number(hours));
+   let[hoursf, minutesf]=hourF.split(":")
+     hourF=(Number(hoursf));
+    console.log(day,hourI, hourF , "Datos")
+    const url = environment.url + "/api/horarios/configurar_horario?id_modulo=1";
+    fetch(url, {
+      method: "POST",
+      // mode: 'cors',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dia: day,
+        hora_inicio:hourI,
+        hora_fin: hourF,
+        id_escenario: selectedEscenaryId,
+        id_servicio: selectedServiceId,
+      }),
+    })
+      .then((response) => {
+        console.log(response);
+        // Hacer algo con la respuesta, como mostrar un mensaje de éxito
+        setNameModule("");
+      })
+      .catch((error) => {
+        console.error(error);
+        // Mostrar un mensaje de error
+      });
+  };
+
   return (
-    <div className={style.containerForm}>
+    <div className={style.containerForm} >
       <div className={style.formManage}>
         <form onSubmit={handleSubmitCreateName}>
           <div className={style.createName}>
@@ -188,11 +228,12 @@ export default function () {
       </div>
       <div className={style.formConfig}>
         <h3>CONFIGURACIÓN DEL HORARIO</h3>
-        <form>
+        <form onSubmit={handleSubmitCreateHorary} >
           <div className={style.stepContainer + " " + style.step}>
             <h4>
               <span className={style.numberRounded}>1</span>PASO 1: Selecionar
               nombre del horario
+              
             </h4>
             <h5>
               Nombre el horario <span className={style.fieldPriority}>*</span>
@@ -203,6 +244,7 @@ export default function () {
                 <option>{item.nombre}</option>
               ))}
             </select>
+            {alertMessage && <span className={style.alert}>{alertMessage}</span>}
           </div>
           <div className={style.stepContainer}>
             <h4>
@@ -215,11 +257,11 @@ export default function () {
               </h5>
               <select onChange={saveDay} value={day}>
                 <option>Seleccione un día</option>
-                <option>Lunes</option>
-                <option>Martes</option>
-                <option>Miercoles</option>
-                <option>Jueves</option>
-                <option>Viernes</option>
+                <option>LUNES</option>
+                <option>MARTES</option>
+                <option>MIERCOLES</option>
+                <option>JUEVES</option>
+                <option>VIERNES</option>
               </select>
             </div>
             <div className={style.spaceHour}>
@@ -231,7 +273,6 @@ export default function () {
                   onChange={saveHourI}
                   value={hourI}
                   type="time"
-                  placeholder="-- : -- "
                 />
               </div>
               <div className={style.positionHour}>
@@ -243,7 +284,6 @@ export default function () {
                   onChange={saveHourF}
                   value={hourF}
                   type="time"
-                  placeholder="-- : --"
                 />
               </div>
             </div>
@@ -257,31 +297,37 @@ export default function () {
               <h5>
                 Escenario <span className={style.fieldPriority}>*</span>
               </h5>
-              <select onChange={saveEscenary} value={nameEscenary}>
-                <option>selecione un escenario</option>
-                {escenary.map((item, index) => (
-                  <option>{item.nombre}</option>
-                 
+              <select
+                onClick={handleEscenary}
+                onChange={handleEscenaryChange}
+                value={selectedEscenaryId}
+              >
+                <option value="">Seleccione un escenario</option>
+                {escenary.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.nombre}
+                  </option>
                 ))}
+                {console.log(selectedEscenaryId, "TRAE ESTO ID")}
               </select>
             </div>
             <div className={style.buttonInlineBlock}>
               <h5>
                 Servicio <span className={style.fieldPriority}>*</span>
               </h5>
-              <select>
+              <select onChange={handleServiceChange} value={selectedServiceId} >
                 <option>selecione un servicio</option>
                 {service.map((item, index) => (
-                  <option>{item.descripcion}</option>
+                  <option key={item.id} value={item.id} >{item.descripcion}</option>
                 ))}
               </select>
             </div>
-            <button
+            <button 
               className={style.buttonStyle + " " + style.buttonInlineBlock}
               style={{ marginLeft: "20px" }}
             >
               Agregar Horario
-            </button>
+            </button >
           </div>
         </form>
       </div>
