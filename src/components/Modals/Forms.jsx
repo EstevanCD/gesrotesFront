@@ -4,12 +4,43 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { environment } from "../../hooks/environment";
 
+function showAlert(message, type) {
+  const alertContainer = document.getElementById("alertContainer");
+  const alertElement = document.createElement("div");
+  alertElement.classList.add("alert");
+
+  if (type === "success") {
+    alertElement.classList.add("success");
+  } else if (type === "error") {
+    alertElement.classList.add("error");
+  }
+
+  alertElement.textContent = message;
+  alertContainer.appendChild(alertElement);
+  const timeout = 3000;
+  setTimeout(() => {
+    alertElement.remove();
+  }, timeout);
+}
+
 export default function () {
   const Icons = () => (
     <IconButton style={{ color: "red" }}>
       <DeleteIcon />
     </IconButton>
   );
+ 
+
+  const resetForm = () => {
+    const form = document.getElementById("myForm");
+    setDay(""); // Establecer el valor del campo 'day' en vacío
+    setHourI(""); // Establecer el valor del campo 'hourI' en vacío
+    setHourF(""); // Establecer el valor del campo 'hourF' en vacío
+    setSelectedEscenaryId(""); // Establecer el valor del campo 'selectedEscenaryId' en vacío
+    setSelectedServiceId("");
+  };
+
+  
 
   const data = [
     {
@@ -62,7 +93,7 @@ export default function () {
     },
   ];
   const [nameActive, setNameActive] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
   const [nameModules, setnameModules] = useState([]);
   const [escenary, setEscenary] = useState([]);
   const [service, setService] = useState([]);
@@ -78,7 +109,7 @@ export default function () {
 
   const saveName = (event) => {
     setName(event.target.value);
-    setNameActive(true)
+    setNameActive(true);
   };
   const [day, setDay] = useState([]);
   const saveDay = (event) => {
@@ -94,7 +125,7 @@ export default function () {
   };
 
   useEffect(() => {
-    setAlertMessage('* Hay un horario sin configurar ');
+    setAlertMessage("* Hay un horario sin configurar ");
     const url =
       environment.url +
       "/api/modulos/sin_horarios?id_docente=1&id_asignatura=1";
@@ -117,7 +148,6 @@ export default function () {
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
@@ -167,7 +197,6 @@ export default function () {
       .then((response) => {
         console.log(response);
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
-        setNameModule("");
       })
       .catch((error) => {
         console.error(error);
@@ -177,12 +206,22 @@ export default function () {
 
   const handleSubmitCreateHorary = (event) => {
     event.preventDefault();
-    let [hours, minutes]=hourI.split(":")
-     hourI= (Number(hours));
-   let[hoursf, minutesf]=hourF.split(":")
-     hourF=(Number(hoursf));
-    console.log(day,hourI, hourF , "Datos")
-    const url = environment.url + "/api/horarios/configurar_horario?id_modulo=1";
+    if (!day || !hourI || !hourF || !selectedEscenaryId || !selectedServiceId) {
+      showAlert("Por favor completa todos los campos obligatorios", "error");
+      return;
+    }
+    if(hourI>=hourF){
+      showAlert("La hora de inicio debe ser menor a la hora de finalizacion");
+      return ;
+    }
+  
+    let [hours, minutes] = hourI.split(":");
+    hourI = Number(hours);
+    let [hoursf, minutesf] = hourF.split(":");
+    hourF = Number(hoursf);
+    console.log(day, hourI, hourF, "Datos");
+    const url =
+      environment.url + "/api/horarios/configurar_horario?id_modulo=1";
     fetch(url, {
       method: "POST",
       // mode: 'cors',
@@ -191,7 +230,7 @@ export default function () {
       },
       body: JSON.stringify({
         dia: day,
-        hora_inicio:hourI,
+        hora_inicio: hourI,
         hora_fin: hourF,
         id_escenario: selectedEscenaryId,
         id_servicio: selectedServiceId,
@@ -200,18 +239,20 @@ export default function () {
       .then((response) => {
         console.log(response);
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
-        setNameModule("");
+        showAlert("¡Horario agregado correctamente!", "success");
+        resetForm();
       })
       .catch((error) => {
         console.error(error);
         // Mostrar un mensaje de error
+        showAlert("Error al agregar el horario", "error");
       });
   };
 
   return (
-    <div className={style.containerForm} >
+    <div className={style.containerForm} id="alertContainer">
       <div className={style.formManage}>
-        <form onSubmit={handleSubmitCreateName}>
+        <form onSubmit={handleSubmitCreateName} id="myForm">
           <div className={style.createName}>
             <h4> Crear nombre del horario (Rote)</h4>
             <div>
@@ -228,12 +269,11 @@ export default function () {
       </div>
       <div className={style.formConfig}>
         <h3>CONFIGURACIÓN DEL HORARIO</h3>
-        <form onSubmit={handleSubmitCreateHorary} >
+        <form onSubmit={handleSubmitCreateHorary}>
           <div className={style.stepContainer + " " + style.step}>
             <h4>
               <span className={style.numberRounded}>1</span>PASO 1: Selecionar
               nombre del horario
-              
             </h4>
             <h5>
               Nombre el horario <span className={style.fieldPriority}>*</span>
@@ -244,7 +284,9 @@ export default function () {
                 <option>{item.nombre}</option>
               ))}
             </select>
-            {alertMessage && <span className={style.alert}>{alertMessage}</span>}
+            {alertMessage && (
+              <span className={style.alertp}>{alertMessage}</span>
+            )}
           </div>
           <div className={style.stepContainer}>
             <h4>
@@ -269,22 +311,14 @@ export default function () {
                 <h5>
                   Hora de inicio <span className={style.fieldPriority}>*</span>
                 </h5>
-                <input
-                  onChange={saveHourI}
-                  value={hourI}
-                  type="time"
-                />
+                <input onChange={saveHourI} value={hourI} type="time" />
               </div>
               <div className={style.positionHour}>
                 <h5>
                   Hora de finalización
                   <span className={style.fieldPriority}>*</span>
                 </h5>
-                <input
-                  onChange={saveHourF}
-                  value={hourF}
-                  type="time"
-                />
+                <input onChange={saveHourF} value={hourF} type="time" />
               </div>
             </div>
           </div>
@@ -315,19 +349,21 @@ export default function () {
               <h5>
                 Servicio <span className={style.fieldPriority}>*</span>
               </h5>
-              <select onChange={handleServiceChange} value={selectedServiceId} >
+              <select onChange={handleServiceChange} value={selectedServiceId}>
                 <option>selecione un servicio</option>
                 {service.map((item, index) => (
-                  <option key={item.id} value={item.id} >{item.descripcion}</option>
+                  <option key={item.id} value={item.id}>
+                    {item.descripcion}
+                  </option>
                 ))}
               </select>
             </div>
-            <button 
+            <button
               className={style.buttonStyle + " " + style.buttonInlineBlock}
               style={{ marginLeft: "20px" }}
             >
               Agregar Horario
-            </button >
+            </button>
           </div>
         </form>
       </div>
