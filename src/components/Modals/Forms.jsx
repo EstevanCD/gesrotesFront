@@ -29,7 +29,6 @@ export default function () {
       <DeleteIcon />
     </IconButton>
   );
- 
 
   const resetForm = () => {
     const form = document.getElementById("myForm");
@@ -40,58 +39,7 @@ export default function () {
     setSelectedServiceId("");
   };
 
-  
-
-  const data = [
-    {
-      name: "Horario 01 SJ",
-      day: "Lunes",
-      hour: "3 pm - 5 pm",
-      escenary: "Hospital sanjose E.S.E",
-      service: "Salud Mental",
-      eliminate: <DeleteIcon />,
-    },
-    {
-      name: "Horario 01 SJ",
-      day: "Lunes",
-      hour: "3 pm - 5 pm",
-      escenary: "Hospital sanjose E.S.E",
-      service: "Salud Mental",
-      eliminate: <DeleteIcon />,
-    },
-    {
-      name: "Horario 01 SJ",
-      day: "Lunes",
-      hour: "3 pm - 5 pm",
-      escenary: "Hospital sanjose E.S.E",
-      service: "Salud Mental",
-      eliminate: <DeleteIcon />,
-    },
-    {
-      name: "Horario 01 SJ",
-      day: "Lunes",
-      hour: "3 pm - 5 pm",
-      escenary: "Hospital sanjose E.S.E",
-      service: "Salud Mental",
-      eliminate: <DeleteIcon />,
-    },
-    {
-      name: "Horario 01 SJ",
-      day: "Lunes",
-      hour: "3 pm - 5 pm",
-      escenary: "Hospital sanjose E.S.E",
-      service: "Salud Mental",
-      eliminate: <DeleteIcon />,
-    },
-    {
-      name: "Horario 01 SJ",
-      day: "Lunes",
-      hour: "3 pm - 5 pm",
-      escenary: "Hospital sanjose E.S.E",
-      service: "Salud Mental",
-      eliminate: <DeleteIcon />,
-    },
-  ];
+  const [horaries, setHoraries] = useState([]);
   const [nameActive, setNameActive] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [nameModules, setnameModules] = useState([]);
@@ -210,11 +158,31 @@ export default function () {
       showAlert("Por favor completa todos los campos obligatorios", "error");
       return;
     }
-    if(hourI>=hourF){
+    if (hourI >= hourF) {
       showAlert("La hora de inicio debe ser menor a la hora de finalizacion");
-      return ;
+      return;
     }
-  
+    //WALKER
+    
+    useEffect(() => {
+      const url = environment.url + "/api/modulos/listarHorarios?id_asignatura=3";
+      fetch(url, { method: "GET" })
+        .then((response) => response.json())
+        .then((data) => {
+          const simplifiedData = data.docente[0].modulos.map((modulo) => {
+            const horario = modulo.horarios[0];
+            const [dia, hora] = horario.descripcion.split(" ");
+            return {
+              id: modulo.id,
+              nombre: modulo.nombre,
+              dia,
+              hora,
+            };
+          });
+          setHoraries(simplifiedData);
+        });
+    }, []);
+
     let [hours, minutes] = hourI.split(":");
     hourI = Number(hours);
     let [hoursf, minutesf] = hourF.split(":");
@@ -382,14 +350,15 @@ export default function () {
             </span>
             <span className={style.tableBody}>Eliminar</span>
           </div>
-          {data.map((item) => (
+          {console.log(horaries, "lista de horarios")}
+          {horaries.map((item) => (
             <div className={style.row} key={item.id}>
-              <span className={style.tableBody}>{item.name}</span>
-              <span className={style.tableBody}>{item.day}</span>
-              <span className={style.tableBody}>{item.hour}</span>
-              <span className={style.tableBody}>{item.escenary}</span>
-              <span className={style.tableBody}>{item.service}</span>
-              <span className={style.tableBody}>{item.eliminate}</span>
+              <span className={style.tableBody}>{item.nombre}</span>
+              <span className={style.tableBody}>{item.dia}</span>
+              <span className={style.tableBody}>{item.hora}</span>
+              <span className={style.tableBody}>falta</span>
+              <span className={style.tableBody}>prueba</span>
+              <span className={style.tableBody}>eliminate</span>
             </div>
           ))}
         </div>
