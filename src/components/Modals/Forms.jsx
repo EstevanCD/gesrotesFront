@@ -151,6 +151,25 @@ export default function () {
         // Mostrar un mensaje de error
       });
   };
+  //WALKER
+  useEffect(() => {
+    const url = environment.url + "/api/modulos/listarHorarios?id_asignatura=1";
+    fetch(url, { method: "GET" })
+      .then((response) => response.json())
+      .then((data) => {
+        const simplifiedData = data.docente[0].modulos.map((modulo) => {
+          const horario = modulo.horarios[0];
+          const [dia, hora] = horario.descripcion.split(" ");
+          return {
+            id: modulo.id,
+            nombre: modulo.nombre,
+            dia,
+            hora,
+          };
+        });
+        setHoraries(simplifiedData);
+      });
+  }, []);
 
   const handleSubmitCreateHorary = (event) => {
     event.preventDefault();
@@ -162,27 +181,6 @@ export default function () {
       showAlert("La hora de inicio debe ser menor a la hora de finalizacion");
       return;
     }
-    //WALKER
-    
-    useEffect(() => {
-      const url = environment.url + "/api/modulos/listarHorarios?id_asignatura=3";
-      fetch(url, { method: "GET" })
-        .then((response) => response.json())
-        .then((data) => {
-          const simplifiedData = data.docente[0].modulos.map((modulo) => {
-            const horario = modulo.horarios[0];
-            const [dia, hora] = horario.descripcion.split(" ");
-            return {
-              id: modulo.id,
-              nombre: modulo.nombre,
-              dia,
-              hora,
-            };
-          });
-          setHoraries(simplifiedData);
-        });
-    }, []);
-
     let [hours, minutes] = hourI.split(":");
     hourI = Number(hours);
     let [hoursf, minutesf] = hourF.split(":");
