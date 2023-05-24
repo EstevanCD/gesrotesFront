@@ -5,22 +5,15 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import HomeIcon from "@material-ui/icons/Home";
 import Avatar from "@material-ui/core/Avatar";
-
 import Box from "@material-ui/core/Box";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
-
-import AppBar from "@material-ui/core/AppBar";
-
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/core/Menu";
-
 import MenuItem from "@material-ui/core/MenuItem";
-import AdbIcon from "@material-ui/icons/Adb";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Verificar Estudiantes", "Verificar Docente", "Asignaturas"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function handleClick(event) {

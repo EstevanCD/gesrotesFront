@@ -7,8 +7,9 @@ import "react-tabs/style/react-tabs.css";
 import SubjectManagement from "../SubjectManagement/subjectManagement";
 import Index from "../layout/index";
 import Routine from "../Routine/Routine";
+import Docs from "../Documents/index";
 
-//TODO: Cambiar layout "index"
+//TODO: Cambiar layout "index" por la implementacion
 
 function TabComponents() {
   let { idAsignatura } = useParams();
@@ -51,7 +52,7 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-              <Index />
+              <Docs />
             </div>
           </TabPanel>
         </Tabs>
