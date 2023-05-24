@@ -12,11 +12,14 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import {  Link } from "react-router-dom";
+
+
 function Navbar() {
   const optionsMenu = [
-    <><ChecklistIcon/> Verificar estudiantes</>,
-    <><HowToRegIcon/> Verificar Docentes</>,
-    <><MenuBookIcon/> Asignaturas</>,
+    <><ChecklistIcon/><Link to="/" style={{ textDecoration: "none" }}>Verificar estudiantes</Link></>,
+    <><HowToRegIcon/> <Link to="/" style={{ textDecoration: "none" }}>Verificar Docentes</Link></>,
+    <><MenuBookIcon/> <Link to="/subjects" style={{ textDecoration: "none" }}>Asignaturas</Link></>,
   ];
 
   const optionsProfile = [
