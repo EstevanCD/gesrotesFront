@@ -1,4 +1,5 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { useState } from 'react';
 import { useParams } from "react-router";
 import Toolbar from "../Toolbar/Toolbar";
 import Navbar from "../Navbar";
@@ -8,11 +9,20 @@ import SubjectManagement from "../SubjectManagement/subjectManagement";
 import Index from "../layout/index";
 import Routine from "../Routine/Routine";
 import Docs from "../Documents/index";
+import Documents from "../Documents/Documents";
 
 //TODO: Cambiar layout "index" por la implementacion
 
 function TabComponents() {
   let { idAsignatura } = useParams();
+
+  const [showDocumentsView, setShowDocumentsView] = useState(false);
+
+  const handleManageDocuments = () => {
+    setShowDocumentsView(true);
+    
+  };
+
   return (
     <>
       <Toolbar />
@@ -34,10 +44,10 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-              <SubjectManagement idAsignatura={idAsignatura}/>
+              <SubjectManagement idAsignatura={idAsignatura} />
             </div>
           </TabPanel>
-          
+
           <TabPanel>
             <div className={style.panel}>
               <Routine />
@@ -52,7 +62,11 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-              <Docs />
+              {showDocumentsView ? (
+                <Documents />
+              ) : (
+                <Docs handleManageDocuments={handleManageDocuments} />
+              )}
             </div>
           </TabPanel>
         </Tabs>

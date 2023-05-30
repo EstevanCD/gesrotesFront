@@ -7,9 +7,9 @@ function App() {
   return (
     <>
       <Routes>
-        {/* {<Route path="/TabComponent/:id" element={<TabComponents />} />} */}
-        {/* <Route index element={<Subjects />} /> */}
-        <Route index element={<Documents />} />
+        {<Route path="/TabComponent/:id" element={<TabComponents />} />}
+        <Route index element={<Subjects />} />
+        {/* <Route index element={<Documents />} /> */}
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </>

@@ -2,10 +2,9 @@ import React from "react";
 import { useEffect, useState } from "react";
 import style from "../Subject/Subject.module.css";
 import BlockIcon from "@material-ui/icons/Block";
-import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 
-function Scenario() {
+function Scenario({ handleManageDocuments }) {
   const [scenario, setScenario] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -49,16 +48,11 @@ function Scenario() {
                     color="#960D0D"
                     textAlign="left"
                   >
-                    * {item.scenario_expirados}
-                    1 documento expirado 
+                    * {item.scenario_expirados}1 documento expirado
                   </Typography>
                 </div>
                 <div className={style.buttons}>
-                  <Link to={"/TabComponent/" + item.scenario_codigo}>
-                    <button className={style.common}>
-                      GESTIONAR DOCUMENTOS
-                    </button>
-                  </Link>
+                  <button className={style.common} onClick={handleManageDocuments}>GESTIONAR DOCUMENTOS</button>
                 </div>
               </div>
             ))

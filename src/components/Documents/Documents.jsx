@@ -17,6 +17,7 @@ import Modals from "../Modals/Modals";
 function Documents() {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterOption, setFilterOption] = useState("Todos");
   const url = environment.url + "/api/documentos/listado?id_escenario=2";
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -29,10 +30,32 @@ function Documents() {
       .catch((error) => console.error(error));
   }, []);
 
-  const filteredDocuments = documentos.filter((documento) =>
+  let documents = [];
+
+  switch (filterOption) {
+    case "Expirados":
+      documents = documentos.filter((documento) => {
+        const currentDate = new Date();
+        const documentDate = new Date(documento.fecha_vigencia);
+        return documentDate < currentDate;
+      });
+      break;
+    case "No Expirados":
+      documents = documentos.filter((documento) => {
+        const currentDate = new Date();
+        const documentDate = new Date(documento.fecha_vigencia);
+        return documentDate >= currentDate;
+      });
+      break;
+    default:
+      documents = documentos;
+      break;
+  }
+  
+  const filteredDocuments = documents.filter((documento) =>
     documento.nombre_archivo.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -135,10 +158,14 @@ function Documents() {
           {" "}
           {/* filtro */}
           <p>Filtrar por:</p>
-          <select className={style.filterSelect}>
-            <option selected>Todos</option>
-            <option>Hora</option>
-            <option>Tipo</option>
+          <select
+            className={style.filterSelect}
+            value={filterOption}
+            onChange={(event) => setFilterOption(event.target.value)}
+          >
+            <option value="Todos">Todos</option>
+            <option value="Expirados">Expirados</option>
+            <option value="No Expirados">No Expirados</option>
           </select>
         </div>
       </div>
