@@ -8,23 +8,23 @@ import style from "./document.module.css";
 export default function NewDocument({ onClose }) {
   // funciones para el control de arhivo
   const [selectedFile, setSelectedFile] = useState(null);
-  const [saveFile,setSaveFile]=useState(null);
+  const [saveFile, setSaveFile] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSaveFile(file);
 
-    fileToBase64(file,setSelectedFile);
+    fileToBase64(file, setSelectedFile);
   };
 
-  const fileToBase64=(file, callback)=> {
+  const fileToBase64 = (file, callback) => {
     var reader = new FileReader();
-    reader.onload = function(event) {
-      var base64String = event.target.result.split(',')[1]; // Obtener contenido Base64 sin encabezado
+    reader.onload = function (event) {
+      var base64String = event.target.result.split(",")[1]; // Obtener contenido Base64 sin encabezado
       callback(base64String);
     };
     reader.readAsDataURL(file);
-  }
+  };
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -35,11 +35,10 @@ export default function NewDocument({ onClose }) {
     reader.onload = (e) => {
       const documentText = e.target.result;
       setSelectedFile(documentText);
-      
     };
 
     reader.readAsText(file);
-    console.log("DOCUMENTOS ",file,reader)
+    console.log("DOCUMENTOS ", file, reader);
   };
 
   const handleDragOver = (event) => {
@@ -78,25 +77,39 @@ export default function NewDocument({ onClose }) {
   const [fechaVigencia, setFechaVigencia] = useState(null);
   const spanishWeekdays = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
   const [alertMessage, setAlertMessage] = useState("");
-// validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
+  // validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
   const handleSubmitCreateDocument = (event) => {
     event.preventDefault();
-    const url = environment.url +"/api/documentos/guardar/?id_escenario="+selectedEscenaryId ;
-    console.log("ESTOS DATOS SON POST ",typeof tipeDocument,typeof fechaVigencia.toISOString().substr(0, 10),typeof selectedEscenaryId,typeof saveFile.name, typeof saveFile.type, typeof  selectedFile)
+    const url =
+      environment.url +
+      "/api/documentos/guardar?id_escenario=" +
+      selectedEscenaryId;
+    console.log(
+      "ESTOS DATOS SON POST ",
+      typeof tipeDocument,
+      typeof fechaVigencia.toISOString().substr(0, 10),
+      typeof selectedEscenaryId,
+      typeof saveFile.name,
+      typeof saveFile.type,
+      typeof selectedFile
+    );
+    const formData = new FormData();
+    formData.append(
+      "documentoRequest",
+      JSON.stringify({
+        nombre: saveFile.name,
+        tipoArchivo: saveFile.type,
+        fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
+        tipoDeDocumento: tipeDocument,
+      })
+    );
+    formData.append("file", saveFile);
     fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify({
-        "documentoRequest": {
-          "nombre": saveFile.name,
-          "tipoArchivo": saveFile.type,
-          "fechaVigencia": fechaVigencia.toISOString().substr(0, 10),
-          "tipoDeDocumento": tipeDocument 
-        },
-        "file": selectedFile
-      }),
+      body: formData,
     })
       .then((response) => {
         console.log(response);
@@ -113,7 +126,7 @@ export default function NewDocument({ onClose }) {
   };
 
   return (
-    <form onSubmit={handleSubmitCreateDocument} id="myForm" >
+    <form onSubmit={handleSubmitCreateDocument} id="myForm">
       <div className={style.selectContainer}>
         <div className={style.selectWrapper}>
           <h4>
@@ -123,7 +136,11 @@ export default function NewDocument({ onClose }) {
           <h5>
             Tipo de documento <span className={style.fieldPriority}>*</span>
           </h5>
-          <select className={style.customSelect} onChange={saveTipoDocument} value={tipeDocument} >
+          <select
+            className={style.customSelect}
+            onChange={saveTipoDocument}
+            value={tipeDocument}
+          >
             <option>Seleccione Documento</option>
             <option>Plan de Prácticas</option>
             <option>Plan de Prácticas 2</option>
