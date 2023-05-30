@@ -6,20 +6,22 @@ import style from "./Subject.module.css";
 import SearchIcon from "@material-ui/icons/Search";
 import BlockIcon from "@material-ui/icons/Block";
 import { Link } from "react-router-dom";
+import {environment} from "../../hooks/environment";
 
 function Subjects() {
   const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const url = environment.url + "/api/asignaturas/listado?id_programa=1";
 
   useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character/", { method: "GET" })
+    fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-        const simplifiedData = data.results.map((subject) => {
+        const simplifiedData = data.map((subject) => {
           return {
-            asignatura_codigo: subject.id,
-            asignatura_nombre: subject.name,
-            programa_titulo: subject.gender,
+            nombrePrograma: subject.nombrePrograma,
+            idAsignatura: subject.idAsignatura,
+            descripcion: subject.descripcion,
           };
         });
         setSubjects(simplifiedData);
@@ -27,7 +29,7 @@ function Subjects() {
   }, []);
 
   const filteredSubjects = subjects.filter((subject) =>
-    subject.asignatura_nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    subject.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -38,7 +40,6 @@ function Subjects() {
           <div className={style.search}>
             <SearchIcon />
             <input
-              className="bar"
               type="text"
               placeholder="Ingresa el nombre de la asignatura"
               value={searchTerm}
@@ -51,17 +52,17 @@ function Subjects() {
             filteredSubjects.map((item, index) => (
               <div key={index} className={style.card}>
                 <div className={style.tittle + " " + style.common}>
-                  <h4>{item.asignatura_nombre}</h4>
-                  <p>{item.programa_titulo}</p>
+                  <h4>{item.descripcion}</h4>
+                  <p>{item.nombrePrograma}</p>
                 </div>
                 <div className={style.body}>
                   <p></p>
                 </div>
                 <div className={style.buttons}>
-                  <button className={style.common} >
+                  <button className={style.common}>
                     ESTADO DE LA ASIGNATURA
                   </button>
-                  <Link to={"/TabComponent/" + item.asignatura_codigo}>
+                  <Link to={"/TabComponent/" + item.idAsignatura}>
                     <button className={style.common}>
                       GESTIONAR ASIGNATURA
                     </button>
