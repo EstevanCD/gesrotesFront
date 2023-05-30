@@ -4,6 +4,7 @@ import { environment } from "../../hooks/environment";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 import style from "./document.module.css";
+import { json } from "react-router-dom";
 
 export default function NewDocument({ onClose }) {
   // funciones para el control de arhivo
@@ -87,28 +88,27 @@ export default function NewDocument({ onClose }) {
     console.log(
       "ESTOS DATOS SON POST ",
       typeof tipeDocument,
-      typeof fechaVigencia.toISOString().substr(0, 10),
+      fechaVigencia.toISOString().substr(0, 10),
       typeof selectedEscenaryId,
       typeof saveFile.name,
       typeof saveFile.type,
       typeof selectedFile
     );
     const formData = new FormData();
-    formData.append(
-      "documentoRequest",
-      JSON.stringify({
-        nombre: saveFile.name,
-        tipoArchivo: saveFile.type,
-        fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
-        tipoDeDocumento: tipeDocument,
-      })
-    );
+    const auxvalue = {
+      nombre: saveFile.name,
+      tipoArchivo: saveFile.type,
+      fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
+      tipoDeDocumento: tipeDocument,
+    };
+    console.log(auxvalue);
+    formData.append("nombre", JSON.stringify(auxvalue));
     formData.append("file", saveFile);
     fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
       body: formData,
     })
       .then((response) => {

@@ -17,7 +17,6 @@ import Modals from "../Modals/Modals";
 function Documents() {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterOption, setFilterOption] = useState("Todos");
   const url = environment.url + "/api/documentos/listado?id_escenario=2";
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
