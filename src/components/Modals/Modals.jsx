@@ -9,7 +9,8 @@ import Forms from "./Forms";
 import CycleCreation from "./CycleCreation";
 import { Close } from "@material-ui/icons";
 import CreateRote from './CreateRote';
-import ClassManageGroups from "../ManageGroups/ClassManageGroups"
+import ClassManageGroups from "../ManageGroups/ClassManageGroups";
+import NewDocument from "./NewDocument";
 
 export default function Modals({ open, handleClose, modalContent, title }) {
 
@@ -18,6 +19,7 @@ export default function Modals({ open, handleClose, modalContent, title }) {
     "CycleCreation": <CycleCreation onClose={handleClose} />,
     "CreateRote": <CreateRote onClose={handleClose} />,
     "ClassManageGroups": <ClassManageGroups />,
+    "NewDocument": <NewDocument onClose={handleClose} />,
     
   };
 

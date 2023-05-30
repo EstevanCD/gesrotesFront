@@ -26,6 +26,12 @@ const Routine = () => {
     setOpen(true);
   };
 
+  const handleOpenDocument = () => {
+    setModalContent("NewDocument");
+    setModalTitle("Agregar Documento");
+    setOpen(true);
+  };
+
   const handleOpenRote = () => {
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
@@ -80,7 +86,6 @@ const Routine = () => {
         <button className={style.buttons} onClick={handleOpenGesGrupos}>
           Gestionar Grupos
         </button>
-
         <button className={style.buttonsred}>Eliminar Todo</button>
         <div>
           <table>
