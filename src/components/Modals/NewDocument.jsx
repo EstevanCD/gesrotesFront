@@ -8,28 +8,46 @@ import style from "./document.module.css";
 export default function NewDocument({ onClose }) {
   // funciones para el control de arhivo
   const [selectedFile, setSelectedFile] = useState(null);
+  const [saveFile,setSaveFile]=useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
+    setSaveFile(file);
+
+    fileToBase64(file,setSelectedFile);
   };
+
+  const fileToBase64=(file, callback)=> {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      var base64String = event.target.result.split(',')[1]; // Obtener contenido Base64 sin encabezado
+      callback(base64String);
+    };
+    reader.readAsDataURL(file);
+  }
 
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-
+    setSaveFile(file);
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const documentText = e.target.result;
       setSelectedFile(documentText);
+      
     };
 
     reader.readAsText(file);
+    console.log("DOCUMENTOS ",file,reader)
   };
 
   const handleDragOver = (event) => {
     event.preventDefault();
+  };
+  const [tipeDocument, setTipeDocument] = useState([]);
+  const saveTipoDocument = (event) => {
+    setTipeDocument(event.target.value);
   };
   //
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
@@ -60,10 +78,11 @@ export default function NewDocument({ onClose }) {
   const [fechaVigencia, setFechaVigencia] = useState(null);
   const spanishWeekdays = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
   const [alertMessage, setAlertMessage] = useState("");
-
+// validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
   const handleSubmitCreateDocument = (event) => {
     event.preventDefault();
-    const url = environment.url +"/api/documentos/guardar" +"1" ;
+    const url = environment.url +"/api/documentos/guardar/?id_escenario="+selectedEscenaryId ;
+    console.log("ESTOS DATOS SON POST ",typeof tipeDocument,typeof fechaVigencia.toISOString().substr(0, 10),typeof selectedEscenaryId,typeof saveFile.name, typeof saveFile.type, typeof  selectedFile)
     fetch(url, {
       method: "POST",
       headers: {
@@ -71,12 +90,12 @@ export default function NewDocument({ onClose }) {
       },
       body: JSON.stringify({
         "documentoRequest": {
-          "nombre": "string",
-          "tipoArchivo": "string",
-          "fechaVigencia": "string",
-          "tipoDeDocumento": "string"
+          "nombre": saveFile.name,
+          "tipoArchivo": saveFile.type,
+          "fechaVigencia": fechaVigencia.toISOString().substr(0, 10),
+          "tipoDeDocumento": tipeDocument 
         },
-        "file": "string"
+        "file": selectedFile
       }),
     })
       .then((response) => {
@@ -104,7 +123,7 @@ export default function NewDocument({ onClose }) {
           <h5>
             Tipo de documento <span className={style.fieldPriority}>*</span>
           </h5>
-          <select className={style.customSelect}>
+          <select className={style.customSelect} onChange={saveTipoDocument} value={tipeDocument} >
             <option>Seleccione Documento</option>
             <option>Plan de Prácticas</option>
             <option>Plan de Prácticas 2</option>
