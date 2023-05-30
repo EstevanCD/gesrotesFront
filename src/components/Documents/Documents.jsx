@@ -18,9 +18,11 @@ function Documents() {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const url = environment.url + "/api/documentos/listado?id_escenario=2";
+  const [filterOption, setFilterOption] = useState("Todos");
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     fetch(url)

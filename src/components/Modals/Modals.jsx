@@ -28,6 +28,7 @@ export default function Modals({ open, handleClose, modalContent, title }) {
     "CycleCreation": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
     "CreateRote": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
     "ClassManageGroups": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
+    "NewDocument": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
   }
 
   return (
