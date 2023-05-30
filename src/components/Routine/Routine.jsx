@@ -51,7 +51,7 @@ const Routine = () => {
   const [cicles, setCicles] = useState([]);
 
   useEffect(() => {
-    const url = environment.url + "/api/ciclos/listar/" + "1";
+    const url = environment.url + "/api/ciclos/listar/?id_asignatura="+"1";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
