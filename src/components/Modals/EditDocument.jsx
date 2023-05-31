@@ -6,7 +6,9 @@ import { es } from "date-fns/locale";
 import style from "./document.module.css";
 import { json } from "react-router-dom";
 
-export default function NewDocument({onClose}) {
+export default function NewDocument({onClose, documentData}) {
+  console.log("EDITAR DOCUMENTO");
+  console.log(documentData);
   // funciones para el control de arhivo
   const [selectedFile, setSelectedFile] = useState(null);
   const [saveFile, setSaveFile] = useState(null);
@@ -205,10 +207,12 @@ const [auxEscenary, setauxEscenary] = useState("")
         <div className={style.selectWrapper}>
           <h4> <span className={style.numberRounded}>4</span>PASO 4: Subir  Documento </h4>
           <div className={style.fileUploadContainer}>
+            
             {selectedFile ? (
               <p>Archivo seleccionado: {selectedFile.name}</p>
             ) : (
               <div>
+               {/*   {getIconByExtension(documentData.extension)} */}
                 <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p>
               </div>
             )}

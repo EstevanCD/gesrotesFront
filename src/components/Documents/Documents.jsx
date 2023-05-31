@@ -104,14 +104,13 @@ function Documents() {
   };
 
   const handleDownload = (documento) => {
-    //codigo para descargar el documento
+  
   };
 
   const handleEdit = (documento) => {
-    onClick={handleOpenDocument}
-    console.log("hoaASDFFFFFFla mundo "+ documento.id_documento);
-    console.log("hoaASDFFFFFFla mundo "+ documento.fecha_vigencia);
-    console.log("hoaASDFFFFFFla mundo "+ documento.nombre_archivo);
+  setDocumentData(documento);
+  handleOpenEditDocument(); 
+
     //todo llamar modal y pasarle prop (documento)
   };
 
@@ -135,6 +134,10 @@ function Documents() {
     setOpen(false);
   };
 
+
+ 
+  const [documentData, setDocumentData] = useState("hola");
+  
   return (
     <div className={style.containerDocuments}>
       <Modals
@@ -142,6 +145,7 @@ function Documents() {
         handleClose={handleClose}
         modalContent={modalContent}
         title={modalTitle}
+        documentData={documentData}
       />
       <div className={style.containerSearchBar}>
         <div className={style.buttonNewDocument}>
@@ -194,8 +198,10 @@ function Documents() {
                     <GetAppIcon style={{ color: "#0a2167" }} />
                   </button>
 
-                  <button /* onClick={() => handleEdit(documento)} */
-                                            onClick={handleOpenEditDocument}>
+                  <button onClick={() => handleEdit(documento)}
+                                          
+                                          >
+                                        
                     <EditIcon style={{ color: "#0a2167" }} />
                   </button>
 
