@@ -14,14 +14,33 @@ import { json } from "react-router-dom";
 import { BorderColor } from "@material-ui/icons";
 
 export default function NewDocument({ onClose, documentData }) {
-  console.log("EDITAR DOCUMENTO");
-  console.log(documentData);
+/*   console.log("EDITAR DOCUMENTO");
+  console.log(documentData); */
+
   // funciones para el control de arhivo
-  const [selectedFile, setSelectedFile] = useState(/* { name: "nuevo archivo" } */);
+  const [selectedFile, setSelectedFile] = useState(/* { name: "nuevo archivo" } */"datos");
   const [saveFile, setSaveFile] = useState(null);
+
+  
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://132.226.60.71:8080/api/documentos/descargar?id_documento=1");
+      const responseAux = await response;
+      if (responseAux.length > 0) {
+       /*  setSelectedFile(responseAux); */
+      }
+      
+      /* console.log("TEST--------");
+      console.log(selectedFile); */
+    }
+    fetchData();
+  }, []);
+
+
 
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
   const [escenary, setEscenary] = useState([]);
+ 
   // METODO get trae escenarios
   useEffect(() => {
     const url = environment.url + "/api/escenarios/listado";
@@ -50,15 +69,12 @@ export default function NewDocument({ onClose, documentData }) {
   };
  */
   /*   with useEfect with an empty array will only run when starting the component [] */
-  const [loading, setloading] = useState("");
-  const [auxEscenary, setauxEscenary] = useState("");
+
+  const [auxEscenary, setauxEscenary] = useState(""); 
   useEffect(() => {
-    setloading(documentData);
     setFechaVigencia(new Date(documentData.fecha_vigencia));
     if (escenary.length > 0) {
       setauxEscenary(escenary[documentData.id_escenario]);
-      console.log("PROBANDO");
-      console.log(auxEscenary.nombre);
     }
   }, [escenary]);
 
@@ -115,7 +131,7 @@ export default function NewDocument({ onClose, documentData }) {
       environment.url +
       "/api/documentos/guardar?id_escenario=" +
       selectedEscenaryId;
-    console.log(
+    /* console.log(
       "ESTOS DATOS SON POST ",
       typeof tipeDocument,
       fechaVigencia.toISOString().substr(0, 10),
@@ -123,7 +139,7 @@ export default function NewDocument({ onClose, documentData }) {
       typeof saveFile.name,
       typeof saveFile.type,
       typeof selectedFile
-    );
+    ); */
     const formData = new FormData();
     const auxvalue = {
       nombre: saveFile.name,
@@ -151,11 +167,11 @@ export default function NewDocument({ onClose, documentData }) {
       });
   };
 
-  const handleCancel = () => {
+/*  const handleCancel = () => {
     onClose();
-  };
+  }; */
 
-
+  //Cargar el icono para el documento
   const getIconByExtension = (extension) => {
     switch (extension) {
       case "pdf":
@@ -186,6 +202,10 @@ export default function NewDocument({ onClose, documentData }) {
     }
   };
   
+  
+
+
+
   return (
     <form onSubmit={handleSubmitCreateDocument} id="myForm">
       <div className={style.selectContainer}>
@@ -208,7 +228,7 @@ export default function NewDocument({ onClose, documentData }) {
           >
             <option hidden defaultValue>
               {" "}
-              {loading.tipo_documento}{" "}
+              {documentData.tipo_documento}{" "}
             </option>{" "}
             {/*shows the plan when loading */}
             <option>Plan de Prácticas</option>
@@ -267,30 +287,31 @@ export default function NewDocument({ onClose, documentData }) {
             {" "}
             <span className={style.numberRounded}>4</span>PASO 4: Subir Documento{" "} </h4>
         
-          {selectedFile ? (   
-          <div className={style.fileUploadContainer}>
-              <p>Archivo seleccionado: {selectedFile.name}</p>   
-            <div>
-                {/* {getIconByExtension(documentData.extension)} */}
-                <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div> 
+          {selectedFile ? ( 
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              height: '12%',
+              width: '100%',
+              borderRadius: '15px',
+              padding: '10px',
+              border: '1px solid #0a2168',
+            }}>
+              {getIconByExtension(documentData.extension)}
+              <h5 style={{ marginRight: '10px' }}>{documentData.nombre_archivo}</h5>
+              <h3>X</h3>
+            </div>   
 
-              <input type="file" id="fileInput"  onChange={handleFileChange}  
-            onDrop={handleDrop}
-              onDragOver={handleDragOver}/>         
-          </div>
-          ):  (<div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            height: '12%',
-            width: '100%',
-            borderRadius: '15px',
-            padding: '10px',
-            border: '1px solid #0a2168',
-          }}>
-            {getIconByExtension(documentData.extension)}
-            <h5 style={{ marginRight: '10px' }}>{documentData.nombre_archivo}</h5>
-            <h3>X</h3>
-          </div>   ) }   
+          ):  (<div className={style.fileUploadContainer}>
+            <p>Archivo seleccionado: {selectedFile.name}</p>   
+          <div>
+              {/* {getIconByExtension(documentData.extension)} */}
+              <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div> 
+
+            <input type="file" id="fileInput"  onChange={handleFileChange}  
+          onDrop={handleDrop}
+            onDragOver={handleDragOver}/>         
+        </div>) }   
 
         </div>
       </div>
