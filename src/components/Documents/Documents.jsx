@@ -198,10 +198,7 @@ function Documents() {
                     <GetAppIcon style={{ color: "#0a2167" }} />
                   </button>
 
-                  <button onClick={() => handleEdit(documento)}
-                                          
-                                          >
-                                        
+                  <button onClick={() => handleEdit(documento)} >
                     <EditIcon style={{ color: "#0a2167" }} />
                   </button>
 

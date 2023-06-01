@@ -125,6 +125,7 @@ export default function NewDocument({ onClose }) {
     onClose();
   };
 
+
   return (
     <form onSubmit={handleSubmitCreateDocument} id="myForm">
       <div className={style.selectContainer}>

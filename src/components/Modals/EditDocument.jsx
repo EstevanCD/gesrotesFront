@@ -4,13 +4,20 @@ import { environment } from "../../hooks/environment";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 import style from "./document.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
+import { faFileWord } from "@fortawesome/free-solid-svg-icons";
+
+
 import { json } from "react-router-dom";
+import { BorderColor } from "@material-ui/icons";
 
 export default function NewDocument({ onClose, documentData }) {
   console.log("EDITAR DOCUMENTO");
-  console.log(documentData.fecha_vigencia);
+  console.log(documentData);
   // funciones para el control de arhivo
-  const [selectedFile, setSelectedFile] = useState(/* { name: "nuevo archivo" } */[]);
+  const [selectedFile, setSelectedFile] = useState(/* { name: "nuevo archivo" } */);
   const [saveFile, setSaveFile] = useState(null);
 
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
@@ -148,6 +155,37 @@ export default function NewDocument({ onClose, documentData }) {
     onClose();
   };
 
+
+  const getIconByExtension = (extension) => {
+    switch (extension) {
+      case "pdf":
+        return (
+          <FontAwesomeIcon
+            style={{ color: "#980c0f", fontSize: "30px" }}
+            icon={faFilePdf}
+          />
+        );
+      case "doc":
+      case "docx":
+        return (
+          <FontAwesomeIcon
+            style={{ color: "#0a2167", fontSize: "30px" }}
+            icon={faFileWord}
+          />
+        );
+      case "xls":
+      case "xlsx":
+        return (
+          <FontAwesomeIcon
+            style={{ color: "#007a29", fontSize: "30px" }}
+            icon={faFileExcel}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+  
   return (
     <form onSubmit={handleSubmitCreateDocument} id="myForm">
       <div className={style.selectContainer}>
@@ -227,23 +265,33 @@ export default function NewDocument({ onClose, documentData }) {
         <div className={style.selectWrapper}>
           <h4>
             {" "}
-            <span className={style.numberRounded}>4</span>PASO 4: Subir
-            Documento{" "}
-          </h4>
+            <span className={style.numberRounded}>4</span>PASO 4: Subir Documento{" "} </h4>
+        
+          {selectedFile ? (   
           <div className={style.fileUploadContainer}>
-           {/*  {selectedFile ? ( */}
-              <p>Archivo seleccionado: {selectedFile.name}</p>
-            /* ) : ( */
+              <p>Archivo seleccionado: {selectedFile.name}</p>   
             <div>
                 {/* {getIconByExtension(documentData.extension)} */}
                 <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div> 
-           /*      )} */
 
               <input type="file" id="fileInput"  onChange={handleFileChange}  
             onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            />
+              onDragOver={handleDragOver}/>         
           </div>
+          ):  (<div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: '12%',
+            width: '100%',
+            borderRadius: '15px',
+            padding: '10px',
+            border: '1px solid #0a2168',
+          }}>
+            {getIconByExtension(documentData.extension)}
+            <h5 style={{ marginRight: '10px' }}>{documentData.nombre_archivo}</h5>
+            <h3>X</h3>
+          </div>   ) }   
+
         </div>
       </div>
 
