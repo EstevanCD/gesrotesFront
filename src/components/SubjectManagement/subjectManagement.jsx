@@ -16,7 +16,7 @@ function SubjectManagement({ idAsignatura }) {
   const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
     const responseTeachers = await fetch(
-      `http://132.226.60.71:8080/api/docentes/listado/1`,
+      `http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=1`,
       {
         method: "GET",
       }

@@ -13,6 +13,8 @@ import ArrowCircleDownRoundedIcon from "@mui/icons-material/ArrowCircleDownRound
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Modals from "../Modals/Modals";
+import { Alert } from "@mui/material";
+import AlertWindow from "./AlertaEmergente";
 
 function Documents() {
   const [documentos, setDocumentos] = useState([]);
@@ -102,14 +104,42 @@ function Documents() {
         return null;
     }
   };
+  //LOGICA PARA DESCARGAR UN DOCUMENTO
+  const [alert, setAlert] = useState([1]);
 
-  const handleDownload = (documento) => {
-  
+  const handleDownload = async (idDocumento) => {
+    // Lógica para obtener los bytes del PDF y crear el Blob
+    try {
+      const responseDocument = await fetch(
+        `http://132.226.60.71:8080/api/documentos/descargar?id_documento=${idDocumento}`,
+        {
+          method: "GET",
+        }
+      );
+      if (responseDocument.status != 400) {
+        console.log(alert)
+        const dataDocument = await responseDocument.arrayBuffer();
+        const blob = new Blob([dataDocument], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+        URL.revokeObjectURL(url);
+      }
+
+      if (responseDocument.status == 400) {
+        console.log("NO HAY DOCUMENTOS")
+        setAlert([]);
+        console.log(alert)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
+
   const handleEdit = (documento) => {
-  setDocumentData(documento);
-  handleOpenEditDocument(); 
+    setDocumentData(documento);
+    handleOpenEditDocument();
 
     //todo llamar modal y pasarle prop (documento)
   };
@@ -135,7 +165,7 @@ function Documents() {
   };
 
   const [documentData, setDocumentData] = useState("hola");
-  
+
   return (
     <div className={style.containerDocuments}>
       <Modals
@@ -192,7 +222,7 @@ function Documents() {
                 </div>
                 <div className={style.dateDoc}>{formatDate(documento.fecha_vigencia)}</div>
                 <div className={style.buttonsDoc}>
-                  <button onClick={() => handleDownload(documento)}>
+                  <button onClick={() => handleDownload(documento.id_documento)}>
                     <ArrowCircleDownRoundedIcon style={{ fontSize: "30px", color: "#0a2167" }} />
                   </button>
                   <button onClick={() => handleEdit(documento)}>
@@ -210,6 +240,12 @@ function Documents() {
               <p>NO FOUND</p>
             </div>
           )}
+          {alert.length == 0 ?
+            <>
+              <AlertWindow></AlertWindow>
+            </>
+            : <></>
+          }
         </ul>
       </div>
     </div>
