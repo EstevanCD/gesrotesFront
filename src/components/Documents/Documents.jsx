@@ -9,7 +9,7 @@ import { faFileWord } from "@fortawesome/free-solid-svg-icons";
 import AddIcon from "@material-ui/icons/Add";
 import SearchIcon from "@material-ui/icons/Search";
 import BlockIcon from "@material-ui/icons/Block";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import ArrowCircleDownRoundedIcon from "@mui/icons-material/ArrowCircleDownRounded";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Modals from "../Modals/Modals";
@@ -79,7 +79,7 @@ function Documents() {
       case "pdf":
         return (
           <FontAwesomeIcon
-            style={{ color: "#980c0f", fontSize: "30px" }}
+            style={{ color: "#980c0f", fontSize: "30px", paddingRight: "1ch", paddingLeft: "1ch" }}
             icon={faFilePdf}
           />
         );
@@ -87,7 +87,7 @@ function Documents() {
       case "docx":
         return (
           <FontAwesomeIcon
-            style={{ color: "#0a2167", fontSize: "30px" }}
+            style={{ color: "#0a2167", fontSize: "30px", paddingRight: "1ch", paddingLeft: "1ch" }}
             icon={faFileWord}
           />
         );
@@ -95,7 +95,7 @@ function Documents() {
       case "xlsx":
         return (
           <FontAwesomeIcon
-            style={{ color: "#007a29", fontSize: "30px" }}
+            style={{ color: "#007a29", fontSize: "30px", paddingRight: "1ch", paddingLeft: "1ch" }}
             icon={faFileExcel}
           />
         );
@@ -175,20 +175,20 @@ function Documents() {
           {filteredDocuments.length > 0 ? (
             filteredDocuments.map((documento) => (
               <li key={documento.id_documento}>
-                <div>
+                <div className={style.nameDoc}>
                   {getIconByExtension(documento.extension)}
                   {documento.nombre_archivo}
                 </div>
-                <div>{formatDate(documento.fecha_vigencia)}</div>
-                <div>
+                <div className={style.dateDoc}>{formatDate(documento.fecha_vigencia)}</div>
+                <div className={style.buttonsDoc}>
                   <button onClick={() => handleDownload(documento)}>
-                    <GetAppIcon style={{ color: "#0a2167" }} />
+                    <ArrowCircleDownRoundedIcon style={{ fontSize: "30px", color: "#0a2167" }} />
                   </button>
                   <button onClick={() => handleEdit(documento)}>
-                    <EditIcon style={{ color: "#0a2167" }} />
+                    <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
                   </button>
                   <button onClick={() => handleDelete(documento)}>
-                    <DeleteForeverIcon style={{ color: "#980c0f" }} />
+                    <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
                   </button>
                 </div>
               </li>

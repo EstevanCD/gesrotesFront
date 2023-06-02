@@ -8,15 +8,14 @@
 
 .containerSearchBar {
     display: flex;
-    margin: 1.3em;
-    width: 100%;
+    margin: 0 1.3em;
+    width: 98%;
     color: #888;
-    justify-content: space-between;
     align-items: center;
 }
 
 .buttonNewDocument {
-    flex-basis: 17%;
+    width: 17%;
     text-align: left;
 }
 
@@ -30,7 +29,7 @@
 }
 
 .searchBar {
-    flex-basis: 66%;
+    width: 66%;
     text-align: center;
 }
 
@@ -63,7 +62,7 @@
 
 .filterDoc {
     display: inherit;
-    flex-basis: 17%;
+    width: 17%;
     text-align: right;
     align-items: center;
 }
@@ -75,7 +74,7 @@
     background-color: transparent;
     color: #494949;
     height: 30px;
-    width: 70px;
+    width: 100px;
 }
 
 .filterDoc p {
@@ -84,9 +83,9 @@
 
 .containerListDocs {
     overflow-y: auto;
-    height: 62vh;
+    height: 60vh;
     padding-bottom: 1vh;
-    margin: 2vh 2vw;
+    margin: 0 2vw;
 }
 
 ul {
@@ -103,14 +102,19 @@ li {
     margin-bottom: 10px;
 }
 
-li div {
-    margin-right: 10px;
+.nameDoc{
+    width: 60%;
 }
 
-li div:last-child {
-    margin-right: 0;
+.dateDoc{
+    width: 30%;
 }
 
-li button {
-    margin-right: 5px;
+.buttonsDoc {
+    width: 10%;
+}
+
+.buttonsDoc button{
+    background-color: transparent;
+    padding: 0px;
 }
