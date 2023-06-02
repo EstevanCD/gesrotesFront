@@ -11,8 +11,9 @@ import { Close } from "@material-ui/icons";
 import CreateRote from './CreateRote';
 import ClassManageGroups from "../ManageGroups/ClassManageGroups";
 import NewDocument from "./NewDocument";
+import EditDocument from './EditDocument'
 
-export default function Modals({ open, handleClose, modalContent, title }) {
+export default function Modals({ open, handleClose, modalContent, title, documentData}) {
 
   const content = {
     "Forms": <Forms />,
@@ -20,6 +21,7 @@ export default function Modals({ open, handleClose, modalContent, title }) {
     "CreateRote": <CreateRote onClose={handleClose} />,
     "ClassManageGroups": <ClassManageGroups />,
     "NewDocument": <NewDocument onClose={handleClose} />,
+    "EditDocument": <EditDocument onClose={handleClose} documentData = {documentData}/>,
     
   };
 
@@ -29,6 +31,7 @@ export default function Modals({ open, handleClose, modalContent, title }) {
     "CreateRote": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
     "ClassManageGroups": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
     "NewDocument": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
+    "EditDocument": { backgroundColor: "#0a2167", color: "white", justifyContent: "unset"},
   }
 
   return (

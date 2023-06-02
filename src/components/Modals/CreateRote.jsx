@@ -11,9 +11,9 @@ function CreateRote() {
   // bring the data backent teacher
   const [options, setData] = useState([]);
 
-     useEffect(() => {
+    useEffect(() => {
       async function fetchData() {
-        const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/1");
+        const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=1");
         const json = await response.json();
         setData(json.docentes);
       }

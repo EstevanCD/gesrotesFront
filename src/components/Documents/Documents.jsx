@@ -23,7 +23,6 @@ function Documents() {
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
 
-
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
@@ -52,7 +51,7 @@ function Documents() {
       documents = documentos;
       break;
   }
-  
+
   const filteredDocuments = documents.filter((documento) =>
     documento.nombre_archivo.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -105,11 +104,14 @@ function Documents() {
   };
 
   const handleDownload = (documento) => {
-    //codigo para descargar el documento
+  
   };
 
   const handleEdit = (documento) => {
-    //codigo para editar el documento
+  setDocumentData(documento);
+  handleOpenEditDocument(); 
+
+    //todo llamar modal y pasarle prop (documento)
   };
 
   const handleDelete = (documento) => {
@@ -122,10 +124,20 @@ function Documents() {
     setOpen(true);
   };
 
+  const handleOpenEditDocument = () => {
+    setModalContent("EditDocument");
+    setModalTitle("Editar Documento");
+    setOpen(true);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
 
+
+ 
+  const [documentData, setDocumentData] = useState("hola");
+  
   return (
     <div className={style.containerDocuments}>
       <Modals
@@ -133,6 +145,7 @@ function Documents() {
         handleClose={handleClose}
         modalContent={modalContent}
         title={modalTitle}
+        documentData={documentData}
       />
       <div className={style.containerSearchBar}>
         <div className={style.buttonNewDocument}>
@@ -187,6 +200,7 @@ function Documents() {
                   <button onClick={() => handleEdit(documento)}>
                     <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
                   </button>
+
                   <button onClick={() => handleDelete(documento)}>
                     <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
                   </button>
