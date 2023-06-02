@@ -134,8 +134,6 @@ function Documents() {
     setOpen(false);
   };
 
-
- 
   const [documentData, setDocumentData] = useState("hola");
   
   return (
@@ -200,7 +198,6 @@ function Documents() {
                   <button onClick={() => handleEdit(documento)}>
                     <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
                   </button>
-
                   <button onClick={() => handleDelete(documento)}>
                     <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
                   </button>
