@@ -151,20 +151,25 @@ export default function () {
         // Mostrar un mensaje de error
       });
   };
+
   //WALKER
+  
   useEffect(() => {
-    const url = environment.url + "/api/modulos/listarHorarios?id_asignatura=1";
+    const url =
+      environment.url + "/api/horarios/listado?id_docente=1&id_asignatura=1";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-        const simplifiedData = data.docente[0].modulos.map((modulo) => {
-          const horario = modulo.horarios[0];
-          const [dia, hora] = horario.descripcion.split(" ");
+        const simplifiedData = data.map((horary) => {
           return {
-            id: modulo.id,
-            nombre: modulo.nombre,
-            dia,
-            hora,
+            codigoAsignatura: horary.codigoAsignatura,
+            descripcionAsignatura: horary.descripcionAsignatura,
+            nombreModulo: horary.nombreModulo,
+            dia: horary.dia,
+            horaInicio: horary.horaInicio,
+            horaFin: horary.horaFin,
+            nombreEscenario: horary.nombreEscenario,
+            descripcionServicio: horary.descripcionServicio,
           };
         });
         setHoraries(simplifiedData);
@@ -351,12 +356,12 @@ export default function () {
           {console.log(horaries, "lista de horarios")}
           {horaries.map((item) => (
             <div className={style.row} key={item.id}>
-              <span className={style.tableBody}>{item.nombre}</span>
+              <span className={style.tableBody}>{item.nombreModulo}</span>
               <span className={style.tableBody}>{item.dia}</span>
-              <span className={style.tableBody}>{item.hora}</span>
-              <span className={style.tableBody}>falta</span>
-              <span className={style.tableBody}>prueba</span>
-              <span className={style.tableBody}>eliminate</span>
+              <span className={style.tableBody}>{item.horaInicio + "-" + item.horaFin}</span>
+              <span className={style.tableBody}>{item.nombreEscenario}</span>
+              <span className={style.tableBody}>{item.descripcionServicio}</span>
+              <span className={style.tableBody}><DeleteIcon/></span>
             </div>
           ))}
         </div>
