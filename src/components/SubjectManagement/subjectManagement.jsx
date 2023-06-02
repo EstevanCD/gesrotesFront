@@ -5,18 +5,23 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Alert } from "@mui/material";
 import Modals from "../Modals/Modals";
-
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import BlockIcon from "@material-ui/icons/Block";
+import style from "../Documents/Documents.module.css";
 
-function SubjectManagement({ idAsignatura }) {
-  console.log("id que trae ", idAsignatura);
+
+function SubjectManagement() {
+  // Utiliza los datos como desees
+  let asignatura = useParams();
+  console.log(asignatura.id);
   const [teachers, setTeachers] = useState([]);
   const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
     const responseTeachers = await fetch(
-      `http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=1`,
+      `http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=${asignatura.id}`,
       {
         method: "GET",
       }
@@ -65,8 +70,11 @@ function SubjectManagement({ idAsignatura }) {
           justifyContent="center"
           columnSpacing={2}
         >
-          {teachers == null ? (
-            <Alert severity="error">Error al cargar los datos</Alert>
+          {teachers== undefined? (
+            <div className={style.noFound}>
+              <BlockIcon />
+              <p>NO FOUND</p>
+            </div>
           ) : (
             teachers.map((teacher) => (
               <Grid item md={3} sm={6} xs={12}>
@@ -110,11 +118,11 @@ function SubjectManagement({ idAsignatura }) {
                   </CardContent>
                   <CardActions style={{ justifyContent: "center" }}>
                     <Button
-                      style={{backgroundColor:"#04048b"}}
+                      style={{ backgroundColor: "#04048b" }}
                       size="small"
                       variant="contained"
                       onClick={handleOpen}
-                    > 
+                    >
                       GESTIONAR HORARIOS
                     </Button>
                   </CardActions>
