@@ -5,10 +5,12 @@ import Navbar from "../Navbar";
 import style from "./Subject.module.css";
 import SearchIcon from "@material-ui/icons/Search";
 import BlockIcon from "@material-ui/icons/Block";
-import { Link } from "react-router-dom";
-import {environment} from "../../hooks/environment";
+import { Link, useParams } from "react-router-dom";
+import { environment } from "../../hooks/environment";
 
 function Subjects() {
+  let params = useParams();
+  console.log(params);
   const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const url = environment.url + "/api/asignaturas/listado?id_programa=1";
@@ -62,11 +64,11 @@ function Subjects() {
                   <button className={style.common}>
                     ESTADO DE LA ASIGNATURA
                   </button>
-                  <Link to={"/TabComponent/" + item.idAsignatura}>
-                    <button className={style.common}>
-                      GESTIONAR ASIGNATURA
-                    </button>
-                  </Link>
+                    <Link to={"/TabComponent/" + item.idAsignatura}>
+                      <button className={style.common}>
+                        GESTIONAR ASIGNATURA
+                      </button>
+                    </Link>
                 </div>
               </div>
             ))

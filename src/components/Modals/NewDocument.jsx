@@ -5,11 +5,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 import style from "./document.module.css";
 import { json } from "react-router-dom";
+import Popup from "./Popup"
 
 export default function NewDocument({ onClose }) {
   // funciones para el control de arhivo
   const [selectedFile, setSelectedFile] = useState(null);
   const [saveFile, setSaveFile] = useState(null);
+
+  // visibilidad popup
+  const [showPopup, setShowPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -78,6 +83,17 @@ export default function NewDocument({ onClose }) {
   const [fechaVigencia, setFechaVigencia] = useState(null);
   const spanishWeekdays = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
   const [alertMessage, setAlertMessage] = useState("");
+
+  const handleClosePopup = () => {
+    setSelectedFile(null);
+    setSaveFile(null);
+    setTipeDocument("");
+    setSelectedEscenaryId("");
+    setFechaVigencia(null);
+    setAlertMessage("");
+    setShowPopup(false);
+  };
+
   // validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
   const handleSubmitCreateDocument = (event) => {
     event.preventDefault();
@@ -113,7 +129,8 @@ export default function NewDocument({ onClose }) {
     })
       .then((response) => {
         console.log(response);
-        // Hacer algo con la respuesta, como mostrar un mensaje de éxito
+        setSuccessMessage("Documento registrado con éxito");
+        setShowPopup(true);
       })
       .catch((error) => {
         console.error(error);
@@ -124,7 +141,6 @@ export default function NewDocument({ onClose }) {
   const handleCancel = () => {
     onClose();
   };
-
 
   return (
     <form onSubmit={handleSubmitCreateDocument} id="myForm">
@@ -221,6 +237,9 @@ export default function NewDocument({ onClose }) {
           Registrar Documento
         </button>
       </center>
+      {showPopup && (
+        <Popup message={successMessage} onClose={handleClosePopup} />
+      )}
     </form>
   );
 }
