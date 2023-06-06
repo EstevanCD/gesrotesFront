@@ -9,7 +9,7 @@ function Scenario({ handleManageDocuments }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character/", { method: "GET" })
+    fetch("http://132.226.60.71:8080/api/escenarios/listado", { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
         const simplifiedData = data.results.map((scenario) => {
