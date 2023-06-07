@@ -9,10 +9,12 @@ function Scenario({ handleManageDocuments }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch("http://132.226.60.71:8080/api/escenarios/estado_documentos", { method: "GET" })
+    fetch("http://132.226.60.71:8080/api/escenarios/estado_documentos", {
+      method: "GET",
+    })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
         const simplifiedData = data.escenarios.map((scenario) => {
           return {
             scenario_codigo: scenario.id,
@@ -51,7 +53,12 @@ function Scenario({ handleManageDocuments }) {
                   </Typography>
                 </div>
                 <div className={style.buttons}>
-                  <button className={style.common} onClick={handleManageDocuments}>GESTIONAR DOCUMENTOS</button>
+                  <button
+                    className={style.common}
+                    onClick={handleManageDocuments}
+                  >
+                    GESTIONAR DOCUMENTOS
+                  </button>
                 </div>
               </div>
             ))

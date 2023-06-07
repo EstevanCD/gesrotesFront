@@ -15,15 +15,17 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Modals from "../Modals/Modals";
 import { Alert } from "@mui/material";
 import AlertWindow from "./AlertaEmergente";
+import { Button, CircularProgress } from '@mui/material';
 
 function Documents() {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const url = environment.url + "/api/documentos/listado?id_escenario=2";
+  const url = environment.url + "/api/documentos/listado?id_escenario=1";
   const [filterOption, setFilterOption] = useState("Todos");
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
+  const [descargando, setDescargando] = useState(false);
 
   useEffect(() => {
     fetch(url)
@@ -105,30 +107,40 @@ function Documents() {
     }
   };
   //LOGICA PARA DESCARGAR UN DOCUMENTO
-  const [alert, setAlert] = useState([1]);
+  const [alert, setAlert] = useState([]);
 
-  const handleDownload = async (idDocumento) => {
+  const handleDownload = async (idDocumento, extension) => {
+
+    let extensionDocumento = extension.split('/');
     // Lógica para obtener los bytes del PDF y crear el Blob
     try {
+      //setIsLoading(true);
       const responseDocument = await fetch(
         `http://132.226.60.71:8080/api/documentos/descargar?id_documento=${idDocumento}`,
         {
           method: "GET",
         }
       );
-      if (responseDocument.status != 400) {
-        console.log(alert)
+      if (responseDocument.status != 400 && extensionDocumento[1] != undefined) {
         const dataDocument = await responseDocument.arrayBuffer();
-        const blob = new Blob([dataDocument], { type: 'application/pdf' });
+        const blob = new Blob([dataDocument], { type: `application/${extensionDocumento[1]}` });
         const url = URL.createObjectURL(blob);
-        window.open(url);
+        //window.open(url);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `documento.${extensionDocumento[1]}`;
+        a.click();
         URL.revokeObjectURL(url);
       }
 
       if (responseDocument.status == 400) {
         console.log("NO HAY DOCUMENTOS")
-        setAlert([]);
+        setAlert(responseDocument.status);
         console.log(alert)
+        handleOpenAlert();
+      }
+      if (extensionDocumento[1] == undefined) {
+        console.log("hola undenfined")
       }
 
     } catch (error) {
@@ -136,120 +148,133 @@ function Documents() {
     }
   };
 
+  const handleBotonClick = async () => {
+    setDescargando(true);
+    try {
+      await handleDownload(idDocumento, extension);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDescargando(false);
+    }
+  }
+    //CONFIGURACION DE ALERTA PARA CUANDO NO SE ECNUENTREN DOCUMENTOS RELACIONADOS
 
-  const handleEdit = (documento) => {
-    setDocumentData(documento);
-    handleOpenEditDocument();
 
-    //todo llamar modal y pasarle prop (documento)
-  };
 
-  const handleDelete = (documento) => {
-    //codigo para eliminar el documento
-  };
+    const handleEdit = (documento) => {
+      setDocumentData(documento);
+      handleOpenEditDocument();
 
-  const handleOpenDocument = () => {
-    setModalContent("NewDocument");
-    setModalTitle("Agregar Documento");
-    setOpen(true);
-  };
+      //todo llamar modal y pasarle prop (documento)
+    };
 
-  const handleOpenEditDocument = () => {
-    setModalContent("EditDocument");
-    setModalTitle("Editar Documento");
-    setOpen(true);
-  };
+    const handleDelete = (documento) => {
+      //codigo para eliminar el documento
+    };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+    const handleOpenDocument = () => {
+      setModalContent("NewDocument");
+      setModalTitle("Agregar Documento");
+      setOpen(true);
+    };
 
-  const [documentData, setDocumentData] = useState("hola");
+    const handleOpenEditDocument = () => {
+      setModalContent("EditDocument");
+      setModalTitle("Editar Documento");
+      setOpen(true);
+    };
 
-  return (
-    <div className={style.containerDocuments}>
-      <Modals
-        open={open}
-        handleClose={handleClose}
-        modalContent={modalContent}
-        title={modalTitle}
-        documentData={documentData}
-      />
-      <div className={style.containerSearchBar}>
-        <div className={style.buttonNewDocument}>
-          <button className={style.buttonND} onClick={handleOpenDocument}>
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const [documentData, setDocumentData] = useState("hola");
+
+    return (
+      <div className={style.containerDocuments}>
+        <Modals
+          open={open}
+          handleClose={handleClose}
+          modalContent={modalContent}
+          title={modalTitle}
+          documentData={documentData}
+        />
+        <div className={style.containerSearchBar}>
+          <div className={style.buttonNewDocument}>
+            <button className={style.buttonND} onClick={handleOpenDocument}>
+              {" "}
+              <i>
+                <AddIcon style={{ fontSize: "15px" }} />
+              </i>{" "}
+              Nuevo Documento
+            </button>
+          </div>
+          <div className={style.searchBar}>
+            <div className={style.search}>
+              <SearchIcon />
+              <input
+                type="text"
+                placeholder="Buscar documentos hospital"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+            </div>
+          </div>
+          <div className={style.filterDoc}>
             {" "}
-            <i>
-              <AddIcon style={{ fontSize: "15px" }} />
-            </i>{" "}
-            Nuevo Documento
-          </button>
-        </div>
-        <div className={style.searchBar}>
-          <div className={style.search}>
-            <SearchIcon />
-            <input
-              type="text"
-              placeholder="Buscar documentos hospital"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-            />
+            {/* filtro */}
+            <p>Filtrar por:</p>
+            <select
+              className={style.filterSelect}
+              value={filterOption}
+              onChange={(event) => setFilterOption(event.target.value)}
+            >
+              <option value="Todos">Todos</option>
+              <option value="Expirados">Expirados</option>
+              <option value="No Expirados">No Expirados</option>
+            </select>
           </div>
         </div>
-        <div className={style.filterDoc}>
-          {" "}
-          {/* filtro */}
-          <p>Filtrar por:</p>
-          <select
-            className={style.filterSelect}
-            value={filterOption}
-            onChange={(event) => setFilterOption(event.target.value)}
-          >
-            <option value="Todos">Todos</option>
-            <option value="Expirados">Expirados</option>
-            <option value="No Expirados">No Expirados</option>
-          </select>
+        <div className={style.containerListDocs}>
+          <ul>
+            {filteredDocuments.length > 0 ? (
+              filteredDocuments.map((documento) => (
+                <li key={documento.id_documento}>
+                  <div className={style.nameDoc}>
+                    {getIconByExtension(documento.extension)}
+                    {documento.nombre_archivo}
+                  </div>
+                  <div className={style.dateDoc}>{formatDate(documento.fecha_vigencia)}</div>
+                  <div className={style.buttonsDoc}>
+                    <button disabled={descargando} onClick={() => {handleDownload(documento.id_documento, documento.extension) }}>
+                      <ArrowCircleDownRoundedIcon style={{ fontSize: "30px", color: "#0a2167" }} />
+                    </button>
+                    <button onClick={() => handleEdit(documento)}>
+                      <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
+                    </button>
+                    <button onClick={() => handleDelete(documento)}>
+                      <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
+                    </button>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <div className={style.noFound}>
+                <BlockIcon />
+                <p>NO FOUND</p>
+              </div>
+            )}
+            {alert == 400 ?
+              <>
+                <AlertWindow></AlertWindow>
+              </>
+              : <></>
+            }
+          </ul>
         </div>
       </div>
-      <div className={style.containerListDocs}>
-        <ul>
-          {filteredDocuments.length > 0 ? (
-            filteredDocuments.map((documento) => (
-              <li key={documento.id_documento}>
-                <div className={style.nameDoc}>
-                  {getIconByExtension(documento.extension)}
-                  {documento.nombre_archivo}
-                </div>
-                <div className={style.dateDoc}>{formatDate(documento.fecha_vigencia)}</div>
-                <div className={style.buttonsDoc}>
-                  <button onClick={() => handleDownload(documento.id_documento)}>
-                    <ArrowCircleDownRoundedIcon style={{ fontSize: "30px", color: "#0a2167" }} />
-                  </button>
-                  <button onClick={() => handleEdit(documento)}>
-                    <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
-                  </button>
-                  <button onClick={() => handleDelete(documento)}>
-                    <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
-                  </button>
-                </div>
-              </li>
-            ))
-          ) : (
-            <div className={style.noFound}>
-              <BlockIcon />
-              <p>NO FOUND</p>
-            </div>
-          )}
-          {alert.length == 0 ?
-            <>
-              <AlertWindow></AlertWindow>
-            </>
-            : <></>
-          }
-        </ul>
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default Documents;
+  export default Documents;
