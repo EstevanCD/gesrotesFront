@@ -19,14 +19,10 @@ function Navbar() {
     <><MenuBookIcon/> Asignaturas</>,
   ];
 
-<<<<<<< HEAD
-  const optionsProfile = ["Configuracion", "Salir"];
-=======
   const optionsProfile = [
     <><SettingsIcon/> Configuracion</>,
     <><ExitToAppIcon/> Salir</>,
   ];
->>>>>>> develop
 
   //TODO: agregar logo
 
