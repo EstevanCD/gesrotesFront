@@ -9,16 +9,17 @@ function Scenario({ handleManageDocuments }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch("http://132.226.60.71:8080/api/escenarios/listado", { method: "GET" })
+    fetch("http://132.226.60.71:8080/api/escenarios/estado_documentos", {
+      method: "GET",
+    })
       .then((response) => response.json())
       .then((data) => {
-        const simplifiedData = data.map((scenario) => {
-          //TODO:Mejorar documentos expirados y ESCENARIOS LISTADOS (API)
-          //FIXME: Ruta para gestion de Documentos
+        console.log(data);
+        const simplifiedData = data.escenarios.map((scenario) => {
           return {
             scenario_codigo: scenario.id,
             scenario_nombre: scenario.nombre,
-            scenario_expirados: scenario.direccion,
+            scenario_expirados: scenario.documentos_expirados,
           };
         });
         setScenario(simplifiedData);
@@ -48,11 +49,16 @@ function Scenario({ handleManageDocuments }) {
                     color="#960D0D"
                     textAlign="left"
                   >
-                    * {item.scenario_expirados}1 documento expirado
+                    * {item.scenario_expirados} documentos expirados
                   </Typography>
                 </div>
                 <div className={style.buttons}>
-                  <button className={style.common} onClick={handleManageDocuments}>GESTIONAR DOCUMENTOS</button>
+                  <button
+                    className={style.common}
+                    onClick={handleManageDocuments}
+                  >
+                    GESTIONAR DOCUMENTOS
+                  </button>
                 </div>
               </div>
             ))
