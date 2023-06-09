@@ -1,43 +1,46 @@
 import { React, useState, useEffect } from "react";
 import RoteList from "./ListRote";
-
+import { environment } from "../../hooks/environment";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import "./stylesCreateRote.css";
 
 function CreateRote() {
 
-
   // bring the data backent teacher
   const [options, setData] = useState([]);
-
-    useEffect(() => {
-      async function fetchData() {
-        const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=1");
-        const json = await response.json();
-        setData(json.docentes);
-      }
-      fetchData();
-    }, []); 
-
-
-/*   console.log("este es el array"+data.docentes); */
-
-/*   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/1");
+  useEffect(() => {
+    async function fetchData() {  //docentes asociados a la asignatura
+      const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=1");
       const json = await response.json();
-      setData(json);
+      setData(json.docentes);
     }
     fetchData();
-  }, []); */
+  }, []); 
 
+    /*    console.log("este es el array"+data.docentes); */
+    
+
+  //HORARIOS
   
-/*   console.log(data); */
 
 
 
- 
+
+
+    //Asignacion Controller  Servicios relacionados con asignacion
+  const [dataAsignaciones, setdataAsignaciones] = useState(" ");
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://132.226.60.71:8080/api/asignaciones/listar/1");
+      const json = await response.json();
+      setdataAsignaciones(json);
+      /* console.log("TEST array schedule") */
+    }
+    fetchData();
+  }, []);
+  console.log(dataAsignaciones);
+
   // Este va a ser el array que se listara ESTO ME TOCA LLEVARMELO A OTRA CLASES
   const [listRotes, setlistRotes] = useState([]);
 
@@ -63,6 +66,8 @@ function CreateRote() {
       horario: "horario 4",
     },
   ];
+
+//Todo reemplazar por el endpoint de horarios configurados
 
 
 
@@ -109,6 +114,10 @@ function CreateRote() {
 
 
   // listado de tareas del horario rote
+/**
+ * /api/horarios/listado
+ */
+
   const [selectHorario, setselectHorario] = useState("");
   const horarios = [
     { label: "Horario 1 SJ", value: 1 },
@@ -130,11 +139,11 @@ function CreateRote() {
     setlistRotes(listRotes.filter((task) => task.id !== taskId)); 
   };
 
- return (
-    <>
+return (
+    <div style={{ width: "800px" }}>
       <form onSubmit={SaveRote}>
         <h4>Asignar horario al rote</h4>
-       
+
         <select className="container-selectTeachers"
           value={selectedValue}
           onChange={(e) => setSelectedValue(e.target.value)} 
@@ -177,7 +186,7 @@ function CreateRote() {
 
       </form>
       <RoteList listRotes={listRotes} deleteAllListRotes = {deleteAllListRotes} deleteListRotes = {deleteListRotes} />
-    </>
+    </div>
   );
 
 }

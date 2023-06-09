@@ -24,6 +24,8 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+  outline: none;
+  text-decoration: none;
 }
 button:hover {
   border-color: #646cff;

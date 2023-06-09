@@ -10,7 +10,7 @@ const StyledButtonDelete = styled(Button)({
   color: "white",
   backgroundColor: "#960D0D",
   border: "1px solid red", // Agregar un borde rojo
-   marginLeft: '30px',
+  marginLeft: '30px',
   fontSize: "10px",
   "&:hover": {
     backgroundColor: "#C21111",
@@ -24,11 +24,11 @@ function RoteList({ listRotes, deleteAllListRotes, deleteListRotes} ) {
     setTasks(listRotes);
   }, [listRotes]);
 
-  console.log(tasks);
+ /*  console.log(tasks); */
 
 
   if (tasks.length === 0) {
-    return <h1>No hay tareas aun</h1>;
+    return <h1></h1>;
   }
 
 
@@ -48,9 +48,7 @@ function RoteList({ listRotes, deleteAllListRotes, deleteListRotes} ) {
                 variant="text"
                 style={{color: "#0A2168", position: "absolute", top: "-11px", right: "-15px" }} // Agregar posicion absoluta y ajustar el top y right
                 onClick={() => deleteListRotes(task.id)}
-              >
-                X
-              </Button>
+              > X </Button>
             </div>
           ))}
         </div>

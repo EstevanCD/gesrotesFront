@@ -29,14 +29,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Popup from "../Modals/Popup";
 
 function ClassManageGroups() {
-  // visibilidad popup
-  const [showPopup, setShowPopup] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
   const [form1, setForm1] = useState("");
   const handleChangeForm1 = (event) => {
     setForm1(event.target.value);
@@ -77,10 +69,16 @@ function ClassManageGroups() {
     loadGroups1();
   }, []);
 
-  // Eliminar grupo
+  // visibilidad popup
+  const [showPopup, setShowPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   const handleEliminar = (id) => {
-    const url =
-      environment.url + "/api/grupos/eliminar?id_grupo=" + id;
+    const url = environment.url + "/api/grupos/eliminar?id_grupo=" + id;
     fetch(url, {
       method: "DELETE",
     })
@@ -214,7 +212,7 @@ function ClassManageGroups() {
                         </Box>
                       </TableCell>
                       <TableCell align="center">
-                        <DeleteIcon onClick={() => handleEliminar(row.id)}/> 
+                        <DeleteIcon onClick={() => handleEliminar(item.id)} />
                       </TableCell>
                     </TableRow>
                   ))}

@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 
-const AlertWindow = () => {
+const AlertWindow = (props) => {
   const [open, setOpen] = useState(true);
-
-
-
+  console.log("entrando a modal alerta")
+  console.log(props.onClose)
   const handleClose = () => {
     setOpen(false);
+    onClose();
   };
 
   return (
     <div>
-
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Alerta</DialogTitle>
+        <DialogTitle>OJO</DialogTitle>
         <DialogContent>
-          <DialogContentText>¡Esto es una alerta!</DialogContentText>
+          <DialogContentText>No hay documentos relacionados</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary" autoFocus>

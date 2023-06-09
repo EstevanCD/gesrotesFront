@@ -12,6 +12,7 @@ import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import avatarimg from "../../assets/salud.png";
 
 const pages = ["Verificar Estudiantes", "Verificar Docente", "Asignaturas"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -25,8 +26,7 @@ const handleOpenUserMenu = (event) => {
 };
 
 export default function CustomSeparator() {
-  //TODO: AGREGAR RUTAS AL BREADCRUMB
-  //: enlazar avatar
+  //TODO: enlazar avatar de usuario
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -61,7 +61,7 @@ export default function CustomSeparator() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="src\assets\salud.png" />
+                <Avatar alt="Remy Sharp" src = {avatarimg} />
               </IconButton>
             </Tooltip>
             <Menu
