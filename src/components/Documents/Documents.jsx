@@ -19,7 +19,7 @@ import AlertWindow from "./AlertaEmergente";
 function Documents() {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const url = environment.url + "/api/documentos/listado?id_escenario=2";
+  const url = environment.url + "/api/documentos/listado?id_escenario=1";
   const [filterOption, setFilterOption] = useState("Todos");
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");

@@ -3,6 +3,7 @@ import style from "./forms.module.css";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { environment } from "../../hooks/environment";
+import Popup from "./Popup";
 
 function showAlert(message, type) {
   const alertContainer = document.getElementById("alertContainer");
@@ -70,6 +71,31 @@ export default function () {
   let [hourF, setHourF] = useState([]);
   const saveHourF = (event) => {
     setHourF(event.target.value);
+  };
+
+  // visibilidad popup
+  const [showPopup, setShowPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  // Eliminar horario
+  const handleEliminar = (id) => {
+    const url =
+      environment.url + "/api/horarios/eliminar?id_horariosmodulos=" + id;
+    fetch(url, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        console.log(response);
+        setSuccessMessage("Horario eliminado con éxito");
+        setShowPopup(true);
+      })
+      .catch((error) => {
+        // Manejar errores de red u otros errores
+      });
   };
 
   useEffect(() => {
@@ -153,7 +179,7 @@ export default function () {
   };
 
   //WALKER
-  
+
   useEffect(() => {
     const url =
       environment.url + "/api/horarios/listado?id_docente=1&id_asignatura=1";
@@ -358,14 +384,25 @@ export default function () {
             <div className={style.row} key={item.id}>
               <span className={style.tableBody}>{item.nombreModulo}</span>
               <span className={style.tableBody}>{item.dia}</span>
-              <span className={style.tableBody}>{item.horaInicio + "-" + item.horaFin}</span>
+              <span className={style.tableBody}>
+                {item.horaInicio + "-" + item.horaFin}
+              </span>
               <span className={style.tableBody}>{item.nombreEscenario}</span>
-              <span className={style.tableBody}>{item.descripcionServicio}</span>
-              <span className={style.tableBody}><DeleteIcon/></span>
+              <span className={style.tableBody}>
+                {item.descripcionServicio}
+              </span>
+              <span className={style.tableBody}>
+                <IconButton onClick={() => handleEliminar(item.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </span>
             </div>
           ))}
         </div>
       </div>
+      {showPopup && (
+        <Popup message={successMessage} onClose={handleClosePopup} />
+      )}
     </div>
   );
 }
