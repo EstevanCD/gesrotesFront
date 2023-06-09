@@ -26,12 +26,6 @@ const Routine = () => {
     setOpen(true);
   };
 
-  const handleOpenDocument = () => {
-    setModalContent("NewDocument");
-    setModalTitle("Agregar Documento");
-    setOpen(true);
-  };
-
   const handleOpenRote = () => {
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
@@ -51,15 +45,16 @@ const Routine = () => {
   const [cicles, setCicles] = useState([]);
 
   useEffect(() => {
-    const url = environment.url + "/api/ciclos/listar/?id_asignatura="+"1";
+    const url = environment.url + "/api/ciclos/listar/?id_asignatura=" + "1";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
         const simplifiedData = data.ciclos.map((cicle) => {
-          return [
-            `${cicle.inicio.mes}. ${cicle.inicio.dia}, ${cicle.inicio.anyo}`,
-            `${cicle.fin.mes}. ${cicle.fin.dia}, ${cicle.fin.anyo}`,
-          ];
+          return {
+            id: cicle.id,
+            inicio: cicle.inicio,
+            fin: cicle.fin
+          };
         });
         setCicles(simplifiedData);
       });
@@ -100,9 +95,9 @@ const Routine = () => {
                   <div className={style.cardCommon}>
                     <div className={style.containerDates}>
                       <p>
-                        {fecha[0]}
+                        {fecha.inicio}
                         <br />
-                        {fecha[1]}
+                        {fecha.fin}
                       </p>
                     </div>
                   </div>
