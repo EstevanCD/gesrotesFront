@@ -22,6 +22,7 @@ grid-template-columns: 1fr 1fr;
         width: 100px;
         height: 40px;
         color: white;
+        outline: none;
     }
 }
 ${useResposiveTo('lg')}{
