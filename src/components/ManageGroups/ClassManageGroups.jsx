@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -28,6 +28,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import Popup from "../Modals/Popup";
 import { AsignaturaContext } from "../../context/AsignaturaContext";
+import { environment } from "../../hooks/environment";
 
 function ClassManageGroups() {
   const { idAsignatura } = useContext(AsignaturaContext);
@@ -79,6 +80,7 @@ function ClassManageGroups() {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+  console.log("Id_asignatura" + idAsignatura);
 
   const handleEliminar = (id) => {
     const url = environment.url + "/api/grupos/eliminar?id_grupo=" + id;
@@ -92,6 +94,31 @@ function ClassManageGroups() {
       })
       .catch((error) => {
         // Manejar errores de red u otros errores
+      });
+  };
+
+  const handleSubmitCreateGroup = (event) => {
+    event.preventDefault();
+    const url =
+      environment.url + "/api/grupos/crear?"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
+    fetch(
+      url +
+        new URLSearchParams({
+          id_asignatura: idAsignatura
+        }),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
 
@@ -182,9 +209,18 @@ function ClassManageGroups() {
         <br></br>
         <Grid container spacing={10} justifyContent="center">
           <Grid item xs={12} md={12}>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={handleSubmitCreateGroup}
+            >
+              Agregar Grupo
+            </Button>
             <Typography textAlign="center">
               Lista de Grupos con Estudiantes
             </Typography>
+
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>

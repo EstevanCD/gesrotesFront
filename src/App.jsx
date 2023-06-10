@@ -9,15 +9,17 @@ import { AsignaturaContextProvider } from "./context/AsignaturaContext";
 function App() {
   return (
     <>
-      {/* <EditDocument />    */}
-      <Routes>
-        {<Route path="/TabComponent/:id" element={<TabComponents />} />}
-        <AsignaturaContextProvider>
+      <AsignaturaContextProvider>
+        {/* <EditDocument />    */}
+        <Routes>
+          {<Route path="/TabComponent/:id" element={<TabComponents />} />}
+
           <Route index element={<Subjects />} />
-        </AsignaturaContextProvider>
-        {/* <Route index element={<Documents />} /> */}
-        <Route path="*" element={<Navigate replace to="/" />} />
-      </Routes>
+
+          {/* <Route index element={<Documents />} /> */}
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
+      </AsignaturaContextProvider>
     </>
   );
 }

@@ -11,7 +11,7 @@ import { environment } from "../../hooks/environment";
 import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 function Subjects() {
-  const setIdAsignatura = useContext(AsignaturaContext);
+  const {setIdAsignatura} = useContext(AsignaturaContext);
 
   let params = useParams();
   console.log(params);
