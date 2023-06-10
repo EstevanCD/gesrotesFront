@@ -27,8 +27,11 @@ import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import Popup from "../Modals/Popup";
+import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 function ClassManageGroups() {
+  const { idAsignatura } = useContext(AsignaturaContext);
+
   const [form1, setForm1] = useState("");
   const handleChangeForm1 = (event) => {
     setForm1(event.target.value);
