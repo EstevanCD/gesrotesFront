@@ -16,6 +16,12 @@ import Modals from "../Modals/Modals";
 import { Alert } from "@mui/material";
 import AlertWindow from "./AlertaEmergente";
 import { Button, CircularProgress } from '@mui/material';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 function Documents() {
   const [documentos, setDocumentos] = useState([]);
@@ -148,133 +154,172 @@ function Documents() {
     }
   };
 
-  const handleBotonClick = async () => {
-    setDescargando(true);
+  const handleEdit = (documento) => {
+    setDocumentData(documento);
+    handleOpenEditDocument();
+
+    //todo llamar modal y pasarle prop (documento)
+  };
+
+  //FUNCION PARA ELIMINAR DOCUMENTOS
+  const [openEliminar, setOpenEliminar] = useState(false);
+
+  const handleDelete = async (idDocumento) => {
     try {
-      await handleDownload(idDocumento, extension);
+      const responseDocument = await fetch(
+        `http://132.226.60.71:8080/api/documentos/eliminar/?id_documento=${idDocumento}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (responseDocument.status != 500) {
+        console.log("Documento eliminado")
+        setDocumentos(documents.filter(documents => documents.id_documento != idDocumento))
+      }
+
+      if (responseDocument.status == 500) {
+        console.log("Documento con problema")
+        setAlert(responseDocument.status);
+        console.log(alert)
+        handleOpenAlert();
+      }
+      setOpenEliminar(false);
+
     } catch (error) {
-      console.log(error);
-    } finally {
-      setDescargando(false);
+      console.log(error)
     }
-  }
-    //CONFIGURACION DE ALERTA PARA CUANDO NO SE ECNUENTREN DOCUMENTOS RELACIONADOS
+  };
 
+  const handleClickOpen = () => {
+    setOpenEliminar(true);
+  };
 
+  const handleCloseEliminar = () => {
+    setOpenEliminar(false);
+  };
 
-    const handleEdit = (documento) => {
-      setDocumentData(documento);
-      handleOpenEditDocument();
+  const handleOpenDocument = () => {
+    setModalContent("NewDocument");
+    setModalTitle("Agregar Documento");
+    setOpen(true);
+  };
 
-      //todo llamar modal y pasarle prop (documento)
-    };
+  const handleOpenEditDocument = () => {
+    setModalContent("EditDocument");
+    setModalTitle("Editar Documento");
+    setOpen(true);
+  };
 
-    const handleDelete = (documento) => {
-      //codigo para eliminar el documento
-    };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-    const handleOpenDocument = () => {
-      setModalContent("NewDocument");
-      setModalTitle("Agregar Documento");
-      setOpen(true);
-    };
+  const [documentData, setDocumentData] = useState("hola");
 
-    const handleOpenEditDocument = () => {
-      setModalContent("EditDocument");
-      setModalTitle("Editar Documento");
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-    const [documentData, setDocumentData] = useState("hola");
-
-    return (
-      <div className={style.containerDocuments}>
-        <Modals
-          open={open}
-          handleClose={handleClose}
-          modalContent={modalContent}
-          title={modalTitle}
-          documentData={documentData}
-        />
-        <div className={style.containerSearchBar}>
-          <div className={style.buttonNewDocument}>
-            <button className={style.buttonND} onClick={handleOpenDocument}>
-              {" "}
-              <i>
-                <AddIcon style={{ fontSize: "15px" }} />
-              </i>{" "}
-              Nuevo Documento
-            </button>
-          </div>
-          <div className={style.searchBar}>
-            <div className={style.search}>
-              <SearchIcon />
-              <input
-                type="text"
-                placeholder="Buscar documentos hospital"
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-              />
-            </div>
-          </div>
-          <div className={style.filterDoc}>
+  return (
+    <div className={style.containerDocuments}>
+      <Modals
+        open={open}
+        handleClose={handleClose}
+        modalContent={modalContent}
+        title={modalTitle}
+        documentData={documentData}
+      />
+      <div className={style.containerSearchBar}>
+        <div className={style.buttonNewDocument}>
+          <button className={style.buttonND} onClick={handleOpenDocument}>
             {" "}
-            {/* filtro */}
-            <p>Filtrar por:</p>
-            <select
-              className={style.filterSelect}
-              value={filterOption}
-              onChange={(event) => setFilterOption(event.target.value)}
-            >
-              <option value="Todos">Todos</option>
-              <option value="Expirados">Expirados</option>
-              <option value="No Expirados">No Expirados</option>
-            </select>
+            <i>
+              <AddIcon style={{ fontSize: "15px" }} />
+            </i>{" "}
+            Nuevo Documento
+          </button>
+        </div>
+        <div className={style.searchBar}>
+          <div className={style.search}>
+            <SearchIcon />
+            <input
+              type="text"
+              placeholder="Buscar documentos hospital"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
           </div>
         </div>
-        <div className={style.containerListDocs}>
-          <ul>
-            {filteredDocuments.length > 0 ? (
-              filteredDocuments.map((documento) => (
-                <li key={documento.id_documento}>
-                  <div className={style.nameDoc}>
-                    {getIconByExtension(documento.extension)}
-                    {documento.nombre_archivo}
-                  </div>
-                  <div className={style.dateDoc}>{formatDate(documento.fecha_vigencia)}</div>
-                  <div className={style.buttonsDoc}>
-                    <button disabled={descargando} onClick={() => {handleDownload(documento.id_documento, documento.extension) }}>
-                      <ArrowCircleDownRoundedIcon style={{ fontSize: "30px", color: "#0a2167" }} />
-                    </button>
-                    <button onClick={() => handleEdit(documento)}>
-                      <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
-                    </button>
-                    <button onClick={() => handleDelete(documento)}>
-                      <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
-                    </button>
-                  </div>
-                </li>
-              ))
-            ) : (
-              <div className={style.noFound}>
-                <BlockIcon />
-                <p>NO FOUND</p>
-              </div>
-            )}
-            {alert == 400 ?
-              <>
-                <AlertWindow></AlertWindow>
-              </>
-              : <></>
-            }
-          </ul>
+        <div className={style.filterDoc}>
+          {" "}
+          {/* filtro */}
+          <p>Filtrar por:</p>
+          <select
+            className={style.filterSelect}
+            value={filterOption}
+            onChange={(event) => setFilterOption(event.target.value)}
+          >
+            <option value="Todos">Todos</option>
+            <option value="Expirados">Expirados</option>
+            <option value="No Expirados">No Expirados</option>
+          </select>
         </div>
       </div>
-    );
-  }
-
-  export default Documents;
+      <div className={style.containerListDocs}>
+        <ul>
+          {filteredDocuments.length > 0 ? (
+            filteredDocuments.map((documento) => (
+              <li key={documento.id_documento}>
+                <div className={style.nameDoc}>
+                  {getIconByExtension(documento.extension)}
+                  {documento.nombre_archivo}
+                </div>
+                <div className={style.dateDoc}>{formatDate(documento.fecha_vigencia)}</div>
+                <div className={style.buttonsDoc}>
+                  <button disabled={descargando} onClick={() => { handleDownload(documento.id_documento, documento.extension) }}>
+                    <ArrowCircleDownRoundedIcon style={{ fontSize: "30px", color: "#0a2167" }} />
+                  </button>
+                  <button onClick={() => handleEdit(documento)}>
+                    <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
+                  </button>
+                  <button onClick={handleClickOpen}>
+                    <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
+                  </button>
+                </div>
+                <Dialog open={openEliminar} onClose={handleCloseEliminar} 
+                BackdropProps={{
+                  style: {
+                    backgroundColor: 'transparent',
+                    backdropFilter: 'blur(5px)',
+                  },
+                }}>
+                  <DialogTitle>Confirmar eliminación</DialogTitle>
+                  <DialogContent>
+                    <p>¿Estás seguro de que deseas eliminar este documento?</p>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseEliminar} color="primary">
+                      Cancelar
+                    </Button>
+                    <Button onClick={() => handleDelete(documento.id_documento)} color="primary">
+                      Eliminar
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </li>
+            ))
+          ) : (
+            <div className={style.noFound}>
+              <BlockIcon />
+              <p>NO FOUND</p>
+            </div>
+          )}
+          {alert == 400 ?
+            <>
+              <AlertWindow></AlertWindow>
+            </>
+            : <></>
+          }
+        </ul>
+      </div>
+    </div>
+  );
+}
+export default Documents;
