@@ -20,13 +20,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import { useParams } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 
-function Documents() {
+function Documents({scenarioId}) {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const url = environment.url + "/api/documentos/listado?id_escenario=1";
+  const url = environment.url + `/api/documentos/listado?id_escenario=${scenarioId}`;
   const [filterOption, setFilterOption] = useState("Todos");
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");

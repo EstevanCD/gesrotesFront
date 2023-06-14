@@ -3,13 +3,20 @@ import { useEffect, useState } from "react";
 import style from "../Subject/Subject.module.css";
 import BlockIcon from "@material-ui/icons/Block";
 import Typography from "@mui/material/Typography";
+import { environment } from "../../hooks/environment";
 
 function Scenario({ handleManageDocuments }) {
   const [scenario, setScenario] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const handleManageDocumentsClick = (scenarioId) => {
+    console.log("id escenario", scenarioId);
+    handleManageDocuments(scenarioId);
+  };
+
+  const url = environment.url + "/api/escenarios/estado_documentos"
   useEffect(() => {
-    fetch("http://132.226.60.71:8080/api/escenarios/estado_documentos", {
+    fetch(url, {
       method: "GET",
     })
       .then((response) => response.json())
@@ -55,7 +62,7 @@ function Scenario({ handleManageDocuments }) {
                 <div className={style.buttons}>
                   <button
                     className={style.common}
-                    onClick={handleManageDocuments}
+                    onClick={() => handleManageDocumentsClick(item.scenario_codigo)}
                   >
                     GESTIONAR DOCUMENTOS
                   </button>

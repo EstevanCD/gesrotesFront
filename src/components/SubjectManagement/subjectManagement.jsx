@@ -11,6 +11,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import BlockIcon from "@material-ui/icons/Block";
 import style from "../Documents/Documents.module.css";
+import { environment } from "../../hooks/environment";
 
 
 function SubjectManagement() {
@@ -20,8 +21,9 @@ function SubjectManagement() {
   const [teachers, setTeachers] = useState([]);
   const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
+    const url = environment.url + `/api/docentes/listado/?id_asignatura=${asignatura.id}`;
     const responseTeachers = await fetch(
-      `http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=${asignatura.id}`,
+      url,
       {
         method: "GET",
       }
