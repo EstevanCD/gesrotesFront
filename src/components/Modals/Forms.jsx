@@ -178,7 +178,7 @@ export default function ({id}) {
     })
       .then((response) => {
         console.log(response);
-        setSuccessMessage("Horario Creado con éxito");
+        setSuccessMessage("Nombre creado Con Exito");
         setShowPopup(true);
         setNameModule("");
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
@@ -247,7 +247,9 @@ export default function ({id}) {
       .then((response) => {
         console.log(response);
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
-        showAlert("¡Horario agregado correctamente!", "success");
+        // showAlert("¡Horario agregado correctamente!", "success");
+        setSuccessMessage("Horario Creado con éxito");
+        setShowPopup(true);
         resetForm();
       })
       .catch((error) => {
