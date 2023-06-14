@@ -38,8 +38,10 @@ function SubjectManagement() {
   }, []);
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
+  const [idDocente, setIdDocente] = useState("");
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
+    setIdDocente(id);
     setModalContent("Forms");
     setOpen(true);
   };
@@ -47,9 +49,11 @@ function SubjectManagement() {
   const handleClose = () => {
     setOpen(false);
   };
+  
+
   return (
     <>
-      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
+      <Modals id={idDocente}  open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
       <Box
         sx={{
           height: 10,
@@ -123,7 +127,7 @@ function SubjectManagement() {
                       style={{ backgroundColor: "#04048b" }}
                       size="small"
                       variant="contained"
-                      onClick={handleOpen}
+                      onClick={()=>handleOpen(teacher.id)}
                     >
                       GESTIONAR HORARIOS
                     </Button>

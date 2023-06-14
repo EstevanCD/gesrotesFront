@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import style from "./forms.module.css";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { environment } from "../../hooks/environment";
 import Popup from "./Popup";
+import { AsignaturaContext } from "../../context/AsignaturaContext";
+
 
 function showAlert(message, type) {
   const alertContainer = document.getElementById("alertContainer");
@@ -24,7 +26,7 @@ function showAlert(message, type) {
   }, timeout);
 }
 
-export default function () {
+export default function ({id}) {
   const Icons = () => (
     <IconButton style={{ color: "red" }}>
       <DeleteIcon />
@@ -52,12 +54,16 @@ export default function () {
     setSelectedEscenaryId(event.target.value);
   };
   const [selectedServiceId, setSelectedServiceId] = useState("");
+  const [idModulo, setIdModulo] = useState("");
   const handleServiceChange = (event) => {
     setSelectedServiceId(event.target.value);
   };
 
   const saveName = (event) => {
     setName(event.target.value);
+    let item = nameModules.filter(modulo=>modulo.nombre==event.target.value)
+    setIdModulo(item[0].id);
+    console.log("VALOR DE ITEM", item)
     setNameActive(true);
   };
   const [day, setDay] = useState([]);
@@ -102,7 +108,7 @@ export default function () {
     setAlertMessage("* Hay un horario sin configurar ");
     const url =
       environment.url +
-      "/api/modulos/sin_horarios?id_docente=1&id_asignatura=1";
+      `/api/modulos/sin_horarios?id_docente=${id}&id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -155,10 +161,12 @@ export default function () {
   const handleInputNameChange = (event) => {
     setNameModule(event.target.value);
   };
-
+  const { idAsignatura } = useContext(AsignaturaContext);
+  
   const handleSubmitCreateName = (event) => {
     event.preventDefault();
-    const url = environment.url + "/api/modulos/crear/" + "1" + "/" + "1";
+    const url = environment.url + `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
+    console.log("ID",id,"IdASIGNATURA",idAsignatura);
     fetch(url, {
       method: "POST",
       headers: {
@@ -170,6 +178,9 @@ export default function () {
     })
       .then((response) => {
         console.log(response);
+        setSuccessMessage("Horario Creado con éxito");
+        setShowPopup(true);
+        setNameModule("");
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
       })
       .catch((error) => {
@@ -182,7 +193,7 @@ export default function () {
 
   useEffect(() => {
     const url =
-      environment.url + "/api/horarios/listado?id_docente=1&id_asignatura=1";
+      environment.url + `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -218,7 +229,7 @@ export default function () {
     hourF = Number(hoursf);
     console.log(day, hourI, hourF, "Datos");
     const url =
-      environment.url + "/api/horarios/configurar_horario?id_modulo=1";
+      environment.url + `/api/horarios/configurar_horario?id_modulo=${idModulo}`;
     fetch(url, {
       method: "POST",
       // mode: 'cors',
