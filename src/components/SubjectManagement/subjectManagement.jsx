@@ -11,6 +11,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import BlockIcon from "@material-ui/icons/Block";
 import style from "../Documents/Documents.module.css";
+import { environment } from "../../hooks/environment";
 
 
 function SubjectManagement() {
@@ -20,8 +21,9 @@ function SubjectManagement() {
   const [teachers, setTeachers] = useState([]);
   const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
+    const url = environment.url + `/api/docentes/listado/?id_asignatura=${asignatura.id}`;
     const responseTeachers = await fetch(
-      `http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=${asignatura.id}`,
+      url,
       {
         method: "GET",
       }
@@ -36,8 +38,10 @@ function SubjectManagement() {
   }, []);
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
+  const [idDocente, setIdDocente] = useState("");
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
+    setIdDocente(id);
     setModalContent("Forms");
     setOpen(true);
   };
@@ -45,9 +49,11 @@ function SubjectManagement() {
   const handleClose = () => {
     setOpen(false);
   };
+  
+
   return (
     <>
-      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
+      <Modals id={idDocente}  open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
       <Box
         sx={{
           height: 10,
@@ -121,7 +127,7 @@ function SubjectManagement() {
                       style={{ backgroundColor: "#04048b" }}
                       size="small"
                       variant="contained"
-                      onClick={handleOpen}
+                      onClick={()=>handleOpen(teacher.id)}
                     >
                       GESTIONAR HORARIOS
                     </Button>

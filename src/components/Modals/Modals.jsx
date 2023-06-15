@@ -13,10 +13,10 @@ import ClassManageGroups from "../ManageGroups/ClassManageGroups";
 import NewDocument from "./NewDocument";
 import EditDocument from './EditDocument'
 
-export default function Modals({ open, handleClose, modalContent, title, documentData}) {
+export default function Modals({ id, open, handleClose, modalContent, title, documentData}) {
 
   const content = {
-    "Forms": <Forms />,
+    "Forms": <Forms id={id} />,
     "CycleCreation": <CycleCreation onClose={handleClose} />,
     "CreateRote": <CreateRote onClose={handleClose} />,
     "ClassManageGroups": <ClassManageGroups />,
