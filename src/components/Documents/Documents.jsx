@@ -165,7 +165,6 @@ function Documents() {
     const handleEdit = (documento) => {
       setDocumentData(documento);
       handleOpenEditDocument();
-
       //todo llamar modal y pasarle prop (documento)
     };
 
