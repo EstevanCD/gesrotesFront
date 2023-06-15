@@ -1,0 +1,120 @@
+.noFound {
+    color: #888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem
+}
+
+.containerSearchBar {
+    display: flex;
+    margin: 0 1.3em;
+    width: 98%;
+    color: #888;
+    align-items: center;
+}
+
+.buttonNewDocument {
+    width: 17%;
+    text-align: left;
+}
+
+.buttonND {
+    margin: 15px 1vw;
+    background-color: rgb(4, 4, 139);
+    color: aliceblue;
+    flex: auto;
+    height: 35px;
+    font-size: 0.8em;
+}
+
+.searchBar {
+    width: 66%;
+    text-align: center;
+}
+
+.search {
+    display: flex;
+    width: 35%;
+    border: 1px solid #888;
+    border-radius: 8px;
+    margin: auto;
+    align-items: center;
+}
+
+.search input {
+    border: none;
+    width: 75%;
+    padding-left: 2vw;
+    background-color: #F7F7F7;
+}
+
+.search input:focus,
+.search input:active {
+    border: none;
+    outline: none;
+}
+
+.search:focus-within {
+    box-shadow: 0 1px 6px 0 #171717;
+    border-color: rgba(223, 225, 229, 0);
+}
+
+.filterDoc {
+    display: inherit;
+    width: 17%;
+    text-align: right;
+    align-items: center;
+}
+
+.filterSelect {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #000;
+    background-color: transparent;
+    color: #494949;
+    height: 30px;
+    width: 100px;
+}
+
+.filterDoc p {
+    color: #000;
+}
+
+.containerListDocs {
+    overflow-y: auto;
+    height: 60vh;
+    padding-bottom: 1vh;
+    margin: 0 2vw;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.nameDoc{
+    width: 60%;
+}
+
+.dateDoc{
+    width: 30%;
+}
+
+.buttonsDoc {
+    width: 10%;
+}
+
+.buttonsDoc button{
+    background-color: transparent;
+    padding: 0px;
+}

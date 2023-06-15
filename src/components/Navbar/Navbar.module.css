@@ -43,14 +43,24 @@
     flex-direction: column;
     height: 100%;
     align-items: flex-start;
+    outline: none;
+    text-decoration: none;
     list-style-type: none;
+    margin-left: 20px;
 }
 .containerli{
-    text-decoration: none;
     padding: 1em 0 1em 0;
     align-items: center;
     justify-content: center;
     display: flex;
+    border-radius:10px;
+    text-decoration: none;
+    outline:none;
+}
+
+.link{
+    text-decoration: none;
+    outline: none;
 }
 
 

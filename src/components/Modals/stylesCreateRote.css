@@ -1,0 +1,41 @@
+/*Styles of Create Rote*/
+.container-selectTeachers {
+  width: 40%;
+  margin-left: 20px;
+  margin-right: 10px;
+  border-radius: 25px;
+}
+
+.container-selectSchedule {
+  width: 40%;
+  margin-left: 10px;
+  margin-right: 20px;
+  border-radius: 25px;
+}
+
+/*Styles of ListRote*/
+
+.container-flex {
+  display: flex;
+}
+
+.container-flex-columns {
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+  grid-gap: 20px;
+  gap: 20px;
+}
+
+.container-cards {
+  height: 15px;
+  width: 95%;
+  /*background: white;*/
+  border: 1px solid #0a2168;
+  border-radius: 25px;
+  font-size: 12px;
+  color: #0a2168;
+  box-shadow: 5px 5px 5px #0a2168;
+  position: relative;
+  text-align: left;
+  padding-left: 20px;
+}

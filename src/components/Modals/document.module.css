@@ -1,0 +1,83 @@
+.numberRounded {
+  background-color: #0a2167;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  padding: 6px 10px;
+  margin-right: 12px;
+  font-size: medium;
+}
+
+.selectContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectWrapper{
+  flex: 1;
+  margin-right: 110px
+}
+
+.customSelect {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.fieldPriority {
+  color: red;
+}
+
+.buttonStyle {
+  background-color: #0a2167;
+  text-align: center;
+  color: white;
+  width: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: bold;
+  font-size: 11px;
+  border-radius: 20px;
+  height: 30px;
+  text-transform: uppercase;
+}
+
+
+.fileUploadContainer {
+  display: inline-block;
+  border: 2px dashed #ccc;
+  background-color: #f2f2f2; /* Color gris total */
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center; /* Centrar el texto */
+}
+
+.fileUploadLabel {
+  font-size: 14px;
+  color: #999;
+  display: block;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.fileUpload {
+  display: none;
+}
+
+.uploadButton {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.uploadButton:hover {
+  background-color: #0056b3;
+}

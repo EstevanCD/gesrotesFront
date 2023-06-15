@@ -1,17 +1,25 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Subjects from "./components/Subject";
 import TabComponents from "./components/TabComponent/TabComponent";
-import CycleCreations from "./components/Modals/CycleCreation";
+import Documents from "./components/Documents/Documents";
+import EditDocument from "./components/Modals/EditDocument";
+
+import { AsignaturaContextProvider } from "./context/AsignaturaContext";
 
 function App() {
   return (
     <>
-      <Routes>
-        {<Route path="/TabComponent/:id" element={<TabComponents />} />}
-        {/* <Route index element={<Subjects />}/> */}
-        <Route index element={<Subjects />} />
-        <Route path="*" element={<Navigate replace to="/" />} />
-      </Routes>
+      <AsignaturaContextProvider>
+        {/* <EditDocument />    */}
+        <Routes>
+          {<Route path="/TabComponent/:id" element={<TabComponents />} />}
+
+          <Route index element={<Subjects />} />
+
+          {/* <Route index element={<Documents />} /> */}
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
+      </AsignaturaContextProvider>
     </>
   );
 }

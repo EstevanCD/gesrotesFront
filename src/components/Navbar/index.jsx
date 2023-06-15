@@ -5,6 +5,7 @@ import style from "./Navbar.module.css";
 import Typography from "@material-ui/core/Typography";
 
 import VerifiedIcon from "@material-ui/icons/VerifiedUser";
+import logo from "../../assets/Logo2.png";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
 import ChecklistIcon from '@material-ui/icons/PlaylistAddCheck';
 import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
@@ -12,11 +13,14 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import {  Link } from "react-router-dom";
+
+
 function Navbar() {
   const optionsMenu = [
-    <><ChecklistIcon/> Verificar estudiantes</>,
-    <><HowToRegIcon/> Verificar Docentes</>,
-    <><MenuBookIcon/> Asignaturas</>,
+    <><ChecklistIcon/><Link to="/" className={style.link}>Verificar estudiantes</Link></>,
+    <><HowToRegIcon/> <Link to="/" style={{ textDecoration: "none", outline:"none" }}>Verificar Docentes</Link></>,
+    <><MenuBookIcon/> <Link to="/subjects" className={style.link}>Asignaturas</Link></>,
   ];
 
   const optionsProfile = [
@@ -30,7 +34,7 @@ function Navbar() {
     <div className={style.container}>
       <div className={style.containernav}>
         <div className={style.logo}>
-          <VerifiedIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+        <img className="logo" src={logo} style={{height:60, width:60}}/>
           <Typography
             variant="h6"
             noWrap
@@ -51,11 +55,11 @@ function Navbar() {
         <div className={style.items}>
           GESTIÓN
           <ul>
-            <h5>GESTIÓN</h5>
+            <h4>GESTIÓN</h4>
             {optionsMenu.map((item) => {
               return <li className={style.containerli}>{item}</li>;
             })}
-            <h5>MI PERFIL</h5>
+            <h4>MI PERFIL</h4>
             {optionsProfile.map((item) => {
               return <li className={style.containerli}>{item}</li>;
             })}

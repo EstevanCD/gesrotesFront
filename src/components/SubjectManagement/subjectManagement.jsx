@@ -5,23 +5,31 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Alert } from "@mui/material";
 import Modals from "../Modals/Modals";
-
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import BlockIcon from "@material-ui/icons/Block";
+import style from "../Documents/Documents.module.css";
+
 
 function SubjectManagement() {
+  // Utiliza los datos como desees
+  let asignatura = useParams();
+  console.log(asignatura.id);
   const [teachers, setTeachers] = useState([]);
+  const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
     const responseTeachers = await fetch(
-      `https://rickandmortyapi.com/api/character`,
+      `http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=${asignatura.id}`,
       {
         method: "GET",
       }
     );
     const dataTeachers = await responseTeachers.json();
-    console.log(dataTeachers.results[1]);
-    setTeachers(dataTeachers.results);
+    console.log(dataTeachers.info);
+    setTeachers(dataTeachers.docentes);
+    setTeachersInfo(dataTeachers.info);
   };
   useEffect(() => {
     loadTeachers();
@@ -39,12 +47,22 @@ function SubjectManagement() {
   };
   return (
     <>
-      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS"/>
+      <Modals open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
       <Box
         sx={{
           height: 10,
         }}
       >
+        <Typography
+          gutterBottom
+          variant="subtitle2"
+          component="div"
+          color="#960D0D"
+          textAlign="left"
+        >
+          {teachersInfo} *
+        </Typography>
+        <br></br>
         <Grid
           container
           direction="row"
@@ -52,8 +70,11 @@ function SubjectManagement() {
           justifyContent="center"
           columnSpacing={2}
         >
-          {teachers == null ? (
-            <Alert severity="error">Error al cargar los datos</Alert>
+          {teachers== undefined? (
+            <div className={style.noFound}>
+              <BlockIcon />
+              <p>NO FOUND</p>
+            </div>
           ) : (
             teachers.map((teacher) => (
               <Grid item md={3} sm={6} xs={12}>
@@ -66,8 +87,6 @@ function SubjectManagement() {
                       border: 1,
                       margin: "auto",
                     }}
-                    image={teacher.image}
-                    title="green iguana"
                   />
                   <CardContent>
                     <Typography
@@ -76,18 +95,36 @@ function SubjectManagement() {
                       component="div"
                       textAlign="center"
                     >
-                      {teacher.name}
+                      {teacher.nombre}
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      color="#960D0D"
+                      textAlign="center"
+                    >
+                      {teacher.info} *
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle2"
+                      component="div"
+                      color="grey"
+                      textAlign="center"
+                    >
+                      _____________________________
                     </Typography>
                   </CardContent>
-                  <CardActions style={{ justifyContent: "center"}}>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleOpen}
-                      >
-                        GESTIONAR HORARIOS
-                      </Button>
+                  <CardActions style={{ justifyContent: "center" }}>
+                    <Button
+                      style={{ backgroundColor: "#04048b" }}
+                      size="small"
+                      variant="contained"
+                      onClick={handleOpen}
+                    >
+                      GESTIONAR HORARIOS
+                    </Button>
                   </CardActions>
                 </Card>
               </Grid>

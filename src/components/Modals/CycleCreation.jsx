@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
+import {environment} from "../../hooks/environment";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 import "./calendar.css";
@@ -20,10 +21,10 @@ export default function CycleCreation({ onClose }) {
     } else if (!fechaFin) {
       setAlertMessage('* Seleccione la fecha de fin');
     } else {
-      const url = "endpoint"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
+      const url = environment.url + "/api/ciclos/crear/" + "1"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
       const data = {
-        fechaInicio: fechaInicio.toISOString().substr(0, 10),
-        fechaFin: fechaFin.toISOString().substr(0, 10),
+        inicio: fechaInicio.toISOString().substr(0, 10),
+        fin: fechaFin.toISOString().substr(0, 10),
       };
 
       fetch(url, {
