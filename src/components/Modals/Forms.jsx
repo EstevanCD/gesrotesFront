@@ -166,6 +166,21 @@ export default function ({ id }) {
 
   const handleSubmitCreateName = (event) => {
     event.preventDefault();
+    
+    // Validar caracteres especiales y espacios en blanco
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const whitespace = /^\s+$/;
+    
+    // Verificar si el nombre del módulo contiene caracteres especiales o está en blanco
+    if (specialChars.test(nameModule) || whitespace.test(nameModule)) {
+      // Mostrar mensaje de error
+      console.error("El nombre del módulo contiene caracteres especiales o está en blanco.");
+      setSuccessMessage("Error al Agregar revise espacios en blanco o caracteres especiales ");
+      setShowPopup(true);
+      setNameModule("");
+      return; // Detener la ejecución de la función
+    }
+    
     const url =
       environment.url +
       `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
@@ -181,16 +196,16 @@ export default function ({ id }) {
     })
       .then((response) => {
         console.log(response);
-        setSuccessMessage("Nombre Agregado con Exito");
+        setSuccessMessage("Nombre Agregado con Éxito");
         setShowPopup(true);
         setNameModule("");
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
       })
       .catch((error) => {
-        console.error(error);
-        // Mostrar un mensaje de error
+       console.error(error);
       });
   };
+  
 
   //WALKER
 
