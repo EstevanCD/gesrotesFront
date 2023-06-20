@@ -22,7 +22,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { useParams } from "react-router-dom";
 
-function Documents({scenarioId}) {
+function Documents({ scenarioId }) {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const url = environment.url + `/api/documentos/listado?id_escenario=${scenarioId}`;
@@ -116,24 +116,22 @@ function Documents({scenarioId}) {
 
   const handleDownload = async (idDocumento, extension) => {
 
-    let extensionDocumento = extension.split('/');
     // Lógica para obtener los bytes del PDF y crear el Blob
     try {
-      //setIsLoading(true);
       const responseDocument = await fetch(
         `http://132.226.60.71:8080/api/documentos/descargar?id_documento=${idDocumento}`,
         {
           method: "GET",
         }
       );
-      if (responseDocument.status != 400 && extensionDocumento[1] != undefined) {
+      if (responseDocument.status != 400 && extension != undefined) {
         const dataDocument = await responseDocument.arrayBuffer();
-        const blob = new Blob([dataDocument], { type: `application/${extensionDocumento[1]}` });
+        const blob = new Blob([dataDocument], { type: `application/${extension}` });
         const url = URL.createObjectURL(blob);
         //window.open(url);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `documento.${extensionDocumento[1]}`;
+        a.download = `documento.${extension}`;
         a.click();
         URL.revokeObjectURL(url);
       }
@@ -144,7 +142,7 @@ function Documents({scenarioId}) {
         console.log(alert)
         handleOpenAlert();
       }
-      if (extensionDocumento[1] == undefined) {
+      if (extension == undefined) {
         console.log("hola undenfined")
       }
 
