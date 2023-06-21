@@ -61,10 +61,10 @@ export default function ({ id }) {
   const saveName = (event) => {
     setName(event.target.value);
     let item = nameModules.filter(
-      (modulo) => modulo.nombre == event.target.value
+      (modulo) => modulo.nombre_modulo == event.target.value
     );
     setIdModulo(item[0].id);
-    console.log("VALOR DE ITEM", item);
+    // console.log("VALOR DE ITEM", item);
     setNameActive(true);
   };
   const [day, setDay] = useState([]);
@@ -116,7 +116,7 @@ export default function ({ id }) {
         const simplifiedData = data.modulos_sin_horarios.map((modules) => {
           return {
             id: modules.id,
-            nombre: modules.nombre,
+            nombre_modulo: modules.nombre_modulo,
           };
         });
         setnameModules(simplifiedData);
@@ -166,21 +166,25 @@ export default function ({ id }) {
 
   const handleSubmitCreateName = (event) => {
     event.preventDefault();
-    
+
     // Validar caracteres especiales y espacios en blanco
     const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const whitespace = /^\s+$/;
-    
+
     // Verificar si el nombre del módulo contiene caracteres especiales o está en blanco
     if (specialChars.test(nameModule) || whitespace.test(nameModule)) {
       // Mostrar mensaje de error
-      console.error("El nombre del módulo contiene caracteres especiales o está en blanco.");
-      setSuccessMessage("Error al Agregar revise espacios en blanco o caracteres especiales ");
+      console.error(
+        "El nombre del módulo contiene caracteres especiales o está en blanco."
+      );
+      setSuccessMessage(
+        "Error al Agregar revise espacios en blanco o caracteres especiales "
+      );
       setShowPopup(true);
       setNameModule("");
       return; // Detener la ejecución de la función
     }
-    
+
     const url =
       environment.url +
       `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
@@ -202,10 +206,9 @@ export default function ({ id }) {
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
       })
       .catch((error) => {
-       console.error(error);
+        console.error(error);
       });
   };
-  
 
   //WALKER
 
@@ -313,7 +316,7 @@ export default function ({ id }) {
             <select onChange={saveName} value={name}>
               <option>Seleccione el nombre del horario</option>
               {nameModules.map((item, index) => (
-                <option>{item.nombre}</option>
+                <option>{item.nombre_modulo}</option>
               ))}
             </select>
             {alertMessage && (
