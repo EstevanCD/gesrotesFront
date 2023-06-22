@@ -20,13 +20,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import { makeStyles } from '@material-ui/core/styles';
+import { useParams } from "react-router-dom";
 
-
-function Documents() {
+function Documents({ scenarioId }) {
   const [documentos, setDocumentos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const url = environment.url + "/api/documentos/listado?id_escenario=1";
+  const url = environment.url + `/api/documentos/listado?id_escenario=${scenarioId}`;
   const [filterOption, setFilterOption] = useState("Todos");
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -117,24 +116,22 @@ function Documents() {
 
   const handleDownload = async (idDocumento, extension) => {
 
-    let extensionDocumento = extension.split('/');
     // Lógica para obtener los bytes del PDF y crear el Blob
     try {
-      //setIsLoading(true);
       const responseDocument = await fetch(
         `http://132.226.60.71:8080/api/documentos/descargar?id_documento=${idDocumento}`,
         {
           method: "GET",
         }
       );
-      if (responseDocument.status != 400 && extensionDocumento[1] != undefined) {
+      if (responseDocument.status != 400 && extension != undefined) {
         const dataDocument = await responseDocument.arrayBuffer();
-        const blob = new Blob([dataDocument], { type: `application/${extensionDocumento[1]}` });
+        const blob = new Blob([dataDocument], { type: `application/${extension}` });
         const url = URL.createObjectURL(blob);
         //window.open(url);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `documento.${extensionDocumento[1]}`;
+        a.download = `documento.${extension}`;
         a.click();
         URL.revokeObjectURL(url);
       }
@@ -145,7 +142,7 @@ function Documents() {
         console.log(alert)
         handleOpenAlert();
       }
-      if (extensionDocumento[1] == undefined) {
+      if (extension == undefined) {
         console.log("hola undenfined")
       }
 
@@ -163,35 +160,39 @@ function Documents() {
 
   //FUNCION PARA ELIMINAR DOCUMENTOS
   const [openEliminar, setOpenEliminar] = useState(false);
+  const [documentoSeleccionado, setDocumentoSeleccionado] = useState(null);
 
   const handleDelete = async (idDocumento) => {
     try {
-      const responseDocument = await fetch(
-        `http://132.226.60.71:8080/api/documentos/eliminar/?id_documento=${idDocumento}`,
-        {
-          method: "DELETE",
+      if (documentoSeleccionado) {
+        const responseDocument = await fetch(
+          `http://132.226.60.71:8080/api/documentos/eliminar/?id_documento=${documentoSeleccionado}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        if (responseDocument.status != 500) {
+          console.log("Documento eliminado")
+          setDocumentos(documents.filter(documents => documents.id_documento != documentoSeleccionado))
         }
-      );
 
-      if (responseDocument.status != 500) {
-        console.log("Documento eliminado")
-        setDocumentos(documents.filter(documents => documents.id_documento != idDocumento))
+        if (responseDocument.status == 500) {
+          console.log("Documento con problema")
+          setAlert(responseDocument.status);
+          console.log(alert)
+          handleOpenAlert();
+        }
+        setOpenEliminar(false);
+        console.log(documentoSeleccionado)
       }
-
-      if (responseDocument.status == 500) {
-        console.log("Documento con problema")
-        setAlert(responseDocument.status);
-        console.log(alert)
-        handleOpenAlert();
-      }
-      setOpenEliminar(false);
-
     } catch (error) {
       console.log(error)
     }
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (documento) => {
+    setDocumentoSeleccionado(documento);
     setOpenEliminar(true);
   };
 
@@ -279,30 +280,30 @@ function Documents() {
                   <button onClick={() => handleEdit(documento)}>
                     <EditIcon style={{ fontSize: "30px", color: "#0a2167" }} />
                   </button>
-                  <button onClick={handleClickOpen}>
+                  <button onClick={() => handleClickOpen(documento.id_documento)}>
                     <DeleteForeverIcon style={{ fontSize: "30px", color: "#980c0f" }} />
                   </button>
+                  <Dialog open={openEliminar} onClose={handleCloseEliminar}
+                    BackdropProps={{
+                      style: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(5px)',
+                      },
+                    }}>
+                    <DialogTitle>Confirmar eliminación</DialogTitle>
+                    <DialogContent>
+                      <p>¿Estás seguro de que deseas eliminar este documento?</p>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseEliminar} color="primary">
+                        Cancelar
+                      </Button>
+                      <Button onClick={() => handleDelete(documento.id_documento)} color="primary">
+                        Eliminar
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
-                <Dialog open={openEliminar} onClose={handleCloseEliminar} 
-                BackdropProps={{
-                  style: {
-                    backgroundColor: 'transparent',
-                    backdropFilter: 'blur(5px)',
-                  },
-                }}>
-                  <DialogTitle>Confirmar eliminación</DialogTitle>
-                  <DialogContent>
-                    <p>¿Estás seguro de que deseas eliminar este documento?</p>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleCloseEliminar} color="primary">
-                      Cancelar
-                    </Button>
-                    <Button onClick={() => handleDelete(documento.id_documento)} color="primary">
-                      Eliminar
-                    </Button>
-                  </DialogActions>
-                </Dialog>
               </li>
             ))
           ) : (

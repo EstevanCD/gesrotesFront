@@ -4,8 +4,14 @@ import {environment} from "../../hooks/environment";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 import "./calendar.css";
+import { Link, useParams } from "react-router-dom";
 
 export default function CycleCreation({ onClose }) {
+
+  let asignatura = useParams();
+  console.log("aqui va el id")
+  console.log(asignatura.id);
+
   const [fechaInicio, setFechaInicio] = useState(null);
   const [fechaFin, setFechaFin] = useState(null);
   const spanishWeekdays = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
@@ -21,7 +27,7 @@ export default function CycleCreation({ onClose }) {
     } else if (!fechaFin) {
       setAlertMessage('* Seleccione la fecha de fin');
     } else {
-      const url = environment.url + "/api/ciclos/crear/" + "1"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
+      const url = environment.url + `/api/ciclos/crear/?id_asignatura=${asignatura.id}`; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
       const data = {
         inicio: fechaInicio.toISOString().substr(0, 10),
         fin: fechaFin.toISOString().substr(0, 10),

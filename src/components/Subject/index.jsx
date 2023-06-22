@@ -74,7 +74,7 @@ function Subjects() {
                   </button>
                   <Link to={"/TabComponent/" + item.idAsignatura}>
                     <button
-                      onClick={handleSubjectSelected(item.idAsignatura)}
+                      onClick={()=>handleSubjectSelected(item.idAsignatura)}
                       className={style.common}
                     >
                       GESTIONAR ASIGNATURA

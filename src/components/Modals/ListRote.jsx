@@ -8,6 +8,7 @@ import "./stylesCreateRote.css";
 
 const StyledButtonDelete = styled(Button)({
   color: "white",
+  fontWeight: 'bold',
   backgroundColor: "#960D0D",
   border: "1px solid red", // Agregar un borde rojo
   marginLeft: '30px',

@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router";
 import style from "./Routine.module.css";
 import AddIcon from "@material-ui/icons/Add";
 import Modals from "../Modals/Modals";
@@ -16,6 +17,7 @@ let grupos = [
 
 const Routine = () => {
   const [selectedCycle, setSelectedCycle] = useState(null);
+  let asignatura = useParams();
   const banderaGrupo = true;
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -59,7 +61,7 @@ const Routine = () => {
   const [cicles, setCicles] = useState([]);
 
   useEffect(() => {
-    const url = environment.url + "/api/ciclos/listar/?id_asignatura=" + "1";
+    const url = environment.url + `/api/ciclos/listar/?id_asignatura=${asignatura.id}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {

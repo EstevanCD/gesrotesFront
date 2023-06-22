@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import style from "./forms.module.css";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { environment } from "../../hooks/environment";
 import Popup from "./Popup";
+import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 function showAlert(message, type) {
   const alertContainer = document.getElementById("alertContainer");
@@ -24,7 +25,7 @@ function showAlert(message, type) {
   }, timeout);
 }
 
-export default function () {
+export default function ({ id }) {
   const Icons = () => (
     <IconButton style={{ color: "red" }}>
       <DeleteIcon />
@@ -52,12 +53,18 @@ export default function () {
     setSelectedEscenaryId(event.target.value);
   };
   const [selectedServiceId, setSelectedServiceId] = useState("");
+  const [idModulo, setIdModulo] = useState("");
   const handleServiceChange = (event) => {
     setSelectedServiceId(event.target.value);
   };
 
   const saveName = (event) => {
     setName(event.target.value);
+    let item = nameModules.filter(
+      (modulo) => modulo.nombre_modulo == event.target.value
+    );
+    setIdModulo(item[0].id);
+    // console.log("VALOR DE ITEM", item);
     setNameActive(true);
   };
   const [day, setDay] = useState([]);
@@ -102,14 +109,14 @@ export default function () {
     setAlertMessage("* Hay un horario sin configurar ");
     const url =
       environment.url +
-      "/api/modulos/sin_horarios?id_docente=1&id_asignatura=1";
+      `/api/modulos/sin_horarios?id_docente=${id}&id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
         const simplifiedData = data.modulos_sin_horarios.map((modules) => {
           return {
             id: modules.id,
-            nombre: modules.nombre,
+            nombre_modulo: modules.nombre_modulo,
           };
         });
         setnameModules(simplifiedData);
@@ -155,10 +162,33 @@ export default function () {
   const handleInputNameChange = (event) => {
     setNameModule(event.target.value);
   };
+  const { idAsignatura } = useContext(AsignaturaContext);
 
   const handleSubmitCreateName = (event) => {
     event.preventDefault();
-    const url = environment.url + "/api/modulos/crear/" + "1" + "/" + "1";
+
+    // Validar caracteres especiales y espacios en blanco
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const whitespace = /^\s+$/;
+
+    // Verificar si el nombre del módulo contiene caracteres especiales o está en blanco
+    if (specialChars.test(nameModule) || whitespace.test(nameModule)) {
+      // Mostrar mensaje de error
+      console.error(
+        "El nombre del módulo contiene caracteres especiales o está en blanco."
+      );
+      setSuccessMessage(
+        "Error al Agregar revise espacios en blanco o caracteres especiales "
+      );
+      setShowPopup(true);
+      setNameModule("");
+      return; // Detener la ejecución de la función
+    }
+
+    const url =
+      environment.url +
+      `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
+    console.log("ID", id, "IdASIGNATURA", idAsignatura);
     fetch(url, {
       method: "POST",
       headers: {
@@ -170,36 +200,42 @@ export default function () {
     })
       .then((response) => {
         console.log(response);
+        setSuccessMessage("Nombre Agregado con Éxito");
+        setShowPopup(true);
+        setNameModule("");
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
       })
       .catch((error) => {
         console.error(error);
-        // Mostrar un mensaje de error
       });
   };
 
   //WALKER
 
   useEffect(() => {
-    const url =
-      environment.url + "/api/horarios/listado?id_docente=1&id_asignatura=1";
-    fetch(url, { method: "GET" })
-      .then((response) => response.json())
-      .then((data) => {
-        const simplifiedData = data.map((horary) => {
-          return {
-            codigoAsignatura: horary.codigoAsignatura,
-            descripcionAsignatura: horary.descripcionAsignatura,
-            nombreModulo: horary.nombreModulo,
-            dia: horary.dia,
-            horaInicio: horary.horaInicio,
-            horaFin: horary.horaFin,
-            nombreEscenario: horary.nombreEscenario,
-            descripcionServicio: horary.descripcionServicio,
-          };
-        });
-        setHoraries(simplifiedData);
+    const fetchdata = async () => {
+      const url =
+        environment.url +
+        `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+      const data = await fetch(url, { method: "GET" });
+      const data2 = await data.json();
+      console.log("DATAAAAAA", data2);
+      const simplifiedData = data2.map((horary) => {
+        return {
+          codigoAsignatura: horary.codigoAsignatura,
+          descripcionAsignatura: horary.descripcionAsignatura,
+          nombreModulo: horary.nombreModulo,
+          dia: horary.dia,
+          horaInicio: horary.horaInicio,
+          horaFin: horary.horaFin,
+          nombreEscenario: horary.nombreEscenario,
+          descripcionServicio: horary.descripcionServicio,
+        };
       });
+
+      setHoraries(simplifiedData);
+    };
+    fetchdata().catch(console.error);
   }, []);
 
   const handleSubmitCreateHorary = (event) => {
@@ -218,7 +254,8 @@ export default function () {
     hourF = Number(hoursf);
     console.log(day, hourI, hourF, "Datos");
     const url =
-      environment.url + "/api/horarios/configurar_horario?id_modulo=1";
+      environment.url +
+      `/api/horarios/configurar_horario?id_modulo=${idModulo}`;
     fetch(url, {
       method: "POST",
       // mode: 'cors',
@@ -236,7 +273,8 @@ export default function () {
       .then((response) => {
         console.log(response);
         // Hacer algo con la respuesta, como mostrar un mensaje de éxito
-        showAlert("¡Horario agregado correctamente!", "success");
+        setSuccessMessage("Horario Agregado con Exito");
+        setShowPopup(true);
         resetForm();
       })
       .catch((error) => {
@@ -278,7 +316,7 @@ export default function () {
             <select onChange={saveName} value={name}>
               <option>Seleccione el nombre del horario</option>
               {nameModules.map((item, index) => (
-                <option>{item.nombre}</option>
+                <option>{item.nombre_modulo}</option>
               ))}
             </select>
             {alertMessage && (
