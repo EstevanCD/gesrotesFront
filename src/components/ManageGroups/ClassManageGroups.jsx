@@ -77,6 +77,8 @@ function ClassManageGroups() {
   const [showPopup, setShowPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Eliminar grupo
+
   const handleClosePopup = () => {
     setShowPopup(false);
   };

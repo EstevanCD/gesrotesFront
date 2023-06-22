@@ -84,7 +84,7 @@ export default function () {
   // Eliminar horario
   const handleEliminar = (id) => {
     const url =
-      environment.url + "/api/horarios/eliminar?id_horariosmodulos=" + id;
+      environment.url + "/api/horarios/eliminar?id_horario=" + id;
     fetch(url, {
       method: "DELETE",
     })
