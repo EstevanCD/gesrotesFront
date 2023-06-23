@@ -91,7 +91,7 @@ export default function ({ id }) {
   // Eliminar horario
   const handleEliminar = (id) => {
     const url =
-      environment.url + "/api/horarios/eliminar?id_horario=" + id;
+      environment.url + "/api/horarios/eliminar?id_horariosmodulos=" + id;
     fetch(url, {
       method: "DELETE",
     })
@@ -166,11 +166,11 @@ export default function ({ id }) {
 
   const handleSubmitCreateName = (event) => {
     event.preventDefault();
-
+  
     // Validar caracteres especiales y espacios en blanco
     const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const whitespace = /^\s+$/;
-
+  
     // Verificar si el nombre del módulo contiene caracteres especiales o está en blanco
     if (specialChars.test(nameModule) || whitespace.test(nameModule)) {
       // Mostrar mensaje de error
@@ -184,7 +184,7 @@ export default function ({ id }) {
       setNameModule("");
       return; // Detener la ejecución de la función
     }
-
+  
     const url =
       environment.url +
       `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
@@ -198,17 +198,26 @@ export default function ({ id }) {
         nombre_modulo: nameModule,
       }),
     })
-      .then((response) => {
-        console.log(response);
+      .then((response) => response.json())
+      .then((data) => {
+        // Crear un nuevo objeto para el módulo agregado con el ID devuelto por la API
+        const newModule = {
+          id: data.id, // Utilizar el ID devuelto por la API
+          nombre_modulo: nameModule,
+        };
+  
+        // Actualizar el estado de nameModules con el nuevo módulo agregado
+        setnameModules((prevModules) => [...prevModules, newModule]);
+  
         setSuccessMessage("Nombre Agregado con Éxito");
         setShowPopup(true);
         setNameModule("");
-        // Hacer algo con la respuesta, como mostrar un mensaje de éxito
       })
       .catch((error) => {
         console.error(error);
       });
   };
+  
 
   //WALKER
 
@@ -258,7 +267,6 @@ export default function ({ id }) {
       `/api/horarios/configurar_horario?id_modulo=${idModulo}`;
     fetch(url, {
       method: "POST",
-      // mode: 'cors',
       headers: {
         "Content-Type": "application/json",
       },
@@ -272,17 +280,42 @@ export default function ({ id }) {
     })
       .then((response) => {
         console.log(response);
-        // Hacer algo con la respuesta, como mostrar un mensaje de éxito
         setSuccessMessage("Horario Agregado con Exito");
         setShowPopup(true);
         resetForm();
+  
+        // Actualizar la lista de horarios después de agregar uno nuevo
+        const fetchData = async () => {
+          const url =
+            environment.url +
+            `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+          const response = await fetch(url, { method: "GET" });
+          const data = await response.json();
+          console.log("DATAAAAAA", data);
+          const simplifiedData = data.map((horary) => {
+            return {
+              codigoAsignatura: horary.codigoAsignatura,
+              descripcionAsignatura: horary.descripcionAsignatura,
+              nombreModulo: horary.nombreModulo,
+              dia: horary.dia,
+              horaInicio: horary.horaInicio,
+              horaFin: horary.horaFin,
+              nombreEscenario: horary.nombreEscenario,
+              descripcionServicio: horary.descripcionServicio,
+            };
+          });
+  
+          setHoraries(simplifiedData);
+        };
+  
+        fetchData().catch(console.error);
       })
       .catch((error) => {
         console.error(error);
-        // Mostrar un mensaje de error
         showAlert("Error al agregar el horario", "error");
       });
   };
+  
 
   return (
     <div className={style.containerForm} id="alertContainer">
