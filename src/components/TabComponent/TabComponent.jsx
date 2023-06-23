@@ -14,13 +14,15 @@ import Documents from "../Documents/Documents";
 //TODO: Cambiar layout "index" por la implementacion
 
 function TabComponents() {
-  let { idAsignatura } = useParams();
+  let idAsignatura = useParams();
 
   const [showDocumentsView, setShowDocumentsView] = useState(false);
+  const [selectedScenarioId, setSelectedScenarioId] = useState(null);
 
-  const handleManageDocuments = () => {
+  const handleManageDocuments = (scenarioId) => {
+    console.log("asdasdas", scenarioId);
+    setSelectedScenarioId(scenarioId);
     setShowDocumentsView(true);
-    
   };
 
   return (
@@ -50,7 +52,7 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-              <Routine />
+              <Routine idAsignatura={idAsignatura}/>
             </div>
           </TabPanel>
 
@@ -61,14 +63,14 @@ function TabComponents() {
           </TabPanel>
 
           <TabPanel>
-            <div className={style.panel}>
-              {showDocumentsView ? (
-                <Documents />
-              ) : (
-                <Docs handleManageDocuments={handleManageDocuments} />
-              )}
-            </div>
-          </TabPanel>
+        <div className={style.panel}>
+          {showDocumentsView ? (
+            <Documents scenarioId={selectedScenarioId} />
+          ) : (
+            <Docs handleManageDocuments={handleManageDocuments} />
+          )}
+        </div>
+      </TabPanel>
         </Tabs>
       </div>
       <Navbar />

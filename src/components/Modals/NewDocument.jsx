@@ -97,23 +97,20 @@ export default function NewDocument({ onClose }) {
   // validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
   const handleSubmitCreateDocument = (event) => {
     event.preventDefault();
+    if (!saveFile || !fechaVigencia || !tipeDocument || !selectedEscenaryId) {
+      // If any required data is missing, display an error message or perform appropriate actions
+      setSuccessMessage("Existen Campos vacios por favor llena todo los Campos ");
+        setShowPopup(true);
+      return;
+    }
     const url =
       environment.url +
       "/api/documentos/guardar?id_escenario=" +
       selectedEscenaryId;
-    console.log(
-      "ESTOS DATOS SON POST ",
-      typeof tipeDocument,
-      fechaVigencia.toISOString().substr(0, 10),
-      typeof selectedEscenaryId,
-      typeof saveFile.name,
-      typeof saveFile.type,
-      typeof selectedFile
-    );
     const formData = new FormData();
     const auxvalue = {
       nombre: saveFile.name,
-      tipoArchivo: saveFile.type,
+      tipoArchivo: saveFile.name.split('.').pop(),
       fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
       tipoDeDocumento: tipeDocument,
     };
@@ -126,14 +123,19 @@ export default function NewDocument({ onClose }) {
       //   "Content-Type": "multipart/form-data",
       // },
       body: formData,
-    })
-      .then((response) => {
-        console.log(response);
+    }).then((response) => {
+      if (response.ok) {
         setSuccessMessage("Documento registrado con éxito");
         setShowPopup(true);
-      })
+        return
+      }
+      throw error 
+      console.log(response)
+    })
       .catch((error) => {
         console.error(error);
+        setSuccessMessage("HAY ERROR AL GUARDAR DOCUMENTO");
+        setShowPopup(true);
         // Mostrar un mensaje de error
       });
   };

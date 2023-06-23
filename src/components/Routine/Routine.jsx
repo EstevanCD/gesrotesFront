@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router";
 import style from "./Routine.module.css";
 import AddIcon from "@material-ui/icons/Add";
 import Modals from "../Modals/Modals";
@@ -15,6 +16,8 @@ let grupos = [
 ];
 
 const Routine = () => {
+  const [selectedCycle, setSelectedCycle] = useState(null);
+  let asignatura = useParams();
   const banderaGrupo = true;
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -26,6 +29,19 @@ const Routine = () => {
     setOpen(true);
   };
 
+  //editar ciclo
+
+  const handleEditCycle = (cycleId, inicio, fin) => {
+    setSelectedCycle({
+      id: cycleId,
+      inicio: inicio,
+      fin: fin
+    });
+    setModalContent("CycleEdit");
+    setModalTitle("EDITAR CICLO");
+    setOpen(true);
+  };
+  
   const handleOpenRote = () => {
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
@@ -45,7 +61,7 @@ const Routine = () => {
   const [cicles, setCicles] = useState([]);
 
   useEffect(() => {
-    const url = environment.url + "/api/ciclos/listar/?id_asignatura=" + "1";
+    const url = environment.url + `/api/ciclos/listar/?id_asignatura=${asignatura.id}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -68,6 +84,7 @@ const Routine = () => {
         handleClose={handleClose}
         modalContent={modalContent}
         title={modalTitle}
+        cycle={selectedCycle}
       />
       <div className={style.positionButton}>
         <button className={style.buttons2} onClick={handleOpenCycle}>
@@ -91,7 +108,7 @@ const Routine = () => {
                 </div>
               </th>
               {cicles.map((fecha, index) => (
-                <th key={index}>
+                <th key={index} onClick={() => handleEditCycle(fecha.id, fecha.inicio, fecha.fin)}>
                   <div className={style.cardCommon}>
                     <div className={style.containerDates}>
                       <p>

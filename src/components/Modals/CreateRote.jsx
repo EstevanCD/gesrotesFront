@@ -73,6 +73,7 @@ function CreateRote() {
 
   const StyledButtonAdd = styled(Button)({
     color: "white",
+    fontWeight: 'bold',
     backgroundColor: "#0A2168",
     border: "1px solid blue", // Agregar un borde rojo
     fontSize: "10px",
@@ -109,7 +110,7 @@ function CreateRote() {
     
   ]; */
 
- 
+
 
 
 
@@ -173,7 +174,7 @@ return (
           ))}
         </select>
         
-       
+
         {/* <input type="submit" value="Agregar" style={{ marginTop: '10px'   }} /> */}
 
 
@@ -181,7 +182,7 @@ return (
             className="deleteAll"
             type="submit"
           >
-           AGREGAR
+          AGREGAR
           </StyledButtonAdd>
 
       </form>
