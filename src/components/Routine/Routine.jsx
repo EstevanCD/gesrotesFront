@@ -27,13 +27,13 @@ const Routine = () => {
     setSelectedCycle({
       id: cycleId,
       inicio: inicio,
-      fin: fin
+      fin: fin,
     });
     setModalContent("CycleEdit");
     setModalTitle("EDITAR CICLO");
     setOpen(true);
   };
-  
+
   const handleOpenRote = () => {
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
@@ -53,7 +53,8 @@ const Routine = () => {
   const [cicles, setCicles] = useState([]);
 
   useEffect(() => {
-    const url = environment.url + `/api/ciclos/listar/?id_asignatura=${asignatura.id}`;
+    const url =
+      environment.url + `/api/ciclos/listar/?id_asignatura=${asignatura.id}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -61,13 +62,13 @@ const Routine = () => {
           return {
             id: cicle.id,
             inicio: cicle.inicio,
-            fin: cicle.fin
+            fin: cicle.fin,
           };
         });
         setCicles(simplifiedData);
       });
   }, []);
-  console.log("idAsigantura", asignatura.id)
+  console.log("idAsigantura", asignatura.id);
   useEffect(() => {
     async function fetchData() {
       const url = environment.url + `/api/asignaciones/listar/${asignatura.id}`;
@@ -77,11 +78,11 @@ const Routine = () => {
     }
     fetchData();
   }, []);
-  console.log("Asignaciones", assignments)
+  console.log("Asignaciones", assignments);
 
   const renderAssignments = () => {
     let schedulesRow = [];
-    // TODO: indexGroup < 5 --> Se debe cambiar el 5 por la cantidad de elementos 
+    // TODO: indexGroup < 5 --> Se debe cambiar el 5 por la cantidad de elementos
     // de la lista de grupos que se trae con el endpoint del back
     // Ademas se debe cambiar en el primer if por grupos[indexGgroup].id
     // o segun corresponda el renombrado de las variables
@@ -89,38 +90,34 @@ const Routine = () => {
       let schedulesColumn = [];
       for (let indexCicle = 0; indexCicle < cicles.length; indexCicle++) {
         assignments.map((group) => {
-            if (group.id_grupo == indexGroup + 1 && group.id_ciclo== cicles[indexCicle].id) {
-              let teachers = [];
-              group.docentes.map((teacher) => {
-                teachers.push(
-                  <div className={style.cardConten}>
-                    <h2 onClick={handleOpenRote}>{teacher.docente}</h2>
-                    <p>{teacher.modulos[0].horarios[0].descripcion}</p>
-                  </div>
-                )
-              })
-              schedulesColumn.push(
-                <td>
-                  {teachers}
-                </td>
-              )
-            } else {
-              schedulesColumn.push(
-                <td>
-                  <div className={style.cardInfo}>
-                    <h2 onClick={handleOpenRote}>
-                      <AddCircleIcon
-                        style={{ color: "#888888", fontSize: 40 }}
-                      />
-                      <br />
-                      Sin asignar
-                    </h2>
-                  </div>
-                </td>
-              )
-            }
-        })
-
+          if (
+            group.id_grupo == indexGroup + 1 &&
+            group.id_ciclo == cicles[indexCicle].id
+          ) {
+            let teachers = [];
+            group.docentes.map((teacher) => {
+              teachers.push(
+                <div className={style.cardConten}>
+                  <h2 onClick={handleOpenRote}>{teacher.docente}</h2>
+                  <p>{teacher.modulos[0].horarios[0].descripcion}</p>
+                </div>
+              );
+            });
+            schedulesColumn.push(<td>{teachers}</td>);
+          } else {
+            schedulesColumn.push(
+              <td>
+                <div className={style.cardInfo}>
+                  <h2 onClick={handleOpenRote}>
+                    <AddCircleIcon style={{ color: "#888888", fontSize: 40 }} />
+                    <br />
+                    Sin asignar
+                  </h2>
+                </div>
+              </td>
+            );
+          }
+        });
       }
       schedulesRow.push(
         <tr>
@@ -133,11 +130,10 @@ const Routine = () => {
           </td>
           {schedulesColumn}
         </tr>
-      )
-      
+      );
     }
     return schedulesRow;
-  }
+  };
   return (
     <div>
       <Modals
@@ -147,19 +143,20 @@ const Routine = () => {
         title={modalTitle}
         cycle={selectedCycle}
       />
-      <div className={style.positionButton}>
-        <button className={style.buttons2} onClick={handleOpenCycle}>
-          {" "}
-          <i>
-            <AddIcon style={{ fontSize: "15px" }} />
-          </i>{" "}
-          Nuevo Ciclo
-        </button>
+      <div className={style.buttonContainer}>
+          <button className={style.buttons2} onClick={handleOpenCycle}>
+            <i>
+              <AddIcon style={{ fontSize: "15px" }} />
+            </i>
+            Nuevo Ciclo
+          </button>
 
-        <button className={style.buttons} onClick={handleOpenGesGrupos}>
-          Gestionar Grupos
-        </button>
-        <button className={style.buttonsred}>Eliminar Todo</button>
+          <button className={style.buttons} onClick={handleOpenGesGrupos}>
+            Gestionar Grupos
+          </button>
+          <button className={style.buttonsred}>Eliminar Todo</button>
+        </div>
+      <div className={style.positionButton}>
         <div>
           <table>
             <tr>
@@ -169,7 +166,12 @@ const Routine = () => {
                 </div>
               </th>
               {cicles.map((fecha, index) => (
-                <th key={index} onClick={() => handleEditCycle(fecha.id, fecha.inicio, fecha.fin)}>
+                <th
+                  key={index}
+                  onClick={() =>
+                    handleEditCycle(fecha.id, fecha.inicio, fecha.fin)
+                  }
+                >
                   <div className={style.cardCommon}>
                     <div className={style.containerDates}>
                       <p>

@@ -21,6 +21,8 @@ export default function CycleEdit({ onClose, cycle }) {
     setShowPopup(false);
   };
 
+  const [alertCycle, setAlertCycle] = useState("");
+
   function convertToValidDate(dateString) {
     const [day, month, year] = dateString.split("-");
     const formattedDate = new Date(`${year}-${month}-${day}`);
@@ -64,7 +66,7 @@ export default function CycleEdit({ onClose, cycle }) {
   const handleCancel = () => {
     setSuccessMessage("¿Esta seguro que desea eliminar el ciclo?");
     setShowPopup(true);
-    setSelectedCycle(null);
+    setAlertCycle("cycleEdit")
   };
 
   return (
@@ -113,7 +115,7 @@ export default function CycleEdit({ onClose, cycle }) {
         </button>
       </center>
       {showPopup && (
-        <Popup message={successMessage} onClose={handleClosePopup} />
+        <Popup message={successMessage} onClose={handleClosePopup} component={alertCycle} />
       )}
     </form>
   );

@@ -2,6 +2,13 @@
   background-color: #484943;
 }
 
+.buttonContainer{
+  margin-bottom: 200px;
+  position: absolute;
+  top: 20;
+  z-index: 1;
+}
+
 .buttons {
   margin: 15px 1vw;
   position: relative;
@@ -29,7 +36,7 @@
   .buttonsred {
     margin: 0 1vw;
     position: relative;
-    left: 520px;
+    left: 1000px;
     background-color:rgb(139, 4, 4);
     color: aliceblue;
     flex: auto;
@@ -38,6 +45,7 @@
     font-size: 0.8em;
   }
   .positionButton{
+    padding-top: 70px;
     position: relative;
     
   }
