@@ -90,8 +90,7 @@ export default function ({ id }) {
 
   // Eliminar horario
   const handleEliminar = (id) => {
-    const url =
-      environment.url + "/api/horarios/eliminar?id_horariosmodulos=" + id;
+    const url = environment.url + "/api/horarios/eliminar?id_horarios=" + id;
     fetch(url, {
       method: "DELETE",
     })
@@ -166,11 +165,11 @@ export default function ({ id }) {
 
   const handleSubmitCreateName = (event) => {
     event.preventDefault();
-  
+
     // Validar caracteres especiales y espacios en blanco
     const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
     const whitespace = /^\s+$/;
-  
+
     // Verificar si el nombre del módulo contiene caracteres especiales o está en blanco
     if (specialChars.test(nameModule) || whitespace.test(nameModule)) {
       // Mostrar mensaje de error
@@ -184,7 +183,7 @@ export default function ({ id }) {
       setNameModule("");
       return; // Detener la ejecución de la función
     }
-  
+
     const url =
       environment.url +
       `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
@@ -205,10 +204,10 @@ export default function ({ id }) {
           id: data.id, // Utilizar el ID devuelto por la API
           nombre_modulo: nameModule,
         };
-  
+
         // Actualizar el estado de nameModules con el nuevo módulo agregado
         setnameModules((prevModules) => [...prevModules, newModule]);
-  
+
         setSuccessMessage("Nombre Agregado con Éxito");
         setShowPopup(true);
         setNameModule("");
@@ -217,34 +216,35 @@ export default function ({ id }) {
         console.error(error);
       });
   };
-  
 
   //WALKER
 
   useEffect(() => {
-    const fetchdata = async () => {
+    const fetchData = async () => {
       const url =
         environment.url +
         `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
-      const data = await fetch(url, { method: "GET" });
-      const data2 = await data.json();
-      console.log("DATAAAAAA", data2);
-      const simplifiedData = data2.map((horary) => {
+      const response = await fetch(url, { method: "GET" });
+      const data = await response.json();
+      const simplifiedData = data.modulos.map((modulo) => {
+        const horarios = modulo.horarios.map((horario) => {
+          const [dia, hora] = horario.descripcion.split(" ");
+          return {
+            id: horario.id,
+            descripcion: horario.descripcion,
+            dia: dia,
+            hora: hora,
+          };
+        });
         return {
-          codigoAsignatura: horary.codigoAsignatura,
-          descripcionAsignatura: horary.descripcionAsignatura,
-          nombreModulo: horary.nombreModulo,
-          dia: horary.dia,
-          horaInicio: horary.horaInicio,
-          horaFin: horary.horaFin,
-          nombreEscenario: horary.nombreEscenario,
-          descripcionServicio: horary.descripcionServicio,
+          id: modulo.id,
+          nombre: modulo.nombre,
+          horarios: horarios,
         };
       });
-
       setHoraries(simplifiedData);
     };
-    fetchdata().catch(console.error);
+    fetchData().catch(console.error);
   }, []);
 
   const handleSubmitCreateHorary = (event) => {
@@ -283,7 +283,7 @@ export default function ({ id }) {
         setSuccessMessage("Horario Agregado con Exito");
         setShowPopup(true);
         resetForm();
-  
+
         // Actualizar la lista de horarios después de agregar uno nuevo
         const fetchData = async () => {
           const url =
@@ -304,10 +304,10 @@ export default function ({ id }) {
               descripcionServicio: horary.descripcionServicio,
             };
           });
-  
+
           setHoraries(simplifiedData);
         };
-  
+
         fetchData().catch(console.error);
       })
       .catch((error) => {
@@ -315,7 +315,6 @@ export default function ({ id }) {
         showAlert("Error al agregar el horario", "error");
       });
   };
-  
 
   return (
     <div className={style.containerForm} id="alertContainer">
@@ -442,26 +441,13 @@ export default function ({ id }) {
             <span className={style.tableBody + " " + style.tittle}>Nombre</span>
             <span className={style.tableBody + " " + style.tittle}>Dia</span>
             <span className={style.tableBody + " " + style.tittle}>Hora</span>
-            <span className={style.tableBody + " " + style.tittle}>
-              Escenario
-            </span>
-            <span className={style.tableBody + " " + style.tittle}>
-              Servicio
-            </span>
             <span className={style.tableBody}>Eliminar</span>
           </div>
-          {console.log(horaries, "lista de horarios")}
           {horaries.map((item) => (
             <div className={style.row} key={item.id}>
-              <span className={style.tableBody}>{item.nombreModulo}</span>
-              <span className={style.tableBody}>{item.dia}</span>
-              <span className={style.tableBody}>
-                {item.horaInicio + "-" + item.horaFin}
-              </span>
-              <span className={style.tableBody}>{item.nombreEscenario}</span>
-              <span className={style.tableBody}>
-                {item.descripcionServicio}
-              </span>
+              <span className={style.tableBody}>{item.nombre}</span>
+              <span className={style.tableBody}>{item.horarios.dia}</span>
+              <span className={style.tableBody}>{item.horarios.hora}</span>
               <span className={style.tableBody}>
                 <IconButton onClick={() => handleEliminar(item.id)}>
                   <DeleteIcon />
