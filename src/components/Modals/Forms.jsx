@@ -408,7 +408,6 @@ export default function ({ id }) {
                     {item.descripcion}
                   </option>
                 ))}
-                {console.log(selectedEscenaryId, "TRAE ESTO ID")}
               </select>
             </div>
             <div className={style.buttonInlineBlock}>
