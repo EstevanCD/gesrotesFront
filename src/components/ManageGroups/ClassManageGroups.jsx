@@ -37,12 +37,10 @@ function ClassManageGroups() {
   const handleChangeForm1 = (event) => {
     setForm1(event.target.value);
   };
-
   const [form2, setForm2] = useState("");
   const handleChangeForm2 = (event) => {
     setForm2(event.target.value);
   };
-
   const [groups, setGroups] = useState([]);
   const [groups1, setGroups1] = useState([]);
 
@@ -76,6 +74,8 @@ function ClassManageGroups() {
   // visibilidad popup
   const [showPopup, setShowPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Eliminar grupo
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -116,9 +116,13 @@ function ClassManageGroups() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        setSuccessMessage("Grupo Creado Con Exito");
+        setShowPopup(true);
       })
       .catch((error) => {
         console.error("Error:", error);
+        setSuccessMessage("Ha ocurrido un Error al Agregar el Grupo");
+        setShowPopup(true);
       });
   };
 

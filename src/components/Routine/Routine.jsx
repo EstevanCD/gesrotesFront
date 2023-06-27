@@ -8,6 +8,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { environment } from "../../hooks/environment";
 
 const Routine = () => {
+  const [selectedCycle, setSelectedCycle] = useState(null);
   let asignatura = useParams();
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -20,6 +21,19 @@ const Routine = () => {
     setOpen(true);
   };
 
+  //editar ciclo
+
+  const handleEditCycle = (cycleId, inicio, fin) => {
+    setSelectedCycle({
+      id: cycleId,
+      inicio: inicio,
+      fin: fin
+    });
+    setModalContent("CycleEdit");
+    setModalTitle("EDITAR CICLO");
+    setOpen(true);
+  };
+  
   const handleOpenRote = () => {
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
@@ -131,6 +145,7 @@ const Routine = () => {
         handleClose={handleClose}
         modalContent={modalContent}
         title={modalTitle}
+        cycle={selectedCycle}
       />
       <div className={style.positionButton}>
         <button className={style.buttons2} onClick={handleOpenCycle}>
@@ -154,7 +169,7 @@ const Routine = () => {
                 </div>
               </th>
               {cicles.map((fecha, index) => (
-                <th key={index}>
+                <th key={index} onClick={() => handleEditCycle(fecha.id, fecha.inicio, fecha.fin)}>
                   <div className={style.cardCommon}>
                     <div className={style.containerDates}>
                       <p>

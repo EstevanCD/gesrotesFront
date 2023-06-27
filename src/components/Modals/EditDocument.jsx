@@ -12,26 +12,30 @@ import { faFileWord } from "@fortawesome/free-solid-svg-icons";
 
 import { json } from "react-router-dom";
 import { BorderColor } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
+
+
+import { styled } from "@mui/material/styles";
 
 export default function NewDocument({ onClose, documentData }) {
-/*   console.log("EDITAR DOCUMENTO");
-  console.log(documentData); */
+  console.log("EDITAR DOCUMENTO");
+  console.log(documentData);
 
   // funciones para el control de arhivo
-  const [selectedFile, setSelectedFile] = useState(/* { name: "nuevo archivo" } */"datos");
+  const [selectedFile, setSelectedFile] = useState(""); //bandera para saber si hay archivo
   const [saveFile, setSaveFile] = useState(null);
 
-  
+
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("http://132.226.60.71:8080/api/documentos/descargar?id_documento=1");
-      const responseAux = await response;
-      if (responseAux.length > 0) {
-       /*  setSelectedFile(responseAux); */
+      const response = await fetch(`http://132.226.60.71:8080/api/documentos/descargar?id_documento= ${documentData.id_documento}`);
+      if (response.status == 400) {
+        console.log("incorrecto------");
+      } else {
+        console.log("DOCUMENTO-------");
+        console.log(response);
+        setSelectedFile("ban");
       }
-      
-      /* console.log("TEST--------");
-      console.log(selectedFile); */
     }
     fetchData();
   }, []);
@@ -40,7 +44,7 @@ export default function NewDocument({ onClose, documentData }) {
 
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
   const [escenary, setEscenary] = useState([]);
- 
+
   // METODO get trae escenarios
   useEffect(() => {
     const url = environment.url + "/api/escenarios/listado";
@@ -55,10 +59,10 @@ export default function NewDocument({ onClose, documentData }) {
           };
         });
         setEscenary(escenary);
-      
+
       });
   }, []);
-  
+
   /*   const doc = {
     id_documento: 2,
     id_archivo: 2,
@@ -71,7 +75,7 @@ export default function NewDocument({ onClose, documentData }) {
  */
   /*   with useEfect with an empty array will only run when starting the component [] */
 
-  const [auxEscenary, setauxEscenary] = useState(""); 
+  const [auxEscenary, setauxEscenary] = useState("");
   useEffect(() => {
     setFechaVigencia(new Date(documentData.fecha_vigencia));
     if (escenary.length > 0) {
@@ -127,20 +131,13 @@ export default function NewDocument({ onClose, documentData }) {
   const [alertMessage, setAlertMessage] = useState("");
   // validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
   const handleSubmitCreateDocument = (event) => {
+
+    /*obtener los datos a actualizar  */
     event.preventDefault();
+
     const url =
-      environment.url +
-      "/api/documentos/guardar?id_escenario=" +
-      selectedEscenaryId;
-    /* console.log(
-      "ESTOS DATOS SON POST ",
-      typeof tipeDocument,
-      fechaVigencia.toISOString().substr(0, 10),
-      typeof selectedEscenaryId,
-      typeof saveFile.name,
-      typeof saveFile.type,
-      typeof selectedFile
-    ); */
+      environment.url + "/api/documentos/guardar?id_escenario=" + selectedEscenaryId; //cambiar   
+
     const formData = new FormData();
     const auxvalue = {
       nombre: saveFile.name,
@@ -148,7 +145,7 @@ export default function NewDocument({ onClose, documentData }) {
       fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
       tipoDeDocumento: tipeDocument,
     };
-    console.log(auxvalue);
+
     formData.append("nombre", JSON.stringify(auxvalue));
     formData.append("file", saveFile);
     fetch(url, {
@@ -168,9 +165,26 @@ export default function NewDocument({ onClose, documentData }) {
       });
   };
 
-/*  const handleCancel = () => {
-    onClose();
-  }; */
+
+  const StyledButtonAdd = styled(Button)({
+    display: 'inline-block',
+    color: "white",
+    backgroundColor: "#0a2167",
+    border: "1px solid blue", // Agregar un borde rojo
+    fontWeight: 'bold',
+    fontSize: "11px",
+    borderRadius: '20px',
+    height: '30px',
+    width: 'auto',
+    "&:hover": {
+      backgroundColor: "#1c45c0",
+      borderSize: "1px solid Red"
+    },
+  });
+
+  const handleDeleteDocument = () => {
+    setSelectedFile("");
+  }
 
   //Cargar el icono para el documento
   const getIconByExtension = (extension) => {
@@ -202,9 +216,6 @@ export default function NewDocument({ onClose, documentData }) {
         return null;
     }
   };
-  
-  
-
 
 
   return (
@@ -227,22 +238,15 @@ export default function NewDocument({ onClose, documentData }) {
             onChange={saveTipoDocument}
             value={tipeDocument}
           >
-            <option hidden defaultValue>
-              {" "}
-              
-              {documentData.tipo_documento}{" "}
-             {console.log("pruebaj",escenary.nombre)} 
-            </option>{" "}
-            {/*shows the plan when loading */}
-            <option>{escenary.nombre}</option>
+            <option hidden defaultValue> {documentData.tipo_documento}</option>
+            <option>Plan de Prácticas</option>
             <option>Plan de Prácticas 2</option>
             <option>Plan de Prácticas 3</option>
           </select>
         </div>
         <div className={style.selectWrapper}>
           <h4>
-            <span className={style.numberRounded}>2</span>PASO 2: Selecione el
-            escenario de practicas{" "}
+            <span className={style.numberRounded}>2</span> PASO 2: Selecione el escenario de practicas{" "}
           </h4>
           <h5>
             {" "}
@@ -261,7 +265,7 @@ export default function NewDocument({ onClose, documentData }) {
                 {item.nombre}
               </option>
             ))}
-            {console.log(selectedEscenaryId, "TRAE ESTO ID")}
+            {/* {console.log(selectedEscenaryId, "TRAE ESTO ID")} */}
           </select>
         </div>
       </div>
@@ -289,12 +293,12 @@ export default function NewDocument({ onClose, documentData }) {
           <h4>
             {" "}
             <span className={style.numberRounded}>4</span>PASO 4: Subir Documento{" "} </h4>
-        
-          {selectedFile ? ( 
+
+          {selectedFile ? (
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
-              height: '12%',
+              height: '14%',
               width: '100%',
               borderRadius: '15px',
               padding: '10px',
@@ -302,19 +306,21 @@ export default function NewDocument({ onClose, documentData }) {
             }}>
               {getIconByExtension(documentData.extension)}
               <h5 style={{ marginRight: '10px' }}>{documentData.nombre_archivo}</h5>
-              <h3>X</h3>
-            </div>   
 
-          ):  (<div className={style.fileUploadContainer}>
-            <p>Archivo seleccionado: {selectedFile.name}</p>   
-          <div>
-              {/* {getIconByExtension(documentData.extension)} */}
-              <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div> 
+              <Button onClick={handleDeleteDocument}>X</Button>
+            </div>
+          ) :
 
-            <input type="file" id="fileInput"  onChange={handleFileChange}  
-          onDrop={handleDrop}
-            onDragOver={handleDragOver}/>         
-        </div>) }   
+            (<div className={style.fileUploadContainer}>
+              <p>Archivo seleccionado: {selectedFile.name}</p>
+              <div>
+                {/* {getIconByExtension(documentData.extension)} */}
+                <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div>
+
+              <input type="file" id="fileInput" onChange={handleFileChange}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver} />
+            </div>)}
 
         </div>
       </div>
@@ -322,9 +328,9 @@ export default function NewDocument({ onClose, documentData }) {
       {alertMessage && <span className="alert">{alertMessage}</span>}
 
       <center>
-        <button className={style.buttonStyle} type="submit">
-          Editar Documento{" "}
-        </button>
+        <StyledButtonAdd type="submit">
+          Actualizar Documento
+        </StyledButtonAdd>
       </center>
     </form>
   );
