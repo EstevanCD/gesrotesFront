@@ -186,7 +186,6 @@ export default function NewDocument({ onClose }) {
                 {item.nombre}
               </option>
             ))}
-            {console.log(selectedEscenaryId, "TRAE ESTO ID")}
           </select>
         </div>
       </div>
