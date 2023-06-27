@@ -1,15 +1,26 @@
 import React from "react";
 import style from "./popup.module.css";
 
-const Popup = ({ message, onClose }) => {
+const Popup = ({ message, onClose, component }) => {
   return (
     <div className={style.popupContainer}>
       <div className={style.popup}>
         <h2 className={style.popupTitle}>Mensaje</h2>
         <p className={style.popupMessage}>{message}</p>
-        <button className={style.closeButton} onClick={onClose}>
-          Cerrar
-        </button>
+        {component == "cycleEdit" ? (
+          <>
+            <button className={style.successButton} onClick={onClose}>
+              Aceptar
+            </button>
+            <button className={style.cancelButton} onClick={onClose}>
+              Cancelar
+            </button>
+          </>
+        ) : (
+          <button className={style.closeButton} onClick={onClose}>
+            Cerrar
+          </button>
+        )}
       </div>
     </div>
   );
