@@ -75,7 +75,7 @@ const Routine = () => {
     }
     fetchData();
   }, []);
-
+  //listar asignaciones con grupos y ciclos asosiados
   const renderAssignments = () => {
     let schedulesRow = [];
     // TODO: indexGroup < 5 --> Se debe cambiar el 5 por la cantidad de elementos
@@ -130,6 +130,7 @@ const Routine = () => {
     }
     return schedulesRow;
   };
+  
   return (
     <div>
       <Modals
