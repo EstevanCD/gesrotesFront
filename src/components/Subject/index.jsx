@@ -7,12 +7,10 @@ import SearchIcon from "@material-ui/icons/Search";
 import BlockIcon from "@material-ui/icons/Block";
 import { Link, useParams } from "react-router-dom";
 import { environment } from "../../hooks/environment";
-
 import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 function Subjects() {
   const {setIdAsignatura} = useContext(AsignaturaContext);
-
   let params = useParams();
   console.log(params);
   const [subjects, setSubjects] = useState([]);
