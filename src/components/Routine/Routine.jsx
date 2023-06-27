@@ -17,6 +17,7 @@ let grupos = [
 
 const Routine = () => {
   const { idAsignatura } = useContext(AsignaturaContext);
+  const [selectedCycle, setSelectedCycle] = useState(null);
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
