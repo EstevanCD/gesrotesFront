@@ -75,6 +75,10 @@
   background-color: #0a2167;
 }
 
+.saveButton:disabled{
+  background-color: #9c9c9c;
+}
+
 .cancelButton{
   background-color: #980c0f;
 }
