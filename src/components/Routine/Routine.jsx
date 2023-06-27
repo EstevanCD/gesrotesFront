@@ -10,8 +10,6 @@ import { AsignaturaContext } from "../../context/AsignaturaContext";
 const Routine = () => {
   const { idAsignatura } = useContext(AsignaturaContext);
   const [selectedCycle, setSelectedCycle] = useState(null);
-  let asignatura = useParams();
-  const banderaGrupo = true;
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
@@ -25,7 +23,6 @@ const Routine = () => {
   };
 
   //editar ciclo
-
   const handleEditCycle = (cycleId, inicio, fin) => {
     setSelectedCycle({
       id: cycleId,
@@ -36,13 +33,13 @@ const Routine = () => {
     setModalTitle("EDITAR CICLO");
     setOpen(true);
   };
-  
+  //crear rote
   const handleOpenRote = () => {
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
     setOpen(true);
   };
-
+  //
   const handleOpenGesGrupos = () => {
     setModalContent("ClassManageGroups");
     setModalTitle("GESTIONAR GRUPOS");
@@ -68,17 +65,15 @@ const Routine = () => {
         setCicles(simplifiedData);
       });
   }, []);
-  console.log("idAsigantura", asignatura.id)
   useEffect(() => {
     async function fetchData() {
-      const url = environment.url + `/api/asignaciones/listar/${asignatura.id}`;
+      const url = environment.url + `/api/asignaciones/listar/${idAsignatura}`;
       const response = await fetch(url);
       const json = await response.json();
       setAssignments(json.asignaciones);
     }
     fetchData();
   }, []);
-  console.log("Asignaciones", assignments)
 
   const renderAssignments = () => {
     let schedulesRow = [];
