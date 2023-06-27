@@ -68,7 +68,6 @@ const Routine = () => {
         setCicles(simplifiedData);
       });
   }, []);
-  console.log("idAsigantura", asignatura.id);
   useEffect(() => {
     async function fetchData() {
       const url = environment.url + `/api/asignaciones/listar/${asignatura.id}`;
@@ -78,8 +77,6 @@ const Routine = () => {
     }
     fetchData();
   }, []);
-  console.log("Asignaciones", assignments);
-
   const renderAssignments = () => {
     let schedulesRow = [];
     // TODO: indexGroup < 5 --> Se debe cambiar el 5 por la cantidad de elementos
