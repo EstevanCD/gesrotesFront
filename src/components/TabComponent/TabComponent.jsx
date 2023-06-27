@@ -52,7 +52,7 @@ function TabComponents() {
 
           <TabPanel>
             <div className={style.panel}>
-              <Routine idAsignatura={idAsignatura}/>
+              <Routine />
             </div>
           </TabPanel>
 

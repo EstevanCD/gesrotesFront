@@ -49,7 +49,7 @@ export default function CustomSeparator() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Breadcrumbs separator="›" aria-label="breadcrumb">
-            <Link color="#092167" href="/" onClick={handleClick}>
+            <Link style={{ border: "none" }} color="#092167" href="/" onClick={handleClick}>
               <HomeIcon />
             </Link>
             <Link color="#092167" href="/" onClick={handleClick}>

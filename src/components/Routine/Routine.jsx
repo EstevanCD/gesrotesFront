@@ -1,11 +1,11 @@
-import React from "react";
-import { useParams } from "react-router";
+import React, {useContext} from "react";
 import style from "./Routine.module.css";
 import AddIcon from "@material-ui/icons/Add";
 import Modals from "../Modals/Modals";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { environment } from "../../hooks/environment";
+import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 let grupos = [
   ["Tiene datos", "", "", "", "", ""],
@@ -16,11 +16,11 @@ let grupos = [
 ];
 
 const Routine = () => {
-  let asignatura = useParams();
-  const banderaGrupo = true;
+  const { idAsignatura } = useContext(AsignaturaContext);
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
+  const [cicles, setCicles] = useState([]);
 
   const handleOpenCycle = () => {
     setModalContent("CycleCreation");
@@ -44,10 +44,8 @@ const Routine = () => {
     setOpen(false);
   };
 
-  const [cicles, setCicles] = useState([]);
-
   useEffect(() => {
-    const url = environment.url + `/api/ciclos/listar/?id_asignatura=${asignatura.id}`;
+    const url = environment.url + `/api/ciclos/listar/?id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
