@@ -25,13 +25,13 @@ export default function NewDocument({ onClose, documentData }) {
   const [selectedFile, setSelectedFile] = useState(""); //bandera para saber si hay archivo
   const [saveFile, setSaveFile] = useState(null);
 
-  
+
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch( `http://132.226.60.71:8080/api/documentos/descargar?id_documento= ${documentData.id_documento}`);
+      const response = await fetch(`http://132.226.60.71:8080/api/documentos/descargar?id_documento= ${documentData.id_documento}`);
       if (response.status == 400) {
         console.log("incorrecto------");
-      }else{  
+      } else {
         console.log("DOCUMENTO-------");
         console.log(response);
         setSelectedFile("ban");
@@ -44,7 +44,7 @@ export default function NewDocument({ onClose, documentData }) {
 
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
   const [escenary, setEscenary] = useState([]);
- 
+
   // METODO get trae escenarios
   useEffect(() => {
     const url = environment.url + "/api/escenarios/listado";
@@ -58,7 +58,8 @@ export default function NewDocument({ onClose, documentData }) {
             direccion: escenaries.direccion,
           };
         });
-        setEscenary(simplifiedData);
+        setEscenary(escenary);
+
       });
   }, []);
 
@@ -74,7 +75,7 @@ export default function NewDocument({ onClose, documentData }) {
  */
   /*   with useEfect with an empty array will only run when starting the component [] */
 
-  const [auxEscenary, setauxEscenary] = useState(""); 
+  const [auxEscenary, setauxEscenary] = useState("");
   useEffect(() => {
     setFechaVigencia(new Date(documentData.fecha_vigencia));
     if (escenary.length > 0) {
@@ -164,7 +165,7 @@ export default function NewDocument({ onClose, documentData }) {
       });
   };
 
-  
+
   const StyledButtonAdd = styled(Button)({
     display: 'inline-block',
     color: "white",
@@ -182,7 +183,7 @@ export default function NewDocument({ onClose, documentData }) {
   });
 
   const handleDeleteDocument = () => {
-    setSelectedFile("");  
+    setSelectedFile("");
   }
 
   //Cargar el icono para el documento
@@ -215,8 +216,8 @@ export default function NewDocument({ onClose, documentData }) {
         return null;
     }
   };
-  
-  
+
+
   return (
     <form onSubmit={handleSubmitCreateDocument} id="myForm">
       <div className={style.selectContainer}>
@@ -292,8 +293,8 @@ export default function NewDocument({ onClose, documentData }) {
           <h4>
             {" "}
             <span className={style.numberRounded}>4</span>PASO 4: Subir Documento{" "} </h4>
-        
-          {selectedFile ? ( 
+
+          {selectedFile ? (
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -305,21 +306,21 @@ export default function NewDocument({ onClose, documentData }) {
             }}>
               {getIconByExtension(documentData.extension)}
               <h5 style={{ marginRight: '10px' }}>{documentData.nombre_archivo}</h5>
-              
-              <Button onClick={handleDeleteDocument}>X</Button>
-            </div>   
-          )   : 
-          
-          (<div className={style.fileUploadContainer}>
-            <p>Archivo seleccionado: {selectedFile.name}</p>   
-          <div>
-              {/* {getIconByExtension(documentData.extension)} */}
-              <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div> 
 
-            <input type="file" id="fileInput"  onChange={handleFileChange}  
-          onDrop={handleDrop}
-            onDragOver={handleDragOver}/>         
-        </div>) }   
+              <Button onClick={handleDeleteDocument}>X</Button>
+            </div>
+          ) :
+
+            (<div className={style.fileUploadContainer}>
+              <p>Archivo seleccionado: {selectedFile.name}</p>
+              <div>
+                {/* {getIconByExtension(documentData.extension)} */}
+                <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div>
+
+              <input type="file" id="fileInput" onChange={handleFileChange}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver} />
+            </div>)}
 
         </div>
       </div>
@@ -327,7 +328,7 @@ export default function NewDocument({ onClose, documentData }) {
       {alertMessage && <span className="alert">{alertMessage}</span>}
 
       <center>
-        <StyledButtonAdd  type="submit">
+        <StyledButtonAdd type="submit">
           Actualizar Documento
         </StyledButtonAdd>
       </center>
