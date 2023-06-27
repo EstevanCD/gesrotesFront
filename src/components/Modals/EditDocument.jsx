@@ -54,10 +54,11 @@ export default function NewDocument({ onClose, documentData }) {
             direccion: escenaries.direccion,
           };
         });
-        setEscenary(simplifiedData);
+        setEscenary(escenary);
+      
       });
   }, []);
-
+  
   /*   const doc = {
     id_documento: 2,
     id_archivo: 2,
@@ -228,10 +229,12 @@ export default function NewDocument({ onClose, documentData }) {
           >
             <option hidden defaultValue>
               {" "}
+              
               {documentData.tipo_documento}{" "}
+             {console.log("pruebaj",escenary.nombre)} 
             </option>{" "}
             {/*shows the plan when loading */}
-            <option>Plan de Prácticas</option>
+            <option>{escenary.nombre}</option>
             <option>Plan de Prácticas 2</option>
             <option>Plan de Prácticas 3</option>
           </select>

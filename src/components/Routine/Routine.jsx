@@ -7,20 +7,12 @@ import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { environment } from "../../hooks/environment";
 
-let grupos = [
-  ["Tiene datos", "", "", "", "", ""],
-  ["", "Tiene datos", "", "", "", ""],
-  ["", "", "Tiene datos", "", "", ""],
-  ["", "", "", "Tiene datos", "", ""],
-  ["", "", "", "", "Tiene datos", ""],
-];
-
 const Routine = () => {
   let asignatura = useParams();
-  const banderaGrupo = true;
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
+  const [assignments, setAssignments] = useState([]);
 
   const handleOpenCycle = () => {
     setModalContent("CycleCreation");
@@ -61,8 +53,77 @@ const Routine = () => {
         setCicles(simplifiedData);
       });
   }, []);
-  console.log(cicles)
+  console.log("idAsigantura", asignatura.id)
+  useEffect(() => {
+    async function fetchData() {
+      const url = environment.url + `/api/asignaciones/listar/${asignatura.id}`;
+      const response = await fetch(url);
+      const json = await response.json();
+      setAssignments(json.asignaciones);
+    }
+    fetchData();
+  }, []);
+  console.log("Asignaciones", assignments)
 
+  const renderAssignments = () => {
+    let schedulesRow = [];
+    // TODO: indexGroup < 5 --> Se debe cambiar el 5 por la cantidad de elementos 
+    // de la lista de grupos que se trae con el endpoint del back
+    // Ademas se debe cambiar en el primer if por grupos[indexGgroup].id
+    // o segun corresponda el renombrado de las variables
+    for (let indexGroup = 0; indexGroup < 5; indexGroup++) {
+      let schedulesColumn = [];
+      for (let indexCicle = 0; indexCicle < cicles.length; indexCicle++) {
+        assignments.map((group) => {
+            if (group.id_grupo == indexGroup + 1 && group.id_ciclo== cicles[indexCicle].id) {
+              let teachers = [];
+              group.docentes.map((teacher) => {
+                teachers.push(
+                  <div className={style.cardConten}>
+                    <h2 onClick={handleOpenRote}>{teacher.docente}</h2>
+                    <p>{teacher.modulos[0].horarios[0].descripcion}</p>
+                  </div>
+                )
+              })
+              schedulesColumn.push(
+                <td>
+                  {teachers}
+                </td>
+              )
+            } else {
+              schedulesColumn.push(
+                <td>
+                  <div className={style.cardInfo}>
+                    <h2 onClick={handleOpenRote}>
+                      <AddCircleIcon
+                        style={{ color: "#888888", fontSize: 40 }}
+                      />
+                      <br />
+                      Sin asignar
+                    </h2>
+                  </div>
+                </td>
+              )
+            }
+        })
+
+      }
+      schedulesRow.push(
+        <tr>
+          <td>
+            <div class={style.cardgroup2}>
+              <p /* onClick={handleOpenRote} */ class={style.cardgroup}>
+                {indexGroup + 1}
+              </p>
+            </div>
+          </td>
+          {schedulesColumn}
+        </tr>
+      )
+      
+    }
+    return schedulesRow;
+  }
   return (
     <div>
       <Modals
@@ -106,43 +167,7 @@ const Routine = () => {
                 </th>
               ))}
             </tr>
-
-            {grupos.map((grupo, indice) => {
-              return (
-                <tr>
-                  <td>
-                    <div class={style.cardgroup2}>
-                      <p /* onClick={handleOpenRote} */ class={style.cardgroup}>
-                        {indice + 1}
-                      </p>
-                    </div>
-                  </td>
-                  {grupo.map((dato) => {
-                    return (
-                      <td>
-                        <div
-                          className={
-                            dato === "" ? style.cardInfo : style.cardConten
-                          }
-                        >
-                          {dato === "" ? (
-                            <h2 onClick={handleOpenRote}>
-                              <AddCircleIcon
-                                style={{ color: "#888888", fontSize: 40 }}
-                              />
-                              <br />
-                              Sin asignar
-                            </h2>
-                          ) : (
-                            <h2 onClick={handleOpenRote}>{dato}</h2>
-                          )}
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
+            {renderAssignments()}
           </table>
         </div>
       </div>
