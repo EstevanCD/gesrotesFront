@@ -9,42 +9,47 @@ import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import { faFileWord } from "@fortawesome/free-solid-svg-icons";
 
-
-import { json } from "react-router-dom";
-import { BorderColor } from "@material-ui/icons";
+import Popup from "./Popup"; //alertas
 import { Button } from "@material-ui/core";
-
-
 import { styled } from "@mui/material/styles";
 
-export default function NewDocument({ onClose, documentData }) {
-  console.log("EDITAR DOCUMENTO");
-  console.log(documentData);
+export default function EditDocument({ onClose, documentData }) {
+  /*   console.log("EDITAR DOCUMENTO");*/
+     // console.log(documentData); 
 
   // funciones para el control de arhivo
-  const [selectedFile, setSelectedFile] = useState(""); //bandera para saber si hay archivo
+  const [selectedFile, setSelectedFile] = useState(null); //bandera para saber si hay archivo
   const [saveFile, setSaveFile] = useState(null);
+  const [nombre_archivo, setnombre_archivo] = useState(
+    documentData.nombre_archivo
+  );
 
-  
+  //useState para guardar el prop de documento
+  const [auxDocument, setauxDocument] = useState(documentData);
+
+  // visibilidad popup  ALERTAS
+  const [showPopup, setShowPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  //function that brings the document to download
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch( `http://132.226.60.71:8080/api/documentos/descargar?id_documento= ${documentData.id_documento}`);
+      const response = await fetch(
+        environment.url + `/api/documentos/descargar?id_documento=${documentData.id_documento}`
+      );
       if (response.status == 400) {
-        console.log("incorrecto------");
-      }else{  
-        console.log("DOCUMENTO-------");
-        console.log(response);
-        setSelectedFile("ban");
+        /* console.log("incorrecto------"); */
+      } else {
+        /* console.log("DOCUMENTO-------"); */
+        setSelectedFile("band");
       }
     }
     fetchData();
   }, []);
 
-
-
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
   const [escenary, setEscenary] = useState([]);
- 
+
   // METODO get trae escenarios
   useEffect(() => {
     const url = environment.url + "/api/escenarios/listado";
@@ -62,7 +67,7 @@ export default function NewDocument({ onClose, documentData }) {
       });
   }, []);
 
-  /*   const doc = {
+  /*      const doc = {
     id_documento: 2,
     id_archivo: 2,
     id_escenario: 2,
@@ -71,20 +76,32 @@ export default function NewDocument({ onClose, documentData }) {
     tipo_documento: "Plan de practicas",
     extension: "pdf",
   };
- */
-  /*   with useEfect with an empty array will only run when starting the component [] */
 
-  const [auxEscenary, setauxEscenary] = useState(""); 
+
+  const [aux, setaux] = useState(doc); */
+
+  /*   with useEfect with an empty array will only run when starting the component [] */
+  const [auxEscenary, setauxEscenary] = useState("");
   useEffect(() => {
     setFechaVigencia(new Date(documentData.fecha_vigencia));
     if (escenary.length > 0) {
-      setauxEscenary(escenary[documentData.id_escenario]);
+      setauxEscenary(
+        escenary.find((escenario) => escenario.id === documentData.id_escenario)
+      ); //buscar escenario
     }
   }, [escenary]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSaveFile(file);
+    /* console.log(saveFile.name); */
+
+    //actualizar nombre
+    setauxDocument((prevAux) => ({
+      ...prevAux,
+      nombre_archivo: file.name,
+    }));
+
     fileToBase64(file, setSelectedFile);
   };
 
@@ -115,11 +132,11 @@ export default function NewDocument({ onClose, documentData }) {
   const handleDragOver = (event) => {
     event.preventDefault();
   };
+
   const [tipeDocument, setTipeDocument] = useState([]);
   const saveTipoDocument = (event) => {
     setTipeDocument(event.target.value);
   };
-  //
 
   const handleEscenaryChange = (event) => {
     setSelectedEscenaryId(event.target.value);
@@ -128,62 +145,76 @@ export default function NewDocument({ onClose, documentData }) {
   const [fechaVigencia, setFechaVigencia] = useState(null);
   const spanishWeekdays = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
   const [alertMessage, setAlertMessage] = useState("");
+
   // validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
-  const handleSubmitCreateDocument = (event) => {
-
-    /*obtener los datos a actualizar  */
+  const handleSubmitUpdateDocument = (event) => {
     event.preventDefault();
+    /*  console.log("test____")
+     console.log(saveFile); */
+    /*obtener los datos a actualizar  */
 
-    const url =
-      environment.url + "/api/documentos/guardar?id_escenario=" + selectedEscenaryId; //cambiar   
-
+    const url = environment.url + `/api/documentos/editar?id_documento=84&nombre=${saveFile.name}&tipoArchivo=${saveFile.name.split(".").pop()}&fechaVigencia=${fechaVigencia.toISOString().substr(0, 10)}&tipoDeDocumento=${tipeDocument}`; //cambiar
+    /* const url =
+       "http://localhost:8080/api/documentos/editar?id_documento=100"; //cambiar */
     const formData = new FormData();
-    const auxvalue = {
-      nombre: saveFile.name,
-      tipoArchivo: saveFile.type,
-      fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
-      tipoDeDocumento: tipeDocument,
-    };
 
-    formData.append("nombre", JSON.stringify(auxvalue));
+    // const auxvalue = {
+    //   nombre: saveFile.name,
+    //   tipoArchivo: saveFile.name.split(".").pop(),
+    //   fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
+    //   tipoDeDocumento: tipeDocument,
+    // };
+
+    // const auxvalue = {
+    //   nombre: "nomb",
+    //   tipoArchivo: "pdf",
+    //   fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
+    //   tipoDeDocumento: "practica",
+    // };
+    // console.log(JSON.stringify(auxvalue));
     formData.append("file", saveFile);
+
+    // formData.append("objRequest", JSON.stringify(auxvalue));
+
     fetch(url, {
-      method: "POST",
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
+      method: "PUT",
       body: formData,
     })
       .then((response) => {
-        console.log(response);
-        // Hacer algo con la respuesta, como mostrar un mensaje de éxito
+        console.log("Status:", response);
+        // return response.json();
       })
+      // .then((data) => {
+      //   console.log("Response body:", data);
+      //   setSuccessMessage("Documento Actualizado con éxito");
+      //   setShowPopup(true);
+      // })
       .catch((error) => {
         console.error(error);
-        // Mostrar un mensaje de error
+        setSuccessMessage("Error al Actualizar documento");
+        setShowPopup(true);
       });
   };
 
-  
   const StyledButtonAdd = styled(Button)({
-    display: 'inline-block',
+    display: "inline-block",
     color: "white",
     backgroundColor: "#0a2167",
     border: "1px solid blue", // Agregar un borde rojo
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: "11px",
-    borderRadius: '20px',
-    height: '30px',
-    width: 'auto',
+    borderRadius: "20px",
+    height: "30px",
+    width: "auto",
     "&:hover": {
       backgroundColor: "#1c45c0",
-      borderSize: "1px solid Red"
+      borderSize: "1px solid Red",
     },
   });
 
   const handleDeleteDocument = () => {
-    setSelectedFile("");  
-  }
+    setSelectedFile(null);
+  };
 
   //Cargar el icono para el documento
   const getIconByExtension = (extension) => {
@@ -215,10 +246,9 @@ export default function NewDocument({ onClose, documentData }) {
         return null;
     }
   };
-  
-  
+
   return (
-    <form onSubmit={handleSubmitCreateDocument} id="myForm">
+    <form onSubmit={handleSubmitUpdateDocument} id="myForm">
       <div className={style.selectContainer}>
         <div className={style.selectWrapper}>
           <h4>
@@ -237,7 +267,10 @@ export default function NewDocument({ onClose, documentData }) {
             onChange={saveTipoDocument}
             value={tipeDocument}
           >
-            <option hidden defaultValue> {documentData.tipo_documento}</option>
+            <option hidden defaultValue>
+              {" "}
+              {auxDocument.tipo_documento}
+            </option>
             <option>Plan de Prácticas</option>
             <option>Plan de Prácticas 2</option>
             <option>Plan de Prácticas 3</option>
@@ -245,7 +278,8 @@ export default function NewDocument({ onClose, documentData }) {
         </div>
         <div className={style.selectWrapper}>
           <h4>
-            <span className={style.numberRounded}>2</span> PASO 2: Selecione el escenario de practicas{" "}
+            <span className={style.numberRounded}>2</span> PASO 2: Selecione el
+            escenario de practicas{" "}
           </h4>
           <h5>
             {" "}
@@ -258,7 +292,9 @@ export default function NewDocument({ onClose, documentData }) {
             value={selectedEscenaryId}
           >
             {/*    <option hidden defaultValue> {selectedEscenari} </option>  */}
-            <option value="2">{auxEscenary.nombre}</option>
+            <option value={auxDocument.id_escenario}>
+              {auxEscenary.nombre}
+            </option>
             {escenary.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.nombre}
@@ -291,45 +327,58 @@ export default function NewDocument({ onClose, documentData }) {
         <div className={style.selectWrapper}>
           <h4>
             {" "}
-            <span className={style.numberRounded}>4</span>PASO 4: Subir Documento{" "} </h4>
-        
-          {selectedFile ? ( 
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              height: '14%',
-              width: '100%',
-              borderRadius: '15px',
-              padding: '10px',
-              border: '1px solid #0a2168',
-            }}>
-              {getIconByExtension(documentData.extension)}
-              <h5 style={{ marginRight: '10px' }}>{documentData.nombre_archivo}</h5>
-              
+            <span className={style.numberRounded}>4</span>PASO 4: Subir
+            Documento{" "}
+          </h4>
+
+          {selectedFile ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: "14%",
+                width: "100%",
+                borderRadius: "15px",
+                padding: "10px",
+                border: "1px solid #0a2168",
+              }}
+            >
+              {getIconByExtension("pdf")}
+              <h5 style={{ marginRight: "10px" }}>
+                {auxDocument.nombre_archivo}
+              </h5>
+
               <Button onClick={handleDeleteDocument}>X</Button>
-            </div>   
-          )   : 
-          
-          (<div className={style.fileUploadContainer}>
-            <p>Archivo seleccionado: {selectedFile.name}</p>   
-          <div>
-              {/* {getIconByExtension(documentData.extension)} */}
-              <p>Arrastre el archivo aquí o haga clic para seleccionarlo.</p> </div> 
+            </div>
+          ) : (
+            <div className={style.fileUploadContainer}>
+              <div>
+                {" "}
+                <p>
+                  Arrastre el archivo aquí o haga clic para seleccionarlo.
+                </p>{" "}
+              </div>
 
-            <input type="file" id="fileInput"  onChange={handleFileChange}  
-          onDrop={handleDrop}
-            onDragOver={handleDragOver}/>         
-        </div>) }   
-
+              <input
+                type="file"
+                id="fileInput"
+                onChange={handleFileChange}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+              />
+            </div>
+          )}
         </div>
       </div>
 
       {alertMessage && <span className="alert">{alertMessage}</span>}
 
       <center>
-        <StyledButtonAdd  type="submit">
-          Actualizar Documento
-        </StyledButtonAdd>
+        {" "}
+        <StyledButtonAdd type="submit">
+          {" "}
+          Actualizar Documento{" "}
+        </StyledButtonAdd>{" "}
       </center>
     </form>
   );
