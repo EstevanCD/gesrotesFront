@@ -39,17 +39,17 @@ const Routine = () => {
     setModalTitle("INFORMACIÓN DEL ROTE");
     setOpen(true);
   };
-  //
+  //gestionar grupos
   const handleOpenGesGrupos = () => {
     setModalContent("ClassManageGroups");
     setModalTitle("GESTIONAR GRUPOS");
     setOpen(true);
   };
-
+  //cerrar modal
   const handleClose = () => {
     setOpen(false);
   };
-
+  //listar asignaturas
   useEffect(() => {
     const url = environment.url + `/api/ciclos/listar/?id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
@@ -65,7 +65,7 @@ const Routine = () => {
         setCicles(simplifiedData);
       });
   }, []);
-  console.log("idAsigantura", asignatura.id)
+  //listar asignaciones
   useEffect(() => {
     async function fetchData() {
       const url = environment.url + `/api/asignaciones/listar/${idAsignatura}`;
@@ -75,7 +75,6 @@ const Routine = () => {
     }
     fetchData();
   }, []);
-  console.log("Asignaciones", assignments)
 
   const renderAssignments = () => {
     let schedulesRow = [];
