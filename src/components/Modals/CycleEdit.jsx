@@ -67,8 +67,25 @@ export default function CycleEdit({ onClose, cycle }) {
     setSuccessMessage("¿Esta seguro que desea eliminar el ciclo?");
     setShowPopup(true);
     setAlertCycle("cycleEdit")
+    handleDelete //eliminar ciclo
   };
 
+  //eliminar ciclo
+  const handleDelete = () => {
+    const url = environment.url + `/api/ciclos/${cycle?.id}/eliminar`; 
+      fetch(url, {
+        method: "DELETE"
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setAlertMessage("* Ciclo eliminado exitosamente");
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+  };
+  
   return (
     <form className="formCreateCycle" onSubmit={handleSubmit}>
       <div className="containerDates">

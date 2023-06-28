@@ -14,8 +14,6 @@ import { Button } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 
 export default function EditDocument({ onClose, documentData }) {
-  /*   console.log("EDITAR DOCUMENTO");*/
-     // console.log(documentData); 
 
   // funciones para el control de arhivo
   const [selectedFile, setSelectedFile] = useState(null); //bandera para saber si hay archivo
@@ -78,8 +76,6 @@ export default function EditDocument({ onClose, documentData }) {
   };
 
 
-  const [aux, setaux] = useState(doc); */
-
   /*   with useEfect with an empty array will only run when starting the component [] */
   const [auxEscenary, setauxEscenary] = useState("");
   useEffect(() => {
@@ -94,8 +90,6 @@ export default function EditDocument({ onClose, documentData }) {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSaveFile(file);
-    /* console.log(saveFile.name); */
-
     //actualizar nombre
     setauxDocument((prevAux) => ({
       ...prevAux,
@@ -149,46 +143,17 @@ export default function EditDocument({ onClose, documentData }) {
   // validar que todos los campos esten llenos o almenos escogido el selectedEscenaryId
   const handleSubmitUpdateDocument = (event) => {
     event.preventDefault();
-    /*  console.log("test____")
-     console.log(saveFile); */
-    /*obtener los datos a actualizar  */
-
-    const url = environment.url + `/api/documentos/editar?id_documento=84&nombre=${saveFile.name}&tipoArchivo=${saveFile.name.split(".").pop()}&fechaVigencia=${fechaVigencia.toISOString().substr(0, 10)}&tipoDeDocumento=${tipeDocument}`; //cambiar
-    /* const url =
-       "http://localhost:8080/api/documentos/editar?id_documento=100"; //cambiar */
+    const url = environment.url + `/api/documentos/editar?id_documento=${auxDocument.id_archivo}&nombre=${saveFile.name}&tipoArchivo=${saveFile.name.split(".").pop()}&fechaVigencia=${fechaVigencia.toISOString().substr(0, 10)}&tipoDeDocumento=${tipeDocument}`; //cambiar
+    
     const formData = new FormData();
-
-    // const auxvalue = {
-    //   nombre: saveFile.name,
-    //   tipoArchivo: saveFile.name.split(".").pop(),
-    //   fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
-    //   tipoDeDocumento: tipeDocument,
-    // };
-
-    // const auxvalue = {
-    //   nombre: "nomb",
-    //   tipoArchivo: "pdf",
-    //   fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
-    //   tipoDeDocumento: "practica",
-    // };
-    // console.log(JSON.stringify(auxvalue));
     formData.append("file", saveFile);
-
-    // formData.append("objRequest", JSON.stringify(auxvalue));
-
     fetch(url, {
       method: "PUT",
       body: formData,
     })
       .then((response) => {
         console.log("Status:", response);
-        // return response.json();
       })
-      // .then((data) => {
-      //   console.log("Response body:", data);
-      //   setSuccessMessage("Documento Actualizado con éxito");
-      //   setShowPopup(true);
-      // })
       .catch((error) => {
         console.error(error);
         setSuccessMessage("Error al Actualizar documento");
