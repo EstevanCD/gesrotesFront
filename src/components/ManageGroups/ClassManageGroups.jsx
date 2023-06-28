@@ -5,6 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import ListGroups from "./ListGroups";
+
 import {
   Grid,
   Box,
@@ -41,34 +43,25 @@ function ClassManageGroups() {
   const handleChangeForm2 = (event) => {
     setForm2(event.target.value);
   };
-  const [groups, setGroups] = useState([]);
-  const [groups1, setGroups1] = useState([]);
+  const [groups, setGroups] = useState([]); // Guardar los grupos del endpoint
 
-  const loadGroups = async () => {
+
+  const loadRegisteredGroups
+  = async () => {
     const responseGroups = await fetch(
-      `https://rickandmortyapi.com/api/character/1`,
+      `http://132.226.60.71:8080/api/grupos/listar/${idAsignatura}`,
       {
         method: "GET",
       }
+
     );
+
     const dataGroups = await responseGroups.json();
-    //console.log(dataGroups);
     setGroups(dataGroups);
   };
-  const loadGroups1 = async () => {
-    const responseGroups1 = await fetch(
-      `https://rickandmortyapi.com/api/character`,
-      {
-        method: "GET",
-      }
-    );
-    const dataGroups1 = await responseGroups1.json();
-    console.log(dataGroups1.results[1]);
-    setGroups1(dataGroups1.results);
-  };
+
   useEffect(() => {
-    loadGroups();
-    loadGroups1();
+    /* loadGroups(); */
   }, []);
 
   // visibilidad popup
@@ -80,6 +73,7 @@ function ClassManageGroups() {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+
   console.log("Id_asignatura" + idAsignatura);
 
   const handleEliminar = (id) => {
@@ -97,15 +91,85 @@ function ClassManageGroups() {
       });
   };
 
+  //#region 
+
+
+  const data = {
+    "grupos": [
+      {
+        "id": 1,
+        "numero_grupo": 1,
+        "estudiantes": [
+          {
+            "id": 1,
+            "nombre": "Cristian David Bravo"
+          },
+          {
+            "id": 2,
+            "nombre": "Natalia Yineth Camacho"
+          },
+          {
+            "id": 3,
+            "nombre": "Karen Daniela Gomez"
+          },
+        ]
+      },
+      {
+        "id": 2,
+        "numero_grupo": 2,
+        "estudiantes": [
+          {
+            "id": 1,
+            "nombre": "Daniela Bravo"
+          },
+          {
+            "id": 2,
+            "nombre": "Laura Bravo"
+          },
+          {
+            "id": 3,
+            "nombre": "Camilo Andres Villamil"
+          },
+        ]
+      },
+      {
+        "id": 3,
+        "numero_grupo": 3,
+        "estudiantes": [
+
+        ]
+      },{
+        "id":4 ,
+        "numero_grupo": 4,
+        "estudiantes": [
+          {
+            "id": 1,
+            "nombre": "Rick Sanchez"
+          },
+          {
+            "id": 2,
+            "nombre": "Morty Smith"
+          },
+          {
+            "id": 3,
+            "nombre": "Jerry Smith"
+          },
+          
+        ]
+      },
+    ]
+  };
+  //#endregion
+
   const handleSubmitCreateGroup = (event) => {
     event.preventDefault();
     const url =
       environment.url + "/api/grupos/crear?"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
     fetch(
       url +
-        new URLSearchParams({
-          id_asignatura: idAsignatura
-        }),
+      new URLSearchParams({
+        id_asignatura: idAsignatura
+      }),
       {
         method: "POST",
         headers: {
@@ -221,39 +285,44 @@ function ClassManageGroups() {
             >
               Agregar Grupo
             </Button>
+
             <Typography textAlign="center">
-              Lista de Grupos con Estudiantes
+              <b>Lista de Grupos con Estudiantes</b>
             </Typography>
 
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>N° Grupo</TableCell>
+                  <TableCell  sx={{ width: "100px", fontSize: "12px"  }}>
+                      <center>N° Grupo</center>
+                    </TableCell>
                     <TableCell align="center">Estudiantes</TableCell>
                     <TableCell align="center">Eliminar</TableCell>
                   </TableRow>
+
                 </TableHead>
                 <TableBody>
-                  {groups1.map((row) => (
+                  {data.grupos.map((row) => (
                     <TableRow
                       key=""
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        1
+                      <center>{row.numero_grupo}</center>
                       </TableCell>
+
                       <TableCell align="center">
-                        <Box sx={{ maxWidth: 200 }}>
-                          <Alert
-                            size="small"
-                            onClose={() => {}}
-                            severity="info"
-                          >
-                            {row.name}
-                          </Alert>
-                        </Box>
+                          
+                          {row.estudiantes.length != 0 ? (<ListGroups data = {row.estudiantes}/>)                         
+                          : (
+                            <span style={{ whiteSpace: "nowrap", color: "red", textAlign: "center" }}>
+                            * Grupo sin asignación de estudiantes
+                            </span>  )
+                            
+                        }
                       </TableCell>
+
                       <TableCell align="center">
                         <DeleteIcon onClick={() => handleEliminar(item.id)} />
                       </TableCell>

@@ -68,6 +68,7 @@ export default function CycleEdit({ onClose, cycle }) {
     setShowPopup(true);
     setAlertCycle("cycleEdit")
     handleDelete //eliminar ciclo
+    setAlertMessage("* Ciclo eliminado exitosamente");
   };
 
   //eliminar ciclo

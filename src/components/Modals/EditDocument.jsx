@@ -8,10 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import { faFileWord } from "@fortawesome/free-solid-svg-icons";
-
-import Popup from "./Popup"; //alertas
 import { Button } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
+import Popup from "../Modals/Popup";
 
 export default function EditDocument({ onClose, documentData }) {
 
@@ -29,6 +28,10 @@ export default function EditDocument({ onClose, documentData }) {
   const [showPopup, setShowPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   //function that brings the document to download
   useEffect(() => {
     async function fetchData() {
@@ -39,6 +42,7 @@ export default function EditDocument({ onClose, documentData }) {
         /* console.log("incorrecto------"); */
       } else {
         /* console.log("DOCUMENTO-------"); */
+        setSaveFile(response);
         setSelectedFile("band");
       }
     }
@@ -48,6 +52,9 @@ export default function EditDocument({ onClose, documentData }) {
   const [selectedEscenaryId, setSelectedEscenaryId] = useState("");
   const [escenary, setEscenary] = useState([]);
 
+
+
+  
   // METODO get trae escenarios
   useEffect(() => {
     const url = environment.url + "/api/escenarios/listado";
@@ -153,10 +160,13 @@ export default function EditDocument({ onClose, documentData }) {
     })
       .then((response) => {
         console.log("Status:", response);
+        setSuccessMessage("Documento actualizado correctamente");
+        setShowPopup(true);
+        console.log("hola mundoaldfj")
       })
       .catch((error) => {
         console.error(error);
-        setSuccessMessage("Error al Actualizar documento");
+        setSuccessMessage("Error al actualizar");
         setShowPopup(true);
       });
   };
@@ -307,7 +317,8 @@ export default function EditDocument({ onClose, documentData }) {
                 padding: "10px",
                 border: "1px solid #0a2168",
               }}
-            >
+            > 
+          
               {getIconByExtension("pdf")}
               <h5 style={{ marginRight: "10px" }}>
                 {auxDocument.nombre_archivo}
@@ -345,6 +356,9 @@ export default function EditDocument({ onClose, documentData }) {
           Actualizar Documento{" "}
         </StyledButtonAdd>{" "}
       </center>
+      {showPopup && (
+        <Popup message={successMessage} onClose={handleClosePopup} />
+      )}
     </form>
   );
 }
