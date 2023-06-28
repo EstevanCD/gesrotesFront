@@ -1,11 +1,13 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import RoteList from "./ListRote";
 import { environment } from "../../hooks/environment";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import { AsignaturaContext } from "../../context/AsignaturaContext";
 import "./stylesCreateRote.css";
 
 function CreateRote() {
+  const { infoRotes } = useContext(AsignaturaContext);
 
   // bring the data backent teacher
   const [options, setData] = useState([]);
@@ -18,54 +20,8 @@ function CreateRote() {
     fetchData();
   }, []); 
 
-    /*    console.log("este es el array"+data.docentes); */
-    
-
-  //HORARIOS
-  
-
-
-
-
-
-    //Asignacion Controller  Servicios relacionados con asignacion
-  const [dataAsignaciones, setdataAsignaciones] = useState(" ");
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch("http://132.226.60.71:8080/api/asignaciones/listar/1");
-      const json = await response.json();
-      setdataAsignaciones(json);
-      /* console.log("TEST array schedule") */
-    }
-    fetchData();
-  }, []);
-  console.log(dataAsignaciones);
-
   // Este va a ser el array que se listara ESTO ME TOCA LLEVARMELO A OTRA CLASES
   const [listRotes, setlistRotes] = useState([]);
-
-  const Rotes = [
-    {
-      id: 1,
-      profesor: "mario Castaneda",
-      horario: "horario 1",
-    },
-    {
-      id: 2,
-      profesor: "juan sebastian",
-      horario: "horario 2",
-    },
-    {
-      id: 3,
-      profesor: "luisa",
-      horario: "horario 3",
-    },
-    {
-      id: 4,
-      profesor: "camila",
-      horario: "horario 4",
-    },
-  ];
 
 //Todo reemplazar por el endpoint de horarios configurados
 
@@ -85,8 +41,6 @@ function CreateRote() {
 
   function SaveRote(e) {
     e.preventDefault();
-    console.log(selectedValue);
-    console.log(selectHorario);
     setlistRotes([
       ...listRotes,
       {
@@ -173,7 +127,7 @@ function CreateRote() {
   
 
   useEffect(() => {
-    setlistRotes(Rotes); //cuando cargue el documento voy a establecer el array de tareas
+    setlistRotes(infoRotes); //cuando cargue el documento voy a establecer el array de tareas
   }, []);
 
 

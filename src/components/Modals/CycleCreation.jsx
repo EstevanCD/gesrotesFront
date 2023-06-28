@@ -9,9 +9,6 @@ import { Link, useParams } from "react-router-dom";
 export default function CycleCreation({ onClose }) {
 
   let asignatura = useParams();
-  console.log("aqui va el id")
-  console.log(asignatura.id);
-
   const [fechaInicio, setFechaInicio] = useState(null);
   const [fechaFin, setFechaFin] = useState(null);
   const spanishWeekdays = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
@@ -43,10 +40,8 @@ export default function CycleCreation({ onClose }) {
         .then((response) => response.json())
         .then((data) => {
           setAlertMessage('* Ciclo creado exitosamente');
-          console.log(data);
         })
         .catch((error) => {
-          console.error("Error:", error);
         });
     }
   };

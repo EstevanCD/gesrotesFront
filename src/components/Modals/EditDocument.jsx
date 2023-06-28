@@ -39,9 +39,7 @@ export default function EditDocument({ onClose, documentData }) {
         environment.url + `/api/documentos/descargar?id_documento=${documentData.id_documento}`
       );
       if (response.status == 400) {
-        /* console.log("incorrecto------"); */
       } else {
-        /* console.log("DOCUMENTO-------"); */
         setSaveFile(response);
         setSelectedFile("band");
       }
@@ -126,7 +124,7 @@ export default function EditDocument({ onClose, documentData }) {
     };
 
     reader.readAsText(file);
-    console.log("DOCUMENTOS ", file, reader);
+    
   };
 
   const handleDragOver = (event) => {
@@ -158,13 +156,10 @@ export default function EditDocument({ onClose, documentData }) {
       body: formData,
     })
       .then((response) => {
-        console.log("Status:", response);
         setSuccessMessage("Documento actualizado correctamente");
         setShowPopup(true);
-        console.log("hola mundoaldfj")
       })
       .catch((error) => {
-        console.error(error);
         setSuccessMessage("Error al actualizar");
         setShowPopup(true);
       });
@@ -274,7 +269,6 @@ export default function EditDocument({ onClose, documentData }) {
                 {item.nombre}
               </option>
             ))}
-            {/* {console.log(selectedEscenaryId, "TRAE ESTO ID")} */}
           </select>
         </div>
       </div>

@@ -3,8 +3,6 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogAc
 
 const AlertWindow = (props) => {
   const [open, setOpen] = useState(true);
-  console.log("entrando a modal alerta")
-  console.log(props.onClose)
   const handleClose = () => {
     setOpen(false);
     onClose();

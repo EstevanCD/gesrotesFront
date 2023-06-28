@@ -31,8 +31,6 @@ export default function CycleEdit({ onClose, cycle }) {
     );
     return new Date(formattedDate);
   }
-  console.log("fecha", cycle?.inicio);
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -55,10 +53,8 @@ export default function CycleEdit({ onClose, cycle }) {
         .then((response) => response.json())
         .then((data) => {
           setAlertMessage("* Ciclo editado exitosamente");
-          console.log(data);
         })
         .catch((error) => {
-          console.error("Error:", error);
         });
     }
   };
@@ -80,10 +76,8 @@ export default function CycleEdit({ onClose, cycle }) {
         .then((response) => response.json())
         .then((data) => {
           setAlertMessage("* Ciclo eliminado exitosamente");
-          console.log(data);
         })
         .catch((error) => {
-          console.error("Error:", error);
         });
   };
   
@@ -115,7 +109,6 @@ export default function CycleEdit({ onClose, cycle }) {
           />
         </div>
         {alertMessage && <span className="alert">{alertMessage}</span>}
-        {console.log(fechaInicioEdit)}
       </div>
 
       <center>

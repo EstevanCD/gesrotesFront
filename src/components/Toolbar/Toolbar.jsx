@@ -19,7 +19,6 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function handleClick(event) {
   event.preventDefault();
-  console.info("You clicked a breadcrumb.");
 }
 const handleOpenUserMenu = (event) => {
   setAnchorElUser(event.currentTarget);

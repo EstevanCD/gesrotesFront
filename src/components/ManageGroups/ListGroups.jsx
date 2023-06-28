@@ -23,7 +23,6 @@ function ListGroups({ data, id_grupo }) {
       })
         .then(retirarItem(id))
         .catch((error) => {
-          console.error("Error:", error);
         });
   };
 
@@ -34,12 +33,12 @@ return (
         <div className="container-flex-columnsG" >
         {data.map((task) => (
             <div className="container-cardsG" focus key={task.id} >
-            <h7> {task.nombre} </h7>
+            {task.nombre}
             <Button 
                 className="Button-DeleteCardG"
                 variant="text"
                 style={{color: "#black", position: "absolute", top: "-11px", right: "-15px" }} // Agregar posicion absoluta y ajustar el top y right
-              onClick={() => handleDeleteEstudiante(task.id)}
+                onClick={() => handleDeleteEstudiante(task.id)}
             > X </Button>
             </div>
         ))}

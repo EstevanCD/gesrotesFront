@@ -10,7 +10,6 @@ function Scenario({ handleManageDocuments }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleManageDocumentsClick = (scenarioId) => {
-    console.log("id escenario", scenarioId);
     handleManageDocuments(scenarioId);
   };
 
@@ -21,7 +20,6 @@ function Scenario({ handleManageDocuments }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const simplifiedData = data.escenarios.map((scenario) => {
           return {
             scenario_codigo: scenario.id,

@@ -8,13 +8,14 @@ import { environment } from "../../hooks/environment";
 import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 const Routine = () => {
-  const { idAsignatura } = useContext(AsignaturaContext);
+  const { idAsignatura, setInfoRotes } = useContext(AsignaturaContext);
   const [selectedCycle, setSelectedCycle] = useState(null);
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [open, setOpen] = useState(false);
-  const [assignments, setAssignments] = useState([]);
-  const [cicles, setCicles] = useState([]);
+  const [assignments, setAssignments] = useState();
+  const [cicles, setCicles] = useState();
+  const [infoGrupos, setInfoGrupos] = useState();
 
   const handleOpenCycle = () => {
     setModalContent("CycleCreation");
@@ -34,7 +35,10 @@ const Routine = () => {
     setOpen(true);
   };
   //crear rote
-  const handleOpenRote = () => {
+  const handleOpenRote = (infoRotes) => {
+
+    setInfoRotes(infoRotes);
+
     setModalContent("CreateRote");
     setModalTitle("INFORMACIÓN DEL ROTE");
     setOpen(true);
@@ -75,51 +79,77 @@ const Routine = () => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    async function loadRegisteredGroups() {
+      const responseGroups = await fetch(
+        `http://132.226.60.71:8080/api/grupos/listar/${idAsignatura}`,
+        {
+          method: "GET",
+        }
+      );  
+      const dataGroups = await responseGroups.json();
+      setInfoGrupos(dataGroups);
+    };
+    loadRegisteredGroups();
+  }, []);
+  
   //listar asignaciones con grupos y ciclos asosiados
   const renderAssignments = () => {
+
+    if (!assignments || !cicles || !infoGrupos) return <> Cargando </>;
+
     let schedulesRow = [];
     // TODO: indexGroup < 5 --> Se debe cambiar el 5 por la cantidad de elementos
     // de la lista de grupos que se trae con el endpoint del back
     // Ademas se debe cambiar en el primer if por grupos[indexGgroup].id
     // o segun corresponda el renombrado de las variables
-    for (let indexGroup = 0; indexGroup < 5; indexGroup++) {
+    for (let indexGroup = 0; indexGroup < infoGrupos?.grupos?.length || 0; indexGroup++) {
       let schedulesColumn = [];
-      for (let indexCicle = 0; indexCicle < cicles.length; indexCicle++) {
-        assignments.map((group) => {
-          if (
-            group.id_grupo == indexGroup + 1 &&
-            group.id_ciclo == cicles[indexCicle].id
-          ) {
-            let teachers = [];
-            group.docentes.map((teacher) => {
-              teachers.push(
-                <div className={style.cardConten}>
-                  <h2 onClick={handleOpenRote}>{teacher.docente}</h2>
-                  <p>{teacher.modulos[0].horarios[0].descripcion}</p>
+      for (let columnCicle = 0; columnCicle < cicles?.length; columnCicle++) {
+        const resultado = assignments?.find(asignacion => (
+          asignacion.id_grupo == +infoGrupos?.grupos[indexGroup]?.id && 
+          asignacion.id_ciclo == +cicles[columnCicle].id
+        ));
+
+        if (resultado) {
+          schedulesColumn.push(
+          <td onClick={() => handleOpenRote(resultado)}>
+            <div className={style.cardConten}>
+              {resultado.docentes.map((docenteItem) => (
+                <div key={docenteItem.id}>
+                  <h2>{docenteItem.docente}</h2>
+                  {docenteItem.modulos.map((moduloItem) => (
+                    <div key={moduloItem.id}>
+                      <p>{moduloItem.nombre}</p>
+                      {moduloItem.horarios.map((horario) => (
+                        <p key={horario.id}>{horario.descripcion}</p>
+                      ))}
+                    </div>
+                  ))}
                 </div>
-              );
-            });
-            schedulesColumn.push(<td>{teachers}</td>);
-          } else {
-            schedulesColumn.push(
-              <td>
-                <div className={style.cardInfo}>
-                  <h2 onClick={handleOpenRote}>
-                    <AddCircleIcon style={{ color: "#888888", fontSize: 40 }} />
-                    <br />
-                    Sin asignar
-                  </h2>
-                </div>
-              </td>
-            );
-          }
-        });
+              ))}
+            </div>
+          </td>);
+        } else {
+          schedulesColumn.push(
+            <td>
+              <div className={style.cardInfo}>
+                <h2 onClick={handleOpenRote}>
+                  <AddCircleIcon style={{ color: "#888888", fontSize: 40 }} />
+                  <br />
+                  Sin asignar
+                </h2>
+              </div>
+            </td>
+          );
+        }
       }
       schedulesRow.push(
         <tr>
           <td>
-            <div class={style.cardgroup2}>
-              <p /* onClick={handleOpenRote} */ class={style.cardgroup}>
+            <div className={style.cardgroup2}>
+              <p /* onClick={handleOpenRote} */ className={style.cardgroup}>
                 {indexGroup + 1}
               </p>
             </div>
@@ -162,7 +192,7 @@ const Routine = () => {
                   <p>Grupo/Ciclo</p>
                 </div>
               </th>
-              {cicles.map((fecha, index) => (
+              {cicles?.map((fecha, index) => (
                 <th
                   key={index}
                   onClick={() =>

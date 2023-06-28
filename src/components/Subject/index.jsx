@@ -12,7 +12,6 @@ import { AsignaturaContext } from "../../context/AsignaturaContext";
 function Subjects() {
   const {setIdAsignatura} = useContext(AsignaturaContext);
   let params = useParams();
-  console.log(params);
   const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const url = environment.url + "/api/asignaturas/listado?id_programa=1";

@@ -25,9 +25,6 @@ function RoteList({ listRotes, deleteAllListRotes, deleteListRotes} ) {
     setTasks(listRotes);
   }, [listRotes]);
 
- /*  console.log(tasks); */
-
-
   if (tasks.length === 0) {
     return <h1></h1>;
   }
@@ -39,19 +36,23 @@ function RoteList({ listRotes, deleteAllListRotes, deleteListRotes} ) {
       <h4>Asignaciones</h4>
       <div className="container-flex" >
         <div className="container-flex-columns" >
-          {tasks.map((task) => (
-            <div className="container-cards" focus key={task.id} >
-              <h7>
-                {task.profesor} {" | "} {task.horario}{" "}
-              </h7>
-              <Button 
-                className="Button-DeleteCard"
-                variant="text"
-                style={{color: "#0A2168", position: "absolute", top: "-11px", right: "-15px" }} // Agregar posicion absoluta y ajustar el top y right
-                onClick={() => deleteListRotes(task.id)}
-              > X </Button>
+            <div className="container-cards h-10" focus >
+              {listRotes.docentes.map((docenteItem) => (
+                <div key={docenteItem.id} >
+                  <>
+                    {docenteItem.docente} {" | "}
+                    {docenteItem.modulos.map((moduloItem) => (
+                      <>
+                        {moduloItem.nombre}
+                        {moduloItem.horarios.map((horario) => (
+                          <>{horario.descripcion}</>
+                        ))}
+                      </>
+                    ))}
+                  </>
+                </div>
+              ))}
             </div>
-          ))}
         </div>
 
         <div>

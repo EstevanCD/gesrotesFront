@@ -44,7 +44,6 @@ export default function NewDocument({ onClose }) {
     };
 
     reader.readAsText(file);
-    console.log("DOCUMENTOS ", file, reader);
   };
 
   const handleDragOver = (event) => {
@@ -113,7 +112,6 @@ export default function NewDocument({ onClose }) {
       fechaVigencia: fechaVigencia.toISOString().substr(0, 10),
       tipoDeDocumento: tipeDocument,
     };
-    console.log(auxvalue);
     formData.append("nombre", JSON.stringify(auxvalue));
     formData.append("file", saveFile);
     fetch(url, {
@@ -129,10 +127,8 @@ export default function NewDocument({ onClose }) {
         return
       }
       throw error 
-      console.log(response)
     })
       .catch((error) => {
-        console.error(error);
         setSuccessMessage("HAY ERROR AL GUARDAR DOCUMENTO");
         setShowPopup(true);
         // Mostrar un mensaje de error

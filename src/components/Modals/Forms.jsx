@@ -64,7 +64,6 @@ export default function ({ id }) {
       (modulo) => modulo.nombre_modulo == event.target.value
     );
     setIdModulo(item[0].id);
-    // console.log("VALOR DE ITEM", item);
     setNameActive(true);
   };
   const [day, setDay] = useState([]);
@@ -95,7 +94,6 @@ export default function ({ id }) {
       method: "DELETE",
     })
       .then((response) => {
-        console.log(response);
         setSuccessMessage("Horario eliminado con éxito");
         setShowPopup(true);
       })
@@ -171,10 +169,6 @@ export default function ({ id }) {
 
     // Verificar si el nombre del módulo contiene caracteres especiales o está en blanco
     if (specialChars.test(nameModule) || whitespace.test(nameModule)) {
-      // Mostrar mensaje de error
-      console.error(
-        "El nombre del módulo contiene caracteres especiales o está en blanco."
-      );
       setSuccessMessage(
         "Error al Agregar revise espacios en blanco o caracteres especiales "
       );
@@ -186,7 +180,6 @@ export default function ({ id }) {
     const url =
       environment.url +
       `/api/modulos/crear/?id_docente=${id}&id_asignatura=${idAsignatura}`;
-    console.log("ID", id, "IdASIGNATURA", idAsignatura);
     fetch(url, {
       method: "POST",
       headers: {
@@ -212,7 +205,6 @@ export default function ({ id }) {
         setNameModule("");
       })
       .catch((error) => {
-        console.error(error);
       });
   };
 
@@ -243,7 +235,7 @@ export default function ({ id }) {
       });
       setHoraries(simplifiedData);
     };
-    fetchData().catch(console.error);
+    fetchData().catch();
   }, []);
 
   const handleSubmitCreateHorary = (event) => {
@@ -260,7 +252,6 @@ export default function ({ id }) {
     hourI = Number(hours);
     let [hoursf, minutesf] = hourF.split(":");
     hourF = Number(hoursf);
-    console.log(day, hourI, hourF, "Datos");
     const url =
       environment.url +
       `/api/horarios/configurar_horario?id_modulo=${idModulo}`;
@@ -278,7 +269,6 @@ export default function ({ id }) {
       }),
     })
       .then((response) => {
-        console.log(response);
         setSuccessMessage("Horario Agregado con Exito");
         setShowPopup(true);
         resetForm();
@@ -321,10 +311,9 @@ export default function ({ id }) {
           setHoraries(simplifiedData);
         };
 
-        fetchData().catch(console.error);
+        fetchData().catch();
       })
       .catch((error) => {
-        console.error(error);
         showAlert("Error al agregar el horario", "error");
       });
   };
@@ -458,11 +447,11 @@ export default function ({ id }) {
           </div>
           {horaries.map((item) => (
             <div className={style.row} key={item.id}>
-              <span className={style.tableBody}>{item.nombre}</span>
-              <span className={style.tableBody}>{item.horarios.dia}</span>
-              <span className={style.tableBody}>{item.horarios.hora}</span>
+              <span className={style.tableBody}>{item?.nombre}</span>
+              <span className={style.tableBody}>{item?.horarios.dia}</span>
+              <span className={style.tableBody}>{item?.horarios.hora}</span>
               <span className={style.tableBody}>
-                <IconButton onClick={() => handleEliminar(item.id)}>
+                <IconButton onClick={() => handleEliminar(item?.id)}>
                   <DeleteIcon />
                 </IconButton>
               </span>

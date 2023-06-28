@@ -20,7 +20,6 @@ function TabComponents() {
   const [selectedScenarioId, setSelectedScenarioId] = useState(null);
 
   const handleManageDocuments = (scenarioId) => {
-    console.log("asdasdas", scenarioId);
     setSelectedScenarioId(scenarioId);
     setShowDocumentsView(true);
   };

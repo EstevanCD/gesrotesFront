@@ -36,7 +36,9 @@ function Documents({ scenarioId }) {
     fetch(url)
       .then((response) => response.json())
       .then((data) => setDocumentos(data.documentos))
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        
+      });
   }, []);
 
   let documents = [];
@@ -137,17 +139,13 @@ function Documents({ scenarioId }) {
       }
 
       if (responseDocument.status == 400) {
-        console.log("NO HAY DOCUMENTOS")
         setAlert(responseDocument.status);
-        console.log(alert)
         handleOpenAlert();
       }
       if (extension == undefined) {
-        console.log("hola undenfined")
       }
 
     } catch (error) {
-      console.log(error)
     }
   };
 
@@ -173,21 +171,19 @@ function Documents({ scenarioId }) {
         );
 
         if (responseDocument.status != 500) {
-          console.log("Documento eliminado")
+
           setDocumentos(documents.filter(documents => documents.id_documento != documentoSeleccionado))
         }
 
         if (responseDocument.status == 500) {
-          console.log("Documento con problema")
+
           setAlert(responseDocument.status);
-          console.log(alert)
+
           handleOpenAlert();
         }
         setOpenEliminar(false);
-        console.log(documentoSeleccionado)
       }
     } catch (error) {
-      console.log(error)
     }
   };
 

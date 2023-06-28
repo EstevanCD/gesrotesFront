@@ -17,7 +17,6 @@ import { environment } from "../../hooks/environment";
 function SubjectManagement() {
   // Utiliza los datos como desees
   let asignatura = useParams();
-  console.log(asignatura.id);
   const [teachers, setTeachers] = useState([]);
   const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
@@ -29,7 +28,6 @@ function SubjectManagement() {
       }
     );
     const dataTeachers = await responseTeachers.json();
-    console.log(dataTeachers.info);
     setTeachers(dataTeachers.docentes);
     setTeachersInfo(dataTeachers.info);
   };

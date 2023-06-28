@@ -13,6 +13,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Menu,
   MenuItem,
   Alert,
   FormHelperText,
@@ -75,15 +76,12 @@ function ClassManageGroups() {
     setShowPopup(false);
   };
 
-  console.log("Id_asignatura" + idAsignatura);
-
   const handleEliminar = (id) => {
     const url = environment.url + "/api/grupos/eliminar?id_grupo=" + id;
     fetch(url, {
       method: "DELETE",
     })
       .then((response) => {
-        console.log(response);
         setSuccessMessage("Grupo eliminado con éxito");
         setShowPopup(true);
         loadRegisteredGroups();
@@ -111,19 +109,17 @@ function ClassManageGroups() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setSuccessMessage("Grupo Creado Con Exito");
         setShowPopup(true);
         loadRegisteredGroups();
       })
       .catch((error) => {
-        console.error("Error:", error);
         setSuccessMessage("Ha ocurrido un Error al Agregar el Grupo");
         setShowPopup(true);
       });
   };
 
-  console.log(groups);
+  console.log(groups)
 
   return (
     <>
@@ -147,17 +143,16 @@ function ClassManageGroups() {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={form1}
-                  label=""
+                  label="Grupo"
                   onChange={handleChangeForm1}
-                  displayEmpty
                 >
                   <MenuItem disabled value="">
                     <em>Seleccione un grupo</em>
                   </MenuItem>
+                  <MenuItem value={10}>Ten</MenuItem>
                   {
                     groups?.grupos?.map((grupo) => {
-                      console.log(grupo);
-                      <MenuItem value="">{grupo?.numero_grupo}</MenuItem>
+                      <MenuItem value={grupo.id}>{""+grupo?.numero_grupo}</MenuItem>
                     })
                   }
 
@@ -207,7 +202,6 @@ function ClassManageGroups() {
                 size="small"
                 variant="contained"
                 color="primary"
-                onClick=""
               >
                 Agregar estudiante
               </Button>
@@ -245,7 +239,7 @@ function ClassManageGroups() {
                 <TableBody>
                   {groups && groups.grupos.map((row) => (
                     <TableRow
-                      key=""
+                      key={row.id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
