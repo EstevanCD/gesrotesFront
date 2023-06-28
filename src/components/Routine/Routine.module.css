@@ -28,8 +28,7 @@ button i {
 }
 .buttonsred {
   margin: 0 1vw;
-  position: relative;
-  left: 1000px;
+  margin-left: 47vw;
   background-color: rgb(139, 4, 4);
   color: aliceblue;
   width: 130px;
