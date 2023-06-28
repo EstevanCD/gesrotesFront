@@ -161,7 +161,6 @@ export default function EditDocument({ onClose, documentData }) {
         console.log("Status:", response);
         setSuccessMessage("Documento actualizado correctamente");
         setShowPopup(true);
-        console.log("hola mundoaldfj")
       })
       .catch((error) => {
         console.error(error);
