@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import "./stylesListGroups.css";
-
+import { environment } from "../../hooks/environment";
+import Popup from "../Modals/Popup";
 const StyledButtonDelete = styled(Button)({
   color: "white",
   fontWeight: 'bold',
@@ -19,22 +20,32 @@ function ListGroups({ data } ) {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    setTasks(data);
+    setTasks(data.estudiantes);
   }, [data]);
 
+  
+    // visibilidad popup  ALERTAS
+    const [showPopup, setShowPopup] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+  
+    const handleClosePopup = () => {
+      setShowPopup(false);
+    };
 
-  const handleDeleteEstudiante = () => {
-      //eliminar ciclo
-    const url = environment.url + `/api/grupos/listar/1`; 
+  const handleDeleteEstudiante = (task) => {
+    const url = environment.url + `/api/grupos/retirarEstudiante?id_estudiante=${task.id}&id_grupo=${data.id}`; 
       fetch(url, {
         method: "DELETE"
       })
         .then((response) => response.json())
         .then((data) => {
-          setAlertMessage("* Ciclo eliminado exitosamente");
+          setSuccessMessage("Estudiante eliminado");
+          setShowPopup(true);
           console.log(data);
         })
         .catch((error) => {
+          setSuccessMessage("Error al eliminar estudiante");
+          setShowPopup(true);
           console.error("Error:", error);
         });
   };
@@ -51,7 +62,7 @@ return (
                 className="Button-DeleteCardG"
                 variant="text"
                 style={{color: "#black", position: "absolute", top: "-11px", right: "-15px" }} // Agregar posicion absoluta y ajustar el top y right
-                onClick={() => handleDeleteEstudiante}
+                onClick={() => handleDeleteEstudiante(task)}
             > X </Button>
             </div>
         ))}
@@ -59,6 +70,9 @@ return (
 
     
       </div>
+      {showPopup && (
+        <Popup message={successMessage} onClose={handleClosePopup} />
+      )}
     </>
   );
 }
