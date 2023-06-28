@@ -15,7 +15,7 @@ function Subjects() {
   console.log(params);
   const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const url = environment.url + "/api/asignaturas/listado?id_programa=1";
+  const url = environment.url + "/api/asignaturas/listar?id_programa=1";
 
   useEffect(() => {
     fetch(url, { method: "GET" })
