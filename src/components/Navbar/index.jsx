@@ -1,10 +1,6 @@
 import React from "react";
-
 import style from "./Navbar.module.css";
-
 import Typography from "@material-ui/core/Typography";
-
-import VerifiedIcon from "@material-ui/icons/VerifiedUser";
 import logo from "../../assets/Logo2.png";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
 import ChecklistIcon from '@material-ui/icons/PlaylistAddCheck';
@@ -27,8 +23,6 @@ function Navbar() {
     <><SettingsIcon/> Configuracion</>,
     <><ExitToAppIcon/> Salir</>,
   ];
-
-  //TODO: agregar logo
 
   return (
     <div className={style.container}>
