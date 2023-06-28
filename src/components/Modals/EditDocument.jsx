@@ -64,8 +64,7 @@ export default function EditDocument({ onClose, documentData }) {
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
-            nombre: escenaries.nombre,
-            direccion: escenaries.direccion,
+            descripcion: escenaries.descripcion
           };
         });
         setEscenary(simplifiedData);
@@ -272,7 +271,7 @@ export default function EditDocument({ onClose, documentData }) {
             </option>
             {escenary.map((item) => (
               <option key={item.id} value={item.id}>
-                {item.nombre}
+                {item.descripcion}
               </option>
             ))}
             {/* {console.log(selectedEscenaryId, "TRAE ESTO ID")} */}

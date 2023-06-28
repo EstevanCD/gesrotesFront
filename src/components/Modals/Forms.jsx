@@ -286,25 +286,27 @@ export default function ({ id }) {
         // Actualizar la lista de horarios después de agregar uno nuevo
         const fetchData = async () => {
           const url =
-            environment.url +
-            `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
-          const response = await fetch(url, { method: "GET" });
-          const data = await response.json();
-          console.log("DATAAAAAA", data);
-          const simplifiedData = data.map((horary) => {
+          environment.url +
+          `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+        const response = await fetch(url, { method: "GET" });
+        const data = await response.json();
+        const simplifiedData = data.modulos.map((modulo) => {
+          const horarios = modulo.horarios.map((horario) => {
+            const [dia, hora] = horario.descripcion.split(" ");
             return {
-              codigoAsignatura: horary.codigoAsignatura,
-              descripcionAsignatura: horary.descripcionAsignatura,
-              nombreModulo: horary.nombreModulo,
-              dia: horary.dia,
-              horaInicio: horary.horaInicio,
-              horaFin: horary.horaFin,
-              nombreEscenario: horary.nombreEscenario,
-              descripcionServicio: horary.descripcionServicio,
+              id: horario.id,
+              descripcion: horario.descripcion,
+              dia: dia,
+              hora: hora,
             };
           });
-
-          setHoraries(simplifiedData);
+          return {
+            id: modulo.id,
+            nombre: modulo.nombre,
+            horarios: horarios,
+          };
+        });
+        setHoraries(simplifiedData);
         };
 
         fetchData().catch(console.error);
