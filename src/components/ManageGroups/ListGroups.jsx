@@ -15,25 +15,25 @@ const StyledButtonDelete = styled(Button)({
   },
 });
 
-function ListGroups({ data } ) {
+function ListGroups({ data, id_grupo }) {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     setTasks(data);
-  }, [data]);
+  }, []);
 
 
-  const handleDeleteEstudiante = () => {
+  const handleDeleteEstudiante = (id) => {
       //eliminar ciclo
-    const url = environment.url + `/api/grupos/listar/1`; 
+    const url = "http://132.226.60.71:8080/api/grupos/retirarEstudiante?" +
+      new URLSearchParams({
+        id_estudiante: id,
+        id_grupo: id_grupo
+      }); 
       fetch(url, {
         method: "DELETE"
       })
         .then((response) => response.json())
-        .then((data) => {
-          setAlertMessage("* Ciclo eliminado exitosamente");
-          console.log(data);
-        })
         .catch((error) => {
           console.error("Error:", error);
         });
@@ -51,7 +51,7 @@ return (
                 className="Button-DeleteCardG"
                 variant="text"
                 style={{color: "#black", position: "absolute", top: "-11px", right: "-15px" }} // Agregar posicion absoluta y ajustar el top y right
-                onClick={() => handleDeleteEstudiante}
+              onClick={() => handleDeleteEstudiante(task.id)}
             > X </Button>
             </div>
         ))}

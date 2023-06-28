@@ -43,7 +43,8 @@ function ClassManageGroups() {
   const handleChangeForm2 = (event) => {
     setForm2(event.target.value);
   };
-  const [groups, setGroups] = useState([]); // Guardar los grupos del endpoint
+  const [groups, setGroups] = useState(); // Guardar los grupos del endpoint
+
 
 
   const loadRegisteredGroups
@@ -61,7 +62,7 @@ function ClassManageGroups() {
   };
 
   useEffect(() => {
-    /* loadGroups(); */
+    loadRegisteredGroups();
   }, []);
 
   // visibilidad popup
@@ -85,81 +86,12 @@ function ClassManageGroups() {
         console.log(response);
         setSuccessMessage("Grupo eliminado con éxito");
         setShowPopup(true);
+        loadRegisteredGroups();
       })
       .catch((error) => {
         // Manejar errores de red u otros errores
       });
   };
-
-  //#region 
-
-
-  const data = {
-    "grupos": [
-      {
-        "id": 1,
-        "numero_grupo": 1,
-        "estudiantes": [
-          {
-            "id": 1,
-            "nombre": "Cristian David Bravo"
-          },
-          {
-            "id": 2,
-            "nombre": "Natalia Yineth Camacho"
-          },
-          {
-            "id": 3,
-            "nombre": "Karen Daniela Gomez"
-          },
-        ]
-      },
-      {
-        "id": 2,
-        "numero_grupo": 2,
-        "estudiantes": [
-          {
-            "id": 1,
-            "nombre": "Daniela Bravo"
-          },
-          {
-            "id": 2,
-            "nombre": "Laura Bravo"
-          },
-          {
-            "id": 3,
-            "nombre": "Camilo Andres Villamil"
-          },
-        ]
-      },
-      {
-        "id": 3,
-        "numero_grupo": 3,
-        "estudiantes": [
-
-        ]
-      },{
-        "id":4 ,
-        "numero_grupo": 4,
-        "estudiantes": [
-          {
-            "id": 1,
-            "nombre": "Rick Sanchez"
-          },
-          {
-            "id": 2,
-            "nombre": "Morty Smith"
-          },
-          {
-            "id": 3,
-            "nombre": "Jerry Smith"
-          },
-          
-        ]
-      },
-    ]
-  };
-  //#endregion
 
   const handleSubmitCreateGroup = (event) => {
     event.preventDefault();
@@ -182,6 +114,7 @@ function ClassManageGroups() {
         console.log(data);
         setSuccessMessage("Grupo Creado Con Exito");
         setShowPopup(true);
+        loadRegisteredGroups();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -189,6 +122,8 @@ function ClassManageGroups() {
         setShowPopup(true);
       });
   };
+
+  console.log(groups);
 
   return (
     <>
@@ -219,8 +154,13 @@ function ClassManageGroups() {
                   <MenuItem disabled value="">
                     <em>Seleccione un grupo</em>
                   </MenuItem>
-                  <MenuItem value={10}>{groups.name}</MenuItem>
-                  <MenuItem value={20}>{groups.status}</MenuItem>
+                  {
+                    groups?.grupos?.map((grupo) => {
+                      console.log(grupo);
+                      <MenuItem value="">{grupo?.numero_grupo}</MenuItem>
+                    })
+                  }
+
                 </Select>
               </FormControl>
             </Box>
@@ -245,8 +185,8 @@ function ClassManageGroups() {
                   <MenuItem disabled value="">
                     <em>Seleccione un estudiante</em>
                   </MenuItem>
-                  <MenuItem value={10}>{groups.name}</MenuItem>
-                  <MenuItem value={20}>{groups.status}</MenuItem>
+                  <MenuItem value={10}>{groups?.name}</MenuItem>
+                  <MenuItem value={20}>{groups?.status}</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -303,7 +243,7 @@ function ClassManageGroups() {
 
                 </TableHead>
                 <TableBody>
-                  {data.grupos.map((row) => (
+                  {groups && groups.grupos.map((row) => (
                     <TableRow
                       key=""
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -314,7 +254,7 @@ function ClassManageGroups() {
 
                       <TableCell align="center">
                           
-                          {row.estudiantes.length != 0 ? (<ListGroups data = {row.estudiantes}/>)                         
+                        {row.estudiantes.length != 0 ? (<ListGroups data={row.estudiantes} id_grupo={row.id} />)                         
                           : (
                             <span style={{ whiteSpace: "nowrap", color: "red", textAlign: "center" }}>
                             * Grupo sin asignación de estudiantes
@@ -324,7 +264,7 @@ function ClassManageGroups() {
                       </TableCell>
 
                       <TableCell align="center">
-                        <DeleteIcon onClick={() => handleEliminar(item.id)} />
+                        <DeleteIcon onClick={() => handleEliminar(row.id)} />
                       </TableCell>
                     </TableRow>
                   ))}
