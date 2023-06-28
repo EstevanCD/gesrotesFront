@@ -120,12 +120,57 @@ function CreateRote() {
  */
 
   const [selectHorario, setselectHorario] = useState("");
-  const horarios = [
-    { label: "Horario 1 SJ", value: 1 },
-    { label: "Horario 2 SJ", value: 2 },
-    { label: "Horario 3 H4", value: 3 },
-    { label: "Horario 4 H4", value: 4 },
-  ];
+  // const horarios = [
+  //   { label: "Horario 1 SJ", value: 1 },
+  //   { label: "Horario 2 SJ", value: 2 },
+  //   { label: "Horario 3 H4", value: 3 },
+  //   { label: "Horario 4 H4", value: 4 },
+  // ];
+
+  const [horarios, setHorarios] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const url =
+        environment.url +
+        `/api/horarios/listado?id_docente=${1}&id_asignatura=${1}`;
+      const response = await fetch(url, { method: "GET" });
+      const data = await response.json();
+      const simplifiedData = data.map((horary) => {
+        return {
+          codigoAsignatura: horary.codigoAsignatura,
+          descripcionAsignatura: horary.descripcionAsignatura,
+          nombreModulo: horary.nombreModulo,
+          dia: horary.dia,
+          horaInicio: horary.horaInicio,
+          horaFin: horary.horaFin,
+          nombreEscenario: horary.nombreEscenario,
+          descripcionServicio: horary.descripcionServicio,
+        }
+      })
+      // const simplifiedData = data.modulos.map((modulo) => {
+      //   const horarios = modulo.horarios.map((horario) => {
+      //     const [dia, hora] = horario.descripcion.split(" ");
+      //     return {
+      //       id: horario.id,
+      //       descripcion: horario.descripcion,
+      //       dia: dia,
+      //       hora: hora,
+      //     };
+      //   });
+      //   return {
+      //     id: modulo.id,
+      //     nombre: modulo.nombre,
+      //     horarios: horarios,
+      //   };
+      // });
+      setHorarios(simplifiedData);
+    };
+
+    fetchData();
+  
+  }, [])
+  
 
   useEffect(() => {
     setlistRotes(Rotes); //cuando cargue el documento voy a establecer el array de tareas
@@ -167,9 +212,9 @@ return (
           <option hidden defaultValue>
             Seleccione el Horario
           </option>
-          {horarios.map((option) => (
-            <option key={option.value} value={option.label}>
-              {option.label}
+          {horarios?.map((option) => (
+            <option key="1" value={option.nombreModulo}>
+              {option.nombreModulo}
             </option>
           ))}
         </select>

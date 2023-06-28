@@ -3,29 +3,17 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import "./stylesListGroups.css";
 
-const StyledButtonDelete = styled(Button)({
-  color: "white",
-  fontWeight: 'bold',
-  backgroundColor: "#960D0D",
-  border: "1px solid red", // Agregar un borde rojo
-  marginLeft: '30px',
-  fontSize: "10px",
-  "&:hover": {
-    backgroundColor: "#C21111",
-  },
-});
 
 function ListGroups({ data, id_grupo }) {
-  const [tasks, setTasks] = useState([]);
-
   useEffect(() => {
-    setTasks(data);
-  }, []);
+  }, [data]);
 
+  const retirarItem = (id) => {
+    data = data.filter((item) => item.id != id)
+  }
 
   const handleDeleteEstudiante = (id) => {
-      //eliminar ciclo
-    const url = "http://132.226.60.71:8080/api/grupos/retirarEstudiante?" +
+    const url = "http://localhost:8083/api/grupos/retirarEstudiante?" +
       new URLSearchParams({
         id_estudiante: id,
         id_grupo: id_grupo
@@ -33,7 +21,7 @@ function ListGroups({ data, id_grupo }) {
       fetch(url, {
         method: "DELETE"
       })
-        .then((response) => response.json())
+        .then(retirarItem(id))
         .catch((error) => {
           console.error("Error:", error);
         });
@@ -44,7 +32,7 @@ return (
     <>
     <div className="container-flexG" >
         <div className="container-flex-columnsG" >
-        {tasks.map((task) => (
+        {data.map((task) => (
             <div className="container-cardsG" focus key={task.id} >
             <h7> {task.nombre} </h7>
             <Button 

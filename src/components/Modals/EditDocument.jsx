@@ -64,7 +64,7 @@ export default function EditDocument({ onClose, documentData }) {
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
-            descripcion: escenaries.descripcion
+            descripcion: escenaries.nombre
           };
         });
         setEscenary(simplifiedData);

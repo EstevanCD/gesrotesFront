@@ -90,7 +90,7 @@ export default function ({ id }) {
 
   // Eliminar horario
   const handleEliminar = (id) => {
-    const url = environment.url + "/api/horarios/eliminar?id_horariosmodulos=" + id;
+    const url = environment.url + "/api/horarios/eliminar?id_horario=" + id;
     fetch(url, {
       method: "DELETE",
     })
@@ -131,7 +131,7 @@ export default function ({ id }) {
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
-            descripcion: escenaries.descripcion
+            descripcion: escenaries.nombre
           };
         });
         setEscenary(simplifiedData);
@@ -290,22 +290,34 @@ export default function ({ id }) {
             `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
           const response = await fetch(url, { method: "GET" });
           const data = await response.json();
-          const simplifiedData = data.modulos.map((modulo) => {
-            const horarios = modulo.horarios.map((horario) => {
-              const [dia, hora] = horario.descripcion.split(" ");
-              return {
-                id: horario.id,
-                descripcion: horario.descripcion,
-                dia: dia,
-                hora: hora,
-              };
-            });
+          const simplifiedData = data.map((horary) => {
             return {
-              id: modulo.id,
-              nombre: modulo.nombre,
-              horarios: horarios,
-            };
-          });
+              codigoAsignatura: horary.codigoAsignatura,
+              descripcionAsignatura: horary.descripcionAsignatura,
+              nombreModulo: horary.nombreModulo,
+              dia: horary.dia,
+              horaInicio: horary.horaInicio,
+              horaFin: horary.horaFin,
+              nombreEscenario: horary.nombreEscenario,
+              descripcionServicio: horary.descripcionServicio,
+            }
+          })
+          // const simplifiedData = data.modulos.map((modulo) => {
+          //   const horarios = modulo.horarios.map((horario) => {
+          //     const [dia, hora] = horario.descripcion.split(" ");
+          //     return {
+          //       id: horario.id,
+          //       descripcion: horario.descripcion,
+          //       dia: dia,
+          //       hora: hora,
+          //     };
+          //   });
+          //   return {
+          //     id: modulo.id,
+          //     nombre: modulo.nombre,
+          //     horarios: horarios,
+          //   };
+          // });
           setHoraries(simplifiedData);
         };
 
@@ -372,6 +384,7 @@ export default function ({ id }) {
                 <option>MIERCOLES</option>
                 <option>JUEVES</option>
                 <option>VIERNES</option>
+                <option>SABADO</option>
               </select>
             </div>
             <div className={style.spaceHour}>

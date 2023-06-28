@@ -124,7 +124,7 @@ function SubjectManagement() {
                   </CardContent>
                   <CardActions style={{ justifyContent: "center" }}>
                     <Button
-                      style={{ backgroundColor: "#04048b" }}
+                      style={{ backgroundColor: "#04048b", color: "#ffffff" }}
                       size="small"
                       variant="contained"
                       onClick={()=>handleOpen(teacher.id)}

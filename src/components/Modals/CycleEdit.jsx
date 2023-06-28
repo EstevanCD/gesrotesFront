@@ -67,13 +67,13 @@ export default function CycleEdit({ onClose, cycle }) {
     setSuccessMessage("¿Esta seguro que desea eliminar el ciclo?");
     setShowPopup(true);
     setAlertCycle("cycleEdit")
-    handleDelete //eliminar ciclo
+    handleDelete() //eliminar ciclo
     setAlertMessage("* Ciclo eliminado exitosamente");
   };
 
   //eliminar ciclo
   const handleDelete = () => {
-    const url = environment.url + `/api/ciclos/${cycle?.id}/eliminar`; 
+    const url = `http://localhost:8083/api/ciclos/${cycle?.id}/eliminar`; 
       fetch(url, {
         method: "DELETE"
       })

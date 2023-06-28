@@ -66,7 +66,7 @@ export default function NewDocument({ onClose }) {
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
-            descripcion: escenaries.descripcion
+            descripcion: escenaries.nombre
           };
         });
         setEscenary(simplifiedData);
@@ -182,7 +182,7 @@ export default function NewDocument({ onClose }) {
             <option value="">Seleccione un escenario</option>
             {escenary.map((item) => (
               <option key={item.id} value={item.id}>
-                {item.nombre}
+                {item.descripcion}
               </option>
             ))}
           </select>
