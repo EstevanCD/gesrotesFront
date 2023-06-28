@@ -93,7 +93,7 @@ ul {
     padding: 0;
 }
 
-li {
+.list {
     display: flex;
     align-items: center;
     border: 1px solid #ccc;

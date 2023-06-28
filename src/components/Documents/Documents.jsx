@@ -267,7 +267,7 @@ function Documents({ scenarioId }) {
         <ul>
           {filteredDocuments.length > 0 ? (
             filteredDocuments.map((documento) => (
-              <li key={documento.id_documento}>
+              <li className={style.list} key={documento.id_documento}>
                 <div className={style.nameDoc}>
                   {getIconByExtension(documento.extension)}
                   {documento.nombre_archivo}
