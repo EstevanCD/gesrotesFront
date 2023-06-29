@@ -49,12 +49,12 @@ function Navbar() {
         <div className={style.items}>
           <ul>
             <h4>GESTIÓN</h4>
-            {optionsMenu.map((item) => {
-              return <li className={style.containerli}>{item}</li>;
+            {optionsMenu.map((item, index) => {
+              return <li key={index} className={style.containerli}>{item}</li>;
             })}
             <h4>MI PERFIL</h4>
-            {optionsProfile.map((item) => {
-              return <li className={style.containerli}>{item}</li>;
+            {optionsProfile.map((item, index) => {
+              return <li key={index} className={style.containerli}>{item}</li>;
             })}
           </ul>
         </div>

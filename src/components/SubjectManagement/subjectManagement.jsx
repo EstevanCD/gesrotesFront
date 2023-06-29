@@ -62,7 +62,7 @@ function SubjectManagement() {
           variant="subtitle2"
           component="div"
           color="#960D0D"
-          textAlign="left"
+          textalign="left"
         >
           {teachersInfo} *
         </Typography>
@@ -97,7 +97,7 @@ function SubjectManagement() {
                       gutterBottom
                       variant="h6"
                       component="div"
-                      textAlign="center"
+                      textalign="center"
                     >
                       {teacher.nombre}
                     </Typography>
@@ -106,7 +106,7 @@ function SubjectManagement() {
                       variant="subtitle2"
                       component="div"
                       color="#960D0D"
-                      textAlign="center"
+                      textalign="center"
                     >
                       {teacher.info} *
                     </Typography>
@@ -115,7 +115,7 @@ function SubjectManagement() {
                       variant="subtitle2"
                       component="div"
                       color="grey"
-                      textAlign="center"
+                      textalign="center"
                     >
                       _____________________________
                     </Typography>

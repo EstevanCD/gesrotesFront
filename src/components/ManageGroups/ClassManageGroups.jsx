@@ -204,7 +204,7 @@ function ClassManageGroups() {
             >
               Agregar Grupo
             </Button>
-            <Typography textAlign="center">
+            <Typography textalign="center">
               Lista de Grupos con Estudiantes
             </Typography>
 
@@ -231,7 +231,7 @@ function ClassManageGroups() {
                           
                         {row.estudiantes.length != 0 ? (<ListGroups data={row.estudiantes} id_grupo={row.id} />)                         
                           : (
-                            <span style={{ whiteSpace: "nowrap", color: "red", textAlign: "center" }}>
+                            <span style={{ whiteSpace: "nowrap", color: "red", textalign: "center" }}>
                             * Grupo sin asignación de estudiantes
                           </span>
                         )}

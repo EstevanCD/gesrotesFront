@@ -48,13 +48,13 @@ export default function CustomSeparator() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Breadcrumbs separator="›" aria-label="breadcrumb">
-            <Link style={{ border: "none" }} color="#092167" href="/" onClick={handleClick}>
+            <Link style={{ border: "none", color: "#092167" }} href="/" onClick={handleClick}>
               <HomeIcon />
             </Link>
-            <Link color="#092167" href="/" onClick={handleClick}>
+            <Link style={{ color: "#092167"}} href="/" onClick={handleClick}>
               Asignaturas
             </Link>
-            <Typography color="#092167">Cuidado de la salud mental</Typography>
+            <Typography style={{ color: "#092167"}}>Cuidado de la salud mental</Typography>
           </Breadcrumbs>
           <hr></hr>
           <Box sx={{ flexGrow: 0 }}>
@@ -81,7 +81,7 @@ export default function CustomSeparator() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textalign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

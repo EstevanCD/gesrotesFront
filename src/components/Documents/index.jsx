@@ -52,7 +52,7 @@ function Scenario({ handleManageDocuments }) {
                     variant="subtitle2"
                     component="div"
                     color="#960D0D"
-                    textAlign="left"
+                    textalign="left"
                   >
                     * {item.scenario_expirados} documentos expirados
                   </Typography>
