@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import "./stylesListGroups.css";
-
+import Popup from "../Modals/Popup";
 
 function ListGroups({ data, id_grupo }) {
   useEffect(() => {
@@ -46,6 +45,9 @@ return (
 
     
       </div>
+      {showPopup && (
+        <Popup message={successMessage} onClose={handleClosePopup} />
+      )}
     </>
   );
 }

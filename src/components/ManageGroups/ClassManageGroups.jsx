@@ -1,24 +1,15 @@
 import React, { useContext } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ListGroups from "./ListGroups";
-
 import {
   Grid,
   Box,
   FormControl,
-  InputLabel,
   Select,
-  Menu,
   MenuItem,
-  Alert,
   FormHelperText,
 } from "@mui/material";
-import Modals from "../Modals/Modals";
 import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -28,10 +19,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ClearIcon from "@mui/icons-material/Clear";
-import Popup from "../Modals/Popup";
 import { AsignaturaContext } from "../../context/AsignaturaContext";
 import { environment } from "../../hooks/environment";
+import ListGroups from "./ListGroups";
 
 function ClassManageGroups() {
   const { idAsignatura } = useContext(AsignaturaContext);
@@ -46,8 +36,6 @@ function ClassManageGroups() {
   };
   const [groups, setGroups] = useState(); // Guardar los grupos del endpoint
 
-
-
   const loadRegisteredGroups
   = async () => {
     const responseGroups = await fetch(
@@ -55,9 +43,7 @@ function ClassManageGroups() {
       {
         method: "GET",
       }
-
     );
-
     const dataGroups = await responseGroups.json();
     setGroups(dataGroups);
   };
@@ -93,13 +79,12 @@ function ClassManageGroups() {
 
   const handleSubmitCreateGroup = (event) => {
     event.preventDefault();
-    const url =
-      environment.url + "/api/grupos/crear?"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
+    const url = environment.url + "/api/grupos/crear?"; //TODO:aqui agregar el endpoint para enviar la informacion para la creacion del ciclo
     fetch(
       url +
-      new URLSearchParams({
-        id_asignatura: idAsignatura
-      }),
+        new URLSearchParams({
+          id_asignatura: idAsignatura,
+        }),
       {
         method: "POST",
         headers: {
@@ -219,22 +204,18 @@ function ClassManageGroups() {
             >
               Agregar Grupo
             </Button>
-
             <Typography textAlign="center">
-              <b>Lista de Grupos con Estudiantes</b>
+              Lista de Grupos con Estudiantes
             </Typography>
 
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                  <TableCell  sx={{ width: "100px", fontSize: "12px"  }}>
-                      <center>N° Grupo</center>
-                    </TableCell>
+                    <TableCell>N° Grupo</TableCell>
                     <TableCell align="center">Estudiantes</TableCell>
                     <TableCell align="center">Eliminar</TableCell>
                   </TableRow>
-
                 </TableHead>
                 <TableBody>
                   {groups && groups.grupos.map((row) => (
@@ -243,7 +224,7 @@ function ClassManageGroups() {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                      <center>{row.numero_grupo}</center>
+                        <center>{row.numero_grupo}</center>
                       </TableCell>
 
                       <TableCell align="center">
@@ -252,15 +233,18 @@ function ClassManageGroups() {
                           : (
                             <span style={{ whiteSpace: "nowrap", color: "red", textAlign: "center" }}>
                             * Grupo sin asignación de estudiantes
-                            </span>  )
-                            
-                        }
+                          </span>
+                        )}
                       </TableCell>
 
                       <TableCell align="center">
                         <DeleteIcon onClick={() => handleEliminar(row.id)} />
                       </TableCell>
                     </TableRow>
+
+
+
+
                   ))}
                 </TableBody>
               </Table>

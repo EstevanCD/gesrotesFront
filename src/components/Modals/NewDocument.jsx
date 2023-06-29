@@ -65,7 +65,7 @@ export default function NewDocument({ onClose }) {
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
-            descripcion: escenaries.nombre
+            descripcion: escenaries.descripcion
           };
         });
         setEscenary(simplifiedData);

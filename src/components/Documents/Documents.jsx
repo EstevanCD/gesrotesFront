@@ -41,6 +41,7 @@ function Documents({ scenarioId }) {
       });
   }, []);
 
+  
   let documents = [];
 
   switch (filterOption) {
@@ -63,6 +64,7 @@ function Documents({ scenarioId }) {
       break;
   }
 
+  
   const filteredDocuments = documents.filter((documento) =>
     documento.nombre_archivo.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -206,6 +208,12 @@ function Documents({ scenarioId }) {
     setModalContent("EditDocument");
     setModalTitle("Editar Documento");
     setOpen(true);
+    if (open == false){
+      fetch(url)
+      .then((response) => response.json())
+      .then((data) => setDocumentos(data.documentos))
+      .catch((error) => console.error(error));
+    }
   };
 
   const handleClose = () => {
