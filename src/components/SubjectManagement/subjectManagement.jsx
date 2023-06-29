@@ -20,7 +20,7 @@ function SubjectManagement() {
   const [teachers, setTeachers] = useState([]);
   const [teachersInfo, setTeachersInfo] = useState([]);
   const loadTeachers = async () => {
-    const url = environment.url + `/api/docentes/listado/?id_asignatura=${asignatura.id}`;
+    const url = `http://localhost:8083/api/docentes/listado/?id_asignatura=${asignatura.id}`;
     const responseTeachers = await fetch(
       url,
       {
@@ -48,7 +48,23 @@ function SubjectManagement() {
     setOpen(false);
   };
   
-
+  if (teachers.length === 0)
+    return (
+      <Typography
+        gutterBottom
+        variant="subtitle2"
+        component="div"
+        color="#960D0D"
+        textalign="left"
+        style={{
+          paddingLeft: 20,
+          textDecoration: "underline",
+          fontWeight: "bold",
+        }}
+      >
+        Cargando
+      </Typography>
+    );
   return (
     <>
       <Modals id={idDocente}  open={open} handleClose={handleClose} modalContent={modalContent} title="GESTIÓN DE HORARIOS" />
@@ -63,6 +79,11 @@ function SubjectManagement() {
           component="div"
           color="#960D0D"
           textalign="left"
+          style={{ 
+            paddingLeft: 20,
+            textDecoration: "underline",
+            fontWeight: "bold"
+           }}
         >
           {teachersInfo} *
         </Typography>
@@ -81,16 +102,18 @@ function SubjectManagement() {
             </div>
           ) : (
             teachers.map((teacher) => (
-              <Grid item md={3} sm={6} xs={12}>
+              <Grid key={teacher.id} item md={3} sm={6} xs={12}>
                 <Card style={{ marginBottom: "1rem" }} sx={{ maxWidth: 345 }}>
                   <CardMedia
                     sx={{
                       height: 100,
                       width: 100,
+                      marginTop: 3,
                       borderRadius: 50,
                       border: 1,
-                      margin: "auto",
+                      marginX: "auto",
                     }}
+                    children={<></>}
                   />
                   <CardContent>
                     <Typography
@@ -108,7 +131,7 @@ function SubjectManagement() {
                       color="#960D0D"
                       textalign="center"
                     >
-                      {teacher.info} *
+                      {teacher.info ? teacher.info : ''} 
                     </Typography>
                     <Typography
                       gutterBottom
