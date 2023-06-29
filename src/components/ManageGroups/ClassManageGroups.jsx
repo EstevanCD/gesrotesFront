@@ -22,6 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { AsignaturaContext } from "../../context/AsignaturaContext";
 import { environment } from "../../hooks/environment";
 import ListGroups from "./ListGroups";
+import Popup from "../Modals/Popup";
 
 function ClassManageGroups() {
   const { idAsignatura } = useContext(AsignaturaContext);

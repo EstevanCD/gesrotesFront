@@ -45,9 +45,6 @@ return (
 
     
       </div>
-      {showPopup && (
-        <Popup message={successMessage} onClose={handleClosePopup} />
-      )}
     </>
   );
 }
