@@ -68,7 +68,7 @@ export default function CycleEdit({ onClose, cycle }) {
 
   //eliminar ciclo
   const handleDelete = () => {
-    const url = `http://localhost:8083/api/ciclos/${cycle?.id}/eliminar`; 
+    const url = `http://132.226.60.71:8080/api/ciclos/${cycle?.id}/eliminar`; 
       fetch(url, {
         method: "DELETE"
       })

@@ -12,7 +12,7 @@ function ListGroups({ data, id_grupo }) {
   }
 
   const handleDeleteEstudiante = (id) => {
-    const url = "http://localhost:8083/api/grupos/retirarEstudiante?" +
+    const url = "http://132.226.60.71:8080/api/grupos/retirarEstudiante?" +
       new URLSearchParams({
         id_estudiante: id,
         id_grupo: id_grupo

@@ -89,7 +89,7 @@ export default function ({ id }) {
 
   // Eliminar horario
   const handleEliminar = (id) => {
-    const url =  "http://localhost:8083/api/horarios/eliminar?id_horario=" + id;
+    const url =  "http://132.226.60.71:8080/api/horarios/eliminar?id_horario=" + id;
     fetch(url, {
       method: "DELETE",
     })
@@ -105,7 +105,7 @@ export default function ({ id }) {
   useEffect(() => {
     setAlertMessage("* Hay un horario sin configurar ");
     const url =
-      `http://localhost:8083/api/modulos/sin_horarios?id_docente=${id}&id_asignatura=${idAsignatura}`;
+      `http://132.226.60.71:8080/api/modulos/sin_horarios?id_docente=${id}&id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -121,7 +121,7 @@ export default function ({ id }) {
 
   //
   useEffect(() => {
-    const url = "http://localhost:8083/api/escenarios/listado";
+    const url = "http://132.226.60.71:8080/api/escenarios/listado";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -214,7 +214,7 @@ export default function ({ id }) {
     const fetchData = async () => {
       const url =
         // environment.url +
-        `http://localhost:8083/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+        `http://132.226.60.71:8080/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
       const response = await fetch(url, { method: "GET" });
       const data = await response.json();
       const simplifiedData = data.modulos.map((modulo) => {
@@ -277,7 +277,7 @@ export default function ({ id }) {
         const fetchData = async () => {
           const url =
             // environment.url +
-            `http://localhost:8083/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+            `http://132.226.60.71:8080/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
           const response = await fetch(url, { method: "GET" });
           const data = await response.json();
           // const simplifiedData = data.map((horary) => {

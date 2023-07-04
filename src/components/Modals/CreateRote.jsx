@@ -15,7 +15,7 @@ function CreateRote() {
 
   useEffect(() => {
     async function fetchData() {  //docentes asociados a la asignatura
-      const response = await fetch("http://localhost:8083/api/docentes/listado/?id_asignatura=1");
+      const response = await fetch("http://132.226.60.71:8080/api/docentes/listado/?id_asignatura=1");
       const json = await response.json();
       setData(json.docentes);
     }
@@ -73,7 +73,7 @@ function CreateRote() {
     const fetchData = async () => {
       const url =
         // environment.url +
-        `http://localhost:8083/api/horarios/listado?id_docente=${selectedValue}&id_asignatura=${1}`;
+        `http://132.226.60.71:8080/api/horarios/listado?id_docente=${selectedValue}&id_asignatura=${1}`;
       const response = await fetch(url, { method: "GET" });
       const data = await response.json();
       const simplifiedData = data.modulos.map((modulo) => {
