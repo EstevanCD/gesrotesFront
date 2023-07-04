@@ -14,17 +14,17 @@ function Subjects() {
   let params = useParams();
   const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const url = environment.url + "/api/asignaturas/listado?id_programa=1";
+  const url = environment.url + "/api/asignaturas/listar/?id_programa=1";
 
   useEffect(() => {
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-        const simplifiedData = data.map((subject) => {
+        const simplifiedData = data.programas[0].asignaturas?.map((subject) => {
           return {
-            nombrePrograma: subject.nombrePrograma,
-            idAsignatura: subject.idAsignatura,
-            descripcion: subject.descripcion,
+            nombrePrograma: "Enfermería",
+            idAsignatura: subject.id,
+            descripcion: subject.nombre,
           };
         });
         setSubjects(simplifiedData);
