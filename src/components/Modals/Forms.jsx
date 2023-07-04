@@ -126,10 +126,11 @@ export default function ({ id }) {
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         const simplifiedData = data.map((escenaries) => {
           return {
             id: escenaries.id,
-            descripcion: escenaries.nombre
+            descripcion: escenaries.descripcion
           };
         });
         setEscenary(simplifiedData);
@@ -317,7 +318,7 @@ export default function ({ id }) {
         showAlert("Error al agregar el horario", "error");
       });
   };
-
+console.log(escenary)
   return (
     <div className={style.containerForm} id="alertContainer">
       <div className={style.formManage}>
