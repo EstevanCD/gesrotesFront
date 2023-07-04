@@ -58,7 +58,7 @@ export default function NewDocument({ onClose }) {
   const [escenary, setEscenary] = useState([]);
   // metodo get trae escenarios
   useEffect(() => {
-    const url = environment.url + "/api/escenarios/listado";
+    const url = "http://localhost:8083/api/escenarios/listado";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -102,8 +102,7 @@ export default function NewDocument({ onClose }) {
       return;
     }
     const url =
-      environment.url +
-      "/api/documentos/guardar?id_escenario=" +
+      "http://localhost:8083/api/documentos/guardar?id_escenario=" +
       selectedEscenaryId;
     const formData = new FormData();
     const auxvalue = {

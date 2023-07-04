@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./popup.module.css";
 
-const Popup = ({ message, onClose, component }) => {
+const Popup = ({ message, onAccept, onClose, component }) => {
   return (
     <div className={style.popupContainer}>
       <div className={style.popup}>
@@ -9,7 +9,7 @@ const Popup = ({ message, onClose, component }) => {
         <p className={style.popupMessage}>{message}</p>
         {component == "cycleEdit" ? (
           <>
-            <button className={style.successButton} onClick={onClose}>
+            <button className={style.successButton} onClick={onAccept}>
               Aceptar
             </button>
             <button className={style.cancelButton} onClick={onClose}>

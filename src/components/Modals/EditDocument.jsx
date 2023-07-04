@@ -55,7 +55,7 @@ export default function EditDocument({ onClose, documentData }) {
   
   // METODO get trae escenarios
   useEffect(() => {
-    const url = environment.url + "/api/escenarios/listado";
+    const url = "http://localhost:8083/api/escenarios/listado";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {

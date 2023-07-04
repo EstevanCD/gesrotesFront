@@ -105,8 +105,7 @@ export default function ({ id }) {
   useEffect(() => {
     setAlertMessage("* Hay un horario sin configurar ");
     const url =
-      environment.url +
-      `/api/modulos/sin_horarios?id_docente=${id}&id_asignatura=${idAsignatura}`;
+      `http://localhost:8083/api/modulos/sin_horarios?id_docente=${id}&id_asignatura=${idAsignatura}`;
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -122,7 +121,7 @@ export default function ({ id }) {
 
   //
   useEffect(() => {
-    const url = environment.url + "/api/escenarios/listado";
+    const url = "http://localhost:8083/api/escenarios/listado";
     fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
@@ -272,7 +271,7 @@ export default function ({ id }) {
       .then((response) => {
         setSuccessMessage("Horario Agregado con Exito");
         setShowPopup(true);
-        resetForm();
+        // resetForm();
 
         // Actualizar la lista de horarios después de agregar uno nuevo
         const fetchData = async () => {

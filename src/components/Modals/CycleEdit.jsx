@@ -63,7 +63,6 @@ export default function CycleEdit({ onClose, cycle }) {
     setSuccessMessage("¿Esta seguro que desea eliminar el ciclo?");
     setShowPopup(true);
     setAlertCycle("cycleEdit")
-    handleDelete() //eliminar ciclo
     setAlertMessage("* Ciclo eliminado exitosamente");
   };
 
@@ -79,6 +78,7 @@ export default function CycleEdit({ onClose, cycle }) {
         })
         .catch((error) => {
         });
+    setShowPopup(false);
   };
   
   return (
@@ -126,7 +126,7 @@ export default function CycleEdit({ onClose, cycle }) {
         </button>
       </center>
       {showPopup && (
-        <Popup message={successMessage} onClose={handleClosePopup} component={alertCycle} />
+        <Popup message={successMessage} onAccept={handleDelete} onClose={handleClosePopup} component={alertCycle} />
       )}
     </form>
   );

@@ -195,7 +195,6 @@ const Routine = () => {
           <button className={style.buttons} onClick={handleOpenGesGrupos}>
             Gestionar Grupos
           </button>
-          <button className={style.buttonsred}>Eliminar Todo</button>
         </div>
       <div className={style.positionButton}>
         <div>
