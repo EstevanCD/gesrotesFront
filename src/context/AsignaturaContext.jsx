@@ -6,6 +6,8 @@ export const AsignaturaContext = createContext();
 // en todo el alcance del módulo de asignaturas
 export function AsignaturaContextProvider(props) {
   const [idAsignatura, setIdAsignatura] = useState(1);
+  const [idGrupo, setIdGrupo] = useState(null);
+  const [idCiclo, setIdCiclo] = useState(null);
   const [infoRotes, setInfoRotes] = useState(null);
 
   return (
@@ -15,6 +17,10 @@ export function AsignaturaContextProvider(props) {
         setIdAsignatura,
         infoRotes,
         setInfoRotes,
+        idGrupo,
+        setIdGrupo,
+        idCiclo,
+        setIdCiclo,
       }}
     >
       {props.children}

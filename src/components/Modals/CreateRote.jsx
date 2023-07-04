@@ -7,10 +7,12 @@ import { AsignaturaContext } from "../../context/AsignaturaContext";
 import "./stylesCreateRote.css";
 
 function CreateRote() {
-  const { infoRotes } = useContext(AsignaturaContext);
-
-  // bring the data backent teacher
+  const { infoRotes, idGrupo, idCiclo } = useContext(AsignaturaContext);
+  
+  const [selectHorario, setselectHorario] = useState("");
+  const [listRotes, setlistRotes] = useState([]);
   const [options, setData] = useState([]);
+
   useEffect(() => {
     async function fetchData() {  //docentes asociados a la asignatura
       const response = await fetch("http://localhost:8083/api/docentes/listado/?id_asignatura=1");
@@ -19,13 +21,6 @@ function CreateRote() {
     }
     fetchData();
   }, []); 
-
-  // Este va a ser el array que se listara ESTO ME TOCA LLEVARMELO A OTRA CLASES
-  const [listRotes, setlistRotes] = useState([]);
-
-//Todo reemplazar por el endpoint de horarios configurados
-
-
 
   const StyledButtonAdd = styled(Button)({
     color: "white",
@@ -39,91 +34,70 @@ function CreateRote() {
     },
   });
 
-  function SaveRote(e) {
+  function SaveRote(e) {    
     e.preventDefault();
-    setlistRotes([
-      ...listRotes,
-      {
-        id: listRotes.length + 1,
-        profesor: selectedValue,
-        horario: selectHorario,
+    fetch("http://132.226.60.71:8080/api/rotes/crear", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify({
+        id_grupo: idGrupo,
+        id_ciclo: idCiclo,
+        id_horario: +selectHorario
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        setlistRotes(data);
+
+        setSuccessMessage("Rote creado con exito");
+        setShowPopup(true);
+        setNameModule("");
+      })
+      .catch((error) => {
+      });
   }
 
 
   // listado de profesores para el rote
   const [selectedValue, setSelectedValue] = useState("");
  
-/*   const options = [
-    { nombre: "Maria Paz", id: 1 },
-    { nombre: "Jorge Ruiz", id: 2 },
-    { nombre: "Christian Escobar", id: 3 },
-    { nombre: "Magdalena Falla", id: 4 },
-    { nombre: "Cristina Mar", id: 5 },
-    
-  ]; */
-
-
-
-
-
-  // listado de tareas del horario rote
-/**
- * /api/horarios/listado
- */
-
-  const [selectHorario, setselectHorario] = useState("");
-  // const horarios = [
-  //   { label: "Horario 1 SJ", value: 1 },
-  //   { label: "Horario 2 SJ", value: 2 },
-  //   { label: "Horario 3 H4", value: 3 },
-  //   { label: "Horario 4 H4", value: 4 },
-  // ];
-
   const [horarios, setHorarios] = useState();
 
   useEffect(() => {
+
+    if (!selectedValue) return;
+
     const fetchData = async () => {
       const url =
-        environment.url +
-        `/api/horarios/listado?id_docente=${1}&id_asignatura=${1}`;
+        // environment.url +
+        `http://localhost:8083/api/horarios/listado?id_docente=${selectedValue}&id_asignatura=${1}`;
       const response = await fetch(url, { method: "GET" });
       const data = await response.json();
-      const simplifiedData = data.map((horary) => {
+      const simplifiedData = data.modulos.map((modulo) => {
+        const horarios = modulo.horarios.map((horario) => {
+          const [dia, hora] = horario.descripcion.split(" ");
+          return {
+            id: horario.id,
+            descripcion: horario.descripcion,
+            dia: dia,
+            hora: hora,
+          };
+        });
         return {
-          codigoAsignatura: horary.codigoAsignatura,
-          descripcionAsignatura: horary.descripcionAsignatura,
-          nombreModulo: horary.nombreModulo,
-          dia: horary.dia,
-          horaInicio: horary.horaInicio,
-          horaFin: horary.horaFin,
-          nombreEscenario: horary.nombreEscenario,
-          descripcionServicio: horary.descripcionServicio,
-        }
-      })
-      // const simplifiedData = data.modulos.map((modulo) => {
-      //   const horarios = modulo.horarios.map((horario) => {
-      //     const [dia, hora] = horario.descripcion.split(" ");
-      //     return {
-      //       id: horario.id,
-      //       descripcion: horario.descripcion,
-      //       dia: dia,
-      //       hora: hora,
-      //     };
-      //   });
-      //   return {
-      //     id: modulo.id,
-      //     nombre: modulo.nombre,
-      //     horarios: horarios,
-      //   };
-      // });
+          id: modulo.id,
+          nombre: modulo.nombre,
+          horarios: horarios,
+        };
+      });
       setHorarios(simplifiedData);
     };
 
     fetchData();
   
-  }, [])
+  }, [selectedValue])
   
 
   useEffect(() => {
@@ -153,7 +127,7 @@ return (
           </option>
 
           {options.map((option) => (
-            <option key={option.id} value={option.nombre}>
+            <option key={option.id} value={option.id}>
               {option.nombre}
             </option>
           ))}
@@ -167,9 +141,13 @@ return (
             Seleccione el Horario
           </option>
           {horarios?.map((option) => (
-            <option key="1" value={option.nombreModulo}>
-              {option.nombreModulo}
-            </option>
+            <>
+              {option.horarios.map((horario) => (
+                <option key={horario.id} value={horario.id}>
+                  {option.nombre}{" - "}{horario.descripcion}
+                </option>
+              ))}            
+            </>
           ))}
         </select>
         

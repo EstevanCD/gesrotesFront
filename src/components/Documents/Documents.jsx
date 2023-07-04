@@ -212,7 +212,9 @@ function Documents({ scenarioId }) {
       fetch(url)
       .then((response) => response.json())
       .then((data) => setDocumentos(data.documentos))
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        
+      });
     }
   };
 

@@ -8,7 +8,7 @@ import { environment } from "../../hooks/environment";
 import { AsignaturaContext } from "../../context/AsignaturaContext";
 
 const Routine = () => {
-  const { idAsignatura, setInfoRotes } = useContext(AsignaturaContext);
+  const { idAsignatura, setInfoRotes, setIdGrupo, setIdCiclo } = useContext(AsignaturaContext);
   const [selectedCycle, setSelectedCycle] = useState(null);
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -43,6 +43,16 @@ const Routine = () => {
     setModalTitle("INFORMACIÓN DEL ROTE");
     setOpen(true);
   };
+
+  const handleCreateRote = (id_grupo, id_ciclo) => {
+    setIdGrupo(id_grupo);
+    setIdCiclo(id_ciclo);
+    setInfoRotes([]);
+    
+    setModalContent("CreateRote");
+    setModalTitle("INFORMACIÓN DEL ROTE");
+    setOpen(true);
+  }
   //gestionar grupos
   const handleOpenGesGrupos = () => {
     setModalContent("ClassManageGroups");
@@ -107,9 +117,13 @@ const Routine = () => {
     for (let indexGroup = 0; indexGroup < infoGrupos?.grupos?.length || 0; indexGroup++) {
       let schedulesColumn = [];
       for (let columnCicle = 0; columnCicle < cicles?.length; columnCicle++) {
+
+        const id_grupo = +infoGrupos?.grupos[indexGroup]?.id;
+        const id_ciclo = +cicles[columnCicle]?.id;
+
         const resultado = assignments?.find(asignacion => (
-          asignacion.id_grupo == +infoGrupos?.grupos[indexGroup]?.id && 
-          asignacion.id_ciclo == +cicles[columnCicle].id
+          asignacion.id_grupo == id_grupo && 
+          asignacion.id_ciclo == id_ciclo
         ));
 
         if (resultado) {
@@ -134,8 +148,8 @@ const Routine = () => {
         } else {
           schedulesColumn.push(
             <td>
-              <div className={style.cardInfo}>
-                <h2 onClick={handleOpenRote}>
+              <div key={id_grupo + "|" + id_ciclo} className={style.cardInfo}>
+                <h2 onClick={() => handleCreateRote(id_grupo, id_ciclo)}>
                   <AddCircleIcon style={{ color: "#888888", fontSize: 40 }} />
                   <br />
                   Sin asignar

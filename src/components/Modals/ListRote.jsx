@@ -25,7 +25,7 @@ function RoteList({ listRotes, deleteAllListRotes, deleteListRotes} ) {
     setTasks(listRotes);
   }, [listRotes]);
 
-  if (tasks.length === 0) {
+  if (tasks?.length === 0 || !tasks) {
     return <h1></h1>;
   }
 
@@ -37,7 +37,7 @@ function RoteList({ listRotes, deleteAllListRotes, deleteListRotes} ) {
       <div className="container-flex" >
         <div className="container-flex-columns" >
             <div className="container-cards h-10" focus >
-              {listRotes.docentes.map((docenteItem) => (
+              {listRotes?.docentes?.map((docenteItem) => (
                 <div key={docenteItem.id} >
                   <>
                     {docenteItem.docente} {" | "}

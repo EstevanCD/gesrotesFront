@@ -89,7 +89,7 @@ export default function ({ id }) {
 
   // Eliminar horario
   const handleEliminar = (id) => {
-    const url = environment.url + "/api/horarios/eliminar?id_horario=" + id;
+    const url =  "http://localhost:8083/api/horarios/eliminar?id_horario=" + id;
     fetch(url, {
       method: "DELETE",
     })
@@ -213,18 +213,18 @@ export default function ({ id }) {
   useEffect(() => {
     const fetchData = async () => {
       const url =
-        environment.url +
-        `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+        // environment.url +
+        `http://localhost:8083/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
       const response = await fetch(url, { method: "GET" });
       const data = await response.json();
       const simplifiedData = data.modulos.map((modulo) => {
         const horarios = modulo.horarios.map((horario) => {
-          const [dia, hora] = horario.descripcion.split(" ");
+          // const [dia, hora] = horario.descripcion.split(" ");
           return {
             id: horario.id,
-            descripcion: horario.descripcion,
-            dia: dia,
-            hora: hora,
+            descripcion: horario.descripcion.replace('\s', ''),
+            // dia: dia,
+            // hora: hora,
           };
         });
         return {
@@ -276,38 +276,38 @@ export default function ({ id }) {
         // Actualizar la lista de horarios después de agregar uno nuevo
         const fetchData = async () => {
           const url =
-            environment.url +
-            `/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
+            // environment.url +
+            `http://localhost:8083/api/horarios/listado?id_docente=${id}&id_asignatura=${idAsignatura}`;
           const response = await fetch(url, { method: "GET" });
           const data = await response.json();
-          const simplifiedData = data.map((horary) => {
-            return {
-              codigoAsignatura: horary.codigoAsignatura,
-              descripcionAsignatura: horary.descripcionAsignatura,
-              nombreModulo: horary.nombreModulo,
-              dia: horary.dia,
-              horaInicio: horary.horaInicio,
-              horaFin: horary.horaFin,
-              nombreEscenario: horary.nombreEscenario,
-              descripcionServicio: horary.descripcionServicio,
-            }
-          })
-          // const simplifiedData = data.modulos.map((modulo) => {
-          //   const horarios = modulo.horarios.map((horario) => {
-          //     const [dia, hora] = horario.descripcion.split(" ");
-          //     return {
-          //       id: horario.id,
-          //       descripcion: horario.descripcion,
-          //       dia: dia,
-          //       hora: hora,
-          //     };
-          //   });
+          // const simplifiedData = data.map((horary) => {
           //   return {
-          //     id: modulo.id,
-          //     nombre: modulo.nombre,
-          //     horarios: horarios,
-          //   };
-          // });
+          //     codigoAsignatura: horary.codigoAsignatura,
+          //     descripcionAsignatura: horary.descripcionAsignatura,
+          //     nombreModulo: horary.nombreModulo,
+          //     dia: horary.dia,
+          //     horaInicio: horary.horaInicio,
+          //     horaFin: horary.horaFin,
+          //     nombreEscenario: horary.nombreEscenario,
+          //     descripcionServicio: horary.descripcionServicio,
+          //   }
+          // })
+          const simplifiedData = data.modulos.map((modulo) => {
+            const horarios = modulo.horarios.map((horario) => {
+              const [dia, hora] = horario.descripcion.split(" ");
+              return {
+                id: horario.id,
+                descripcion: horario.descripcion,
+                dia: dia,
+                hora: hora,
+              };
+            });
+            return {
+              id: modulo.id,
+              nombre: modulo.nombre,
+              horarios: horarios,
+            };
+          });
           setHoraries(simplifiedData);
         };
 
@@ -440,20 +440,21 @@ export default function ({ id }) {
         <h3>LISTA DE HORARIOS CREADOS</h3>
         <div className={style.tableContainer}>
           <div className={style.tableTittle}>
-            <span className={style.tableBody + " " + style.tittle}>Nombre</span>
-            <span className={style.tableBody + " " + style.tittle}>Dia</span>
-            <span className={style.tableBody + " " + style.tittle}>Hora</span>
-            <span className={style.tableBody}>Eliminar</span>
+            <span className={style.tableBody }>Nombre</span>
+            <span className={style.tableBody }>Descripcion</span>
           </div>
           {horaries.map((item) => (
             <div className={style.row} key={item.id}>
-              <span className={style.tableBody}>{item?.nombre}</span>
-              <span className={style.tableBody}>{item?.horarios.dia}</span>
-              <span className={style.tableBody}>{item?.horarios.hora}</span>
-              <span className={style.tableBody}>
-                <IconButton onClick={() => handleEliminar(item?.id)}>
-                  <DeleteIcon />
-                </IconButton>
+              <span className={style.tableBody}>{item.nombre}</span>
+              <span >
+                {item.horarios.map((horario) => (
+                  <div className={style.tableDescription}>
+                    <p>{horario.descripcion}</p>
+                    <IconButton onClick={() => handleEliminar(horario.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                ))}
               </span>
             </div>
           ))}

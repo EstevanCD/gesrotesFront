@@ -105,8 +105,6 @@ function ClassManageGroups() {
       });
   };
 
-  console.log(groups)
-
   return (
     <>
       <Card sx={{ m: 1 }}>

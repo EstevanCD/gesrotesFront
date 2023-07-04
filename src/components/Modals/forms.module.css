@@ -1,6 +1,6 @@
 .containerForm {
   margin: 0 20px;
-  width: calc(100vw - 270px);
+  width: 63vw;
 }
 
 .formManage {
@@ -132,8 +132,9 @@ h3 {
 }
 
 .row {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   border-bottom: 1px solid #ccc;
   padding: 5px 0;
 }
@@ -141,11 +142,19 @@ h3 {
 .tableBody {
   flex-basis: 16.66%;
   text-align: center;
+  align-self: center;
+}
+
+.tableDescription {  
+  white-space: nowrap;
+  flex-basis: 16.66%;
+  text-align: center;
+  display: flex;
 }
 
 .tableTittle {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   font-weight: bold;
   padding: 5px 0;
 }
